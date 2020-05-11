@@ -1,0 +1,14 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/nike4613/ModSaber-MetadataFileSchema/master/Schema.json",
+  "id": "NalulunaModifier",
+  "name": "NalulunaModifier",
+  "author": "Nalulu Luluna",
+  "version": "0.0.1",
+  "description": "Custom Gameplay Modifiers",
+  "gameVersion": "1.9.1",
+  "dependsOn": {
+    "BeatSaberMarkupLanguage": "^1.2.0",
+    "BS Utils": "^1.4.4"
+  },
+  "features": []
+}

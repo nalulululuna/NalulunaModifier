@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NalulunaModifier", "NalulunaModifier.csproj", "{A82D8940-3C70-4AC7-99AC-93D1A8206BBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A82D8940-3C70-4AC7-99AC-93D1A8206BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A82D8940-3C70-4AC7-99AC-93D1A8206BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A82D8940-3C70-4AC7-99AC-93D1A8206BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A82D8940-3C70-4AC7-99AC-93D1A8206BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E711CF4-E3DF-4AA4-98D8-E11E8D1E3139}
+	EndGlobalSection
+EndGlobal
