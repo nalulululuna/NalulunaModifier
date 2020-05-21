@@ -15,9 +15,14 @@ namespace NalulunaModifier
                 moveEndPos.z = moveEndPos.z * 2;
                 jumpEndPos.z = jumpEndPos.z * 2;
 
-                moveStartPos.y = moveStartPos.y + Config.parabolaOffsetY;
-                moveEndPos.y = moveEndPos.y + Config.parabolaOffsetY;
-                jumpEndPos.y = jumpEndPos.y + Config.parabolaOffsetY;
+                float offsetY = Config.parabolaOffsetY;
+                if (Config.boxing)
+                {
+                    offsetY -= 0.3f;
+                }
+                moveStartPos.y = moveStartPos.y + offsetY;
+                moveEndPos.y = moveEndPos.y + offsetY;
+                jumpEndPos.y = jumpEndPos.y + offsetY;
                 //Logger.log.Debug($"NoteMovementInit:2: moveStartPos={moveStartPos}, moveEndPos={moveEndPos}, jumpEndPos={jumpEndPos}");
             }
         }

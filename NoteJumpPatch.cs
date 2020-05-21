@@ -7,6 +7,7 @@ namespace NalulunaModifier
     class NoteJumpManualUpdate
     {
         //static int tick = 0;
+        public static Vector3 center = new Vector3(0, 0.9f, 0);
 
         static void Postfix(
             NoteJump __instance,
@@ -31,9 +32,18 @@ namespace NalulunaModifier
 
                 __result = ____worldRotation * ____localPosition;
                 __instance.transform.position = __result;
-
-                //if (tick++ % 9 == 0) Logger.log.Debug($"NoteJumpManualUpdate: num2={num2}, __result={__result}, ____startPos={____startPos}, ____endPos={____endPos}");
             }
+
+            if (Config.centering)
+            {
+                ____localPosition.x = ____localPosition.x / 2f + center.x / 2f;
+                ____localPosition.y = ____localPosition.y / 2f + center.y / 2f;
+                ____localPosition.y = ____localPosition.y + 0.3f;
+                __result = ____worldRotation * ____localPosition;
+                __instance.transform.position = __result;
+            }
+
+            //if (tick++ % 9 == 0) Logger.log.Debug($"NoteJumpManualUpdate: num2={num2}, __result={__result}, ____startPos={____startPos}, ____endPos={____endPos}");
         }
     }
 }

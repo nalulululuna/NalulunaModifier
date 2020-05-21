@@ -21,8 +21,7 @@ namespace NalulunaModifier
         internal static Plugin instance { get; private set; }
         internal static string Name => "NalulunaModifier";
         internal static string TabName => "Naluluna";
-
-        private static PlayerController _playerController;
+        internal static NalulunaModifierController PluginController { get { return NalulunaModifierController.instance; } }
 
         [Init]
         public Plugin(IPALogger logger)
@@ -30,26 +29,6 @@ namespace NalulunaModifier
             instance = this;
             Logger.log = logger;
             Logger.log.Debug("Logger initialized.");
-        }
-
-        private void HandleGameSceneLoaded()
-        {
-            Config.Read();
-            if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed)
-            {
-                ScoreSubmission.ProlongedDisableSubmission(Name);
-            }
-            else
-            {
-                ScoreSubmission.RemoveProlongedDisable(Name);
-            }
-
-            _playerController = Resources.FindObjectsOfTypeAll<PlayerController>().FirstOrDefault();
-            if (_playerController != null)
-            {
-                _playerController.leftSaber.gameObject.SetActive(Config.blueToRed || !(Config.noRed || Config.redToBlue));
-                _playerController.rightSaber.gameObject.SetActive(Config.redToBlue || !(Config.noBlue || Config.blueToRed));
-            }
         }
 
         [OnStart]
@@ -61,20 +40,19 @@ namespace NalulunaModifier
         //[OnEnable]
         public void OnEnable()
         {
-            ApplyHarmonyPatches();
-
             Config.Read();
-            BSEvents.gameSceneLoaded += HandleGameSceneLoaded;
             GameplaySetup.instance.AddTab(TabName, $"{Name}.UI.BSML.ModifierUI.bsml", UI.ModifierUI.instance);
+            new GameObject("NalulunaModifierController").AddComponent<NalulunaModifierController>();
+            ApplyHarmonyPatches();
         }
 
         /*
         [OnDisable]
         public void OnDisable()
         {
+            if (PluginController != null)
+                GameObject.Destroy(PluginController);
             RemoveHarmonyPatches();
-
-            BSEvents.gameSceneLoaded -= HandleGameSceneLoaded;
             GameplaySetup.instance.RemoveTab(TabName);
         }
         */

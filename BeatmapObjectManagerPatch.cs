@@ -11,13 +11,11 @@ namespace NalulunaModifier
             if ((noteData.noteType == NoteType.NoteA) && Config.redToBlue)
             {
                 PropertyInfo property = typeof(NoteData).GetProperty("noteType");
-//                property = property.DeclaringType.GetProperty("noteType");
                 property.SetValue(noteData, NoteType.NoteB, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
             }
             else if ((noteData.noteType == NoteType.NoteB) && Config.blueToRed)
             {
                 PropertyInfo property = typeof(NoteData).GetProperty("noteType");
-//                property = property.DeclaringType.GetProperty("noteType");
                 property.SetValue(noteData, NoteType.NoteA, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
             }
 

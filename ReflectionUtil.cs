@@ -2,7 +2,7 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace PracticePlugin
+namespace NalulunaModifier
 {
 	public static class ReflectionUtil
 	{

@@ -1,10 +1,34 @@
 ﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-  <modifier-container child-control-width='true' child-expand-width='true'>
-    <modifier value='parabola' on-change='setParabola' source='NalulunaModifier.UI.Parabola.png' text='Parabola' hover-hint='You can change notes height offset by modifying the value of parabolaOffsetY in (BeatSaberDir)\UserData\NalulunaModifier.ini'></modifier>
-    <modifier value='noRed' on-change='setNoRed' source='NalulunaModifier.UI.NoRed.png' text='No Red Notes' hover-hint='Remove all red notes'></modifier>
-    <modifier value='noBlue' on-change='setNoBlue' source='NalulunaModifier.UI.NoBlue.png' text='No Blue Notes' hover-hint='Remove all blue notes'></modifier>
-    <modifier value='redToBlue' on-change='setRedToBlue' source='NalulunaModifier.UI.RedToBlue.png' text='Change Red to Blue' hover-hint='Change All red notes to blue'></modifier>
-    <modifier value='blueToRed' on-change='setBlueToRed' source='NalulunaModifier.UI.BlueToRed.png' text='Change Blue to Red' hover-hint='Change All blue notes to red'></modifier>
-    <clickable-text font-size='4' align='Center' underlined='true' text='Mod Distribution (YouTube) (Open Browser)' on-click='modLinkClick' hover-hint='It would be great if you could subscribe my YouTube channel.'></clickable-text>
-  </modifier-container>
+  <vertical child-control-height='false' child-expand-height='false'>
+    <horizontal>
+      <tab-selector tab-tag='settings-tab' />
+    </horizontal>
+
+    <tab tags='settings-tab' tab-name='Modifier'>
+      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+        <modifier value='parabola' on-change='setParabola' source='NalulunaModifier.UI.Parabola.png' text='Parabola' hover-hint='[Disable Score] You can change notes height offset by modifying the value of parabolaOffsetY in (BeatSaberDir)\UserData\NalulunaModifier.ini'></modifier>
+        <modifier value='boxing' on-change='setBoxing' source='NalulunaModifier.UI.Boxing.png' text='Boxing' hover-hint='Hit the notes with your hands. Highly recommended to turn on the Hide Sabers option below.'></modifier>
+        <modifier value='hideSabers' on-change='setHideSabers' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
+      </vertical>
+    </tab>
+
+    <tab tags='settings-tab' tab-name='Note'>
+      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+        <modifier value='centering' on-change='setCentering' source='NalulunaModifier.UI.Centering.png' text='Centering' hover-hint='[Disable Score] Move notes to the center for the Boxing modifier. Those notes are a little smaller.'></modifier>
+        <modifier value='noRed' on-change='setNoRed' source='NalulunaModifier.UI.NoRed.png' text='No Red Notes' hover-hint='[Disable Score] Remove all red notes'></modifier>
+        <modifier value='noBlue' on-change='setNoBlue' source='NalulunaModifier.UI.NoBlue.png' text='No Blue Notes' hover-hint='[Disable Score] Remove all blue notes'></modifier>
+        <modifier value='redToBlue' on-change='setRedToBlue' source='NalulunaModifier.UI.RedToBlue.png' text='Change Red to Blue' hover-hint='[Disable Score] Change All red notes to blue'></modifier>
+        <modifier value='blueToRed' on-change='setBlueToRed' source='NalulunaModifier.UI.BlueToRed.png' text='Change Blue to Red' hover-hint='[Disable Score] Change All blue notes to red'></modifier>
+      </vertical>
+    </tab>
+
+    <tab tags='settings-tab' tab-name='About'>
+      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+        <clickable-text font-size='4' align='Center' underlined='true' text='Author: nalulululuna (Twitter)' on-click='twitterLinkClick' hover-hint='Open browser in your monitor. I tweet in Japanese, but you can respond in English.'></clickable-text>
+        <clickable-text font-size='4' align='Center' underlined='true' text='Badminton description (YouTube)' on-click='badmintonLinkClick' hover-hint='Open browser in your monitor. There is a link to download the latest mod.'></clickable-text>
+        <clickable-text font-size='4' align='Center' underlined='true' text='Boxing description (YouTube)' on-click='boxingLinkClick' hover-hint='Open browser in your monitor. There is a link to download the latest mod.'></clickable-text>
+        <clickable-text font-size='4' align='Center' underlined='true' text='Beat Saber Jokes (YouTube Playlist)' on-click='jokeLinkClick' hover-hint='Open browser in your monitor. It would be great it if you could subscribe to my channel.'></clickable-text>
+      </vertical>
+    </tab>    
+  </vertical>
 </bg>

@@ -11,10 +11,18 @@
         public static bool redToBlue = false;
         public static bool blueToRed = false;
 
+        public static bool boxing = false;
+        public static bool hideSabers = false;
+        public static bool centering = false;
+
         public static void Read()
         {
             parabola = config.GetBool(Plugin.Name, "parabola", false, true);
             parabolaOffsetY = config.GetFloat(Plugin.Name, "parabolaOffsetY", 1.8f);
+            boxing = config.GetBool(Plugin.Name, "boxing", false, true);
+            hideSabers = config.GetBool(Plugin.Name, "hideSabers", false, true);
+
+            centering = config.GetBool(Plugin.Name, "centering", false, true);
             noBlue = config.GetBool(Plugin.Name, "noBlue", false, true);
             noRed = config.GetBool(Plugin.Name, "noRed", false, true);
             redToBlue = config.GetBool(Plugin.Name, "redToBlue", false, true);
@@ -25,6 +33,10 @@
         {
             config.SetBool(Plugin.Name, "parabola", parabola);
             config.SetFloat(Plugin.Name, "parabolaOffsetY", parabolaOffsetY);
+            config.SetBool(Plugin.Name, "boxing", boxing);
+            config.SetBool(Plugin.Name, "hideSabers", hideSabers);
+
+            config.SetBool(Plugin.Name, "centering", centering);
             config.SetBool(Plugin.Name, "noBlue", noBlue);
             config.SetBool(Plugin.Name, "noRed", noRed);
             config.SetBool(Plugin.Name, "redToBlue", redToBlue);

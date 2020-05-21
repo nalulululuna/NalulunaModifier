@@ -15,15 +15,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIValue("duration")]
-        public float duration
-        {
-            get { return 1.8f; }
-            set
-            {
-            }
-        }
-
         [UIAction("setParabola")]
         void setParabola(bool value)
         {
@@ -98,10 +89,80 @@ namespace NalulunaModifier.UI
             blueToRed = value;
         }
 
-        [UIAction("modLinkClick")]
-        void modLinkClick()
+        [UIAction("twitterLinkClick")]
+        void twitterLinkClick()
+        {
+            System.Diagnostics.Process.Start("https://twitter.com/nalulululuna");
+        }
+
+        [UIAction("badmintonLinkClick")]
+        void badmintonLinkClick()
         {
             System.Diagnostics.Process.Start("https://youtu.be/hWmCNc5rLEI");
+        }
+
+        [UIAction("boxingLinkClick")]
+        void boxingLinkClick()
+        {
+            System.Diagnostics.Process.Start("https://youtu.be/JCZbdFYst5E");
+        }
+
+        [UIAction("jokeLinkClick")]
+        void jokeLinkClick()
+        {
+            System.Diagnostics.Process.Start("https://www.youtube.com/playlist?list=PLCy2c6iKFgOGhgJnusH8AM0fPcAEpEAJL");
+        }
+
+        [UIValue("boxing")]
+        public bool boxing
+        {
+            get => Config.boxing;
+            set
+            {
+                Config.boxing = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setBoxing")]
+        void setBoxing(bool value)
+        {
+            boxing = value;
+        }
+
+        [UIValue("centering")]
+        public bool centering
+        {
+            get => Config.centering;
+            set
+            {
+                Config.centering = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setCentering")]
+        void setCentering(bool value)
+        {
+            centering = value;
+        }
+
+
+        [UIValue("hideSabers")]
+        public bool hideSabers
+        {
+            get => Config.hideSabers;
+            set
+            {
+                Config.hideSabers = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setHideSabers")]
+        void setHideSabers(bool value)
+        {
+            hideSabers = value;
         }
     }
 }

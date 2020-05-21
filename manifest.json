@@ -2,8 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/nike4613/ModSaber-MetadataFileSchema/master/Schema.json",
   "id": "NalulunaModifier",
   "name": "NalulunaModifier",
-  "author": "Nalulu Luluna",
-  "version": "0.0.1",
+  "author": "nalulululuna",
+  "version": "0.0.2",
   "description": "Custom Gameplay Modifiers",
   "gameVersion": "1.9.1",
   "dependsOn": {
