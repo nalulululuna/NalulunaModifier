@@ -4,21 +4,21 @@
       <tab-selector tab-tag='settings-tab' />
     </horizontal>
 
-    <tab tags='settings-tab' tab-name='Modifier'>
+    <tab tags='settings-tab' tab-name='Parabola'>
       <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
         <modifier value='parabola' on-change='setParabola' source='NalulunaModifier.UI.Parabola.png' text='Parabola' hover-hint='[Disable Score] You can change notes height offset by modifying the value of parabolaOffsetY in (BeatSaberDir)\UserData\NalulunaModifier.ini'></modifier>
-        <modifier value='boxing' on-change='setBoxing' source='NalulunaModifier.UI.Boxing.png' text='Boxing' hover-hint='Hit the notes with your hands. Highly recommended to turn on the Hide Sabers option below.'></modifier>
-        <modifier value='hideSabers' on-change='setHideSabers' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
-      </vertical>
-    </tab>
-
-    <tab tags='settings-tab' tab-name='Note'>
-      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
-        <modifier value='centering' on-change='setCentering' source='NalulunaModifier.UI.Centering.png' text='Centering' hover-hint='[Disable Score] Move notes to the center for the Boxing modifier. Those notes are a little smaller.'></modifier>
         <modifier value='noRed' on-change='setNoRed' source='NalulunaModifier.UI.NoRed.png' text='No Red Notes' hover-hint='[Disable Score] Remove all red notes'></modifier>
         <modifier value='noBlue' on-change='setNoBlue' source='NalulunaModifier.UI.NoBlue.png' text='No Blue Notes' hover-hint='[Disable Score] Remove all blue notes'></modifier>
         <modifier value='redToBlue' on-change='setRedToBlue' source='NalulunaModifier.UI.RedToBlue.png' text='Change Red to Blue' hover-hint='[Disable Score] Change All red notes to blue'></modifier>
         <modifier value='blueToRed' on-change='setBlueToRed' source='NalulunaModifier.UI.BlueToRed.png' text='Change Blue to Red' hover-hint='[Disable Score] Change All blue notes to red'></modifier>
+      </vertical>
+    </tab>
+
+    <tab tags='settings-tab' tab-name='Boxing'>
+      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+        <modifier value='boxing' on-change='setBoxing' source='NalulunaModifier.UI.Boxing.png' text='Boxing' hover-hint='Hit the notes with your hands. Highly recommended to turn on the Hide Sabers and Centering option below.'></modifier>
+        <modifier value='hideSabers' on-change='setHideSabers' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
+        <modifier value='centering' on-change='setCentering' source='NalulunaModifier.UI.Centering.png' text='Centering Notes' hover-hint='[Disable Score] Move notes to the center for the Boxing modifier. Those notes are a little smaller.'></modifier>
       </vertical>
     </tab>
 
