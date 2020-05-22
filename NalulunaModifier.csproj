@@ -103,11 +103,11 @@
   <ItemGroup>
     <Compile Include="NalulunaModifierController.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="BeatmapObjectManagerPatch.cs" />
-    <Compile Include="NoteBasicCutInfo.cs" />
-    <Compile Include="NoteControllerPatch.cs" />
-    <Compile Include="NoteMovementPatch.cs" />
-    <Compile Include="NoteJumpPatch.cs" />
+    <Compile Include="HarmonyPatches\BeatmapObjectManagerPatch.cs" />
+    <Compile Include="HarmonyPatches\NoteBasicCutInfoPatch.cs" />
+    <Compile Include="HarmonyPatches\NoteControllerPatch.cs" />
+    <Compile Include="HarmonyPatches\NoteMovementPatch.cs" />
+    <Compile Include="HarmonyPatches\NoteJumpPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

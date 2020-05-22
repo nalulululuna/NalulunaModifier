@@ -22,13 +22,12 @@ namespace NalulunaModifier
         {
             if (Config.parabola)
             {
-                float songTime = ____audioTimeSyncController.songTime;
-                float num = songTime - (____beatTime - ____jumpDuration * 0.5f);
-                float num2 = num / ____jumpDuration;
-                float num3 = num2 - 0.25f;
-                ____localPosition.y = ____localPosition.y - 60f * (num3 * num3 - 0.0625f);
+                float time = ____audioTimeSyncController.songTime - ____beatTime + ____jumpDuration * 0.5f;
+                float amount = time / ____jumpDuration;
+                float amountHalf = amount - 0.25f;
+                ____localPosition.y = ____localPosition.y - 60f * (amountHalf * amountHalf - 0.0625f);
                 //____localPosition.z = playerController.MoveTowardsHead(____startPos.z, ____endPos.z, ____inverseWorldRotation, num2);
-                ____localPosition.z = Mathf.Lerp(____startPos.z, ____endPos.z, num2);
+                ____localPosition.z = Mathf.Lerp(____startPos.z, ____endPos.z, amount);
 
                 __result = ____worldRotation * ____localPosition;
                 __instance.transform.position = __result;
