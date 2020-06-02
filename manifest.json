@@ -3,9 +3,9 @@
   "id": "NalulunaModifier",
   "name": "NalulunaModifier",
   "author": "nalulululuna",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Custom Gameplay Modifiers",
-  "gameVersion": "1.9.1",
+  "gameVersion": "1.10.1",
   "dependsOn": {
     "BeatSaberMarkupLanguage": "^1.2.0",
     "BS Utils": "^1.4.4"

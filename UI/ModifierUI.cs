@@ -164,5 +164,39 @@ namespace NalulunaModifier.UI
         {
             hideSabers = value;
         }
+
+        [UIValue("headbang")]
+        public bool headbang
+        {
+            get => Config.headbang;
+            set
+            {
+                Config.headbang = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setHeadbang")]
+        void setHeadbang(bool value)
+        {
+            headbang = value;
+        }
+
+        [UIValue("superhot")]
+        public bool superhot
+        {
+            get => Config.superhot;
+            set
+            {
+                Config.superhot = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setSuperhot")]
+        void setSuperhot(bool value)
+        {
+            superhot = value;
+        }
     }
 }

@@ -22,6 +22,13 @@
       </vertical>
     </tab>
 
+    <tab tags='settings-tab' tab-name='Jokes'>
+      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+        <modifier value='headbang' on-change='setHeadbang' text='Headbang' source='NalulunaModifier.UI.Question.png' hover-hint='!!!!CAUTION!!!! !!!!Head and neck injury risk!!!! Hit the notes with your head. Make sure to move slowly.'></modifier>
+        <modifier value='superhot' on-change='setSuperhot' text='SUPER H0T' source='NalulunaModifier.UI.Question.png' hover-hint='[Disable Score] SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER'></modifier>
+      </vertical>
+    </tab>
+
     <tab tags='settings-tab' tab-name='About'>
       <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
         <clickable-text font-size='4' align='Center' underlined='true' text='Author: nalulululuna (Twitter)' on-click='twitterLinkClick' hover-hint='Open browser in your monitor. I tweet in Japanese, but you can respond in English.'></clickable-text>

@@ -12,6 +12,8 @@ namespace NalulunaModifier
     {
         public static NalulunaModifierController instance { get; private set; }
 
+        private AudioTimeSyncController _audioTimeSyncController;
+        private AudioSource _audioSource;
         private PlayerController _playerController;
         private Transform _rightSaberTransform;
         private Transform _leftSaberTransform;
@@ -19,6 +21,9 @@ namespace NalulunaModifier
         private SaberBurnMarkArea _saberBurnMarkArea;
         private SaberBurnMarkSparkles _saberBurnMarkSparkles;
         private BeatmapObjectSpawnController _beatmapObjectSpawnController;
+
+        private bool _init;
+        private float _originalTimeScale;
 
         private void Awake()
         {
@@ -37,10 +42,12 @@ namespace NalulunaModifier
 
         public void OnActiveSceneChanged(Scene oldScene, Scene newScene)
         {
+            _init = false;
+
             if (newScene.name == "GameCore")
             {
                 Config.Read();
-                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering)
+                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering || Config.superhot)
                 {
                     ScoreSubmission.ProlongedDisableSubmission(Plugin.Name);
                 }
@@ -51,6 +58,138 @@ namespace NalulunaModifier
 
                 StartCoroutine(OnGameCore());
             }
+        }
+
+        private IEnumerator OnGameCore()
+        {
+            if (_audioTimeSyncController == null)
+                _audioTimeSyncController = Resources.FindObjectsOfTypeAll<AudioTimeSyncController>().FirstOrDefault();
+            if (_audioSource == null)
+                _audioSource = _audioTimeSyncController.GetPrivateField<AudioSource>("_audioSource");
+            _originalTimeScale = _audioTimeSyncController.timeScale;
+
+            // wait for custom saber
+            yield return new WaitUntil(() => Resources.FindObjectsOfTypeAll<Saber>().Any());
+            yield return new WaitForSecondsRealtime(0.1f);
+
+            if (_playerController == null)
+                _playerController = Resources.FindObjectsOfTypeAll<PlayerController>().FirstOrDefault();
+            if (_rightSaberTransform == null)
+                _rightSaberTransform = _playerController.rightSaber.transform;
+            if (_leftSaberTransform == null)
+                _leftSaberTransform = _playerController.leftSaber.transform;
+            if (_saberClashChecker == null)
+                _saberClashChecker = Resources.FindObjectsOfTypeAll<SaberClashChecker>().FirstOrDefault();
+            if (_saberBurnMarkArea == null)
+                _saberBurnMarkArea = Resources.FindObjectsOfTypeAll<SaberBurnMarkArea>().FirstOrDefault();
+            if (_saberBurnMarkSparkles == null)
+                _saberBurnMarkSparkles = Resources.FindObjectsOfTypeAll<SaberBurnMarkSparkles>().FirstOrDefault();
+
+            _playerController.leftSaber.gameObject.SetActive(Config.blueToRed || !(Config.noRed || Config.redToBlue));
+            _playerController.rightSaber.gameObject.SetActive(Config.redToBlue || !(Config.noBlue || Config.blueToRed));
+
+            // need some wait to GetNoteOffset
+            if (Config.centering)
+            {
+                if (_beatmapObjectSpawnController == null)
+                    _beatmapObjectSpawnController = Resources.FindObjectsOfTypeAll<BeatmapObjectSpawnController>().FirstOrDefault();
+                BeatmapObjectSpawnMovementData beatmapObjectSpawnMovementData = _beatmapObjectSpawnController.GetPrivateField<BeatmapObjectSpawnMovementData>("_beatmapObjectSpawnMovementData");
+                Vector3 leftBase = beatmapObjectSpawnMovementData.GetNoteOffset(0, NoteLineLayer.Base);
+                Vector3 rightTop = beatmapObjectSpawnMovementData.GetNoteOffset(3, NoteLineLayer.Top);
+                NoteJumpManualUpdate.center = (leftBase + rightTop) / 2;
+                //Logger.log.Debug($"leftBase={leftBase.x}, {leftBase.y}, {leftBase.z}");
+                //Logger.log.Debug($"rightTop={rightTop.x}, {rightTop.y}, {rightTop.z}");
+            }
+
+            if (Config.hideSabers)
+            {
+                SetSaberVisible(_playerController.rightSaber, false);
+                SetSaberVisible(_playerController.leftSaber, false);
+                SetTrailWidth(0f);
+                _saberClashChecker.enabled = false;
+                _saberBurnMarkArea.enabled = false;
+                _saberBurnMarkSparkles.enabled = false;
+            }
+
+            if (Config.hideSaberEffects)
+            {
+                SetTrailWidth(0f);
+                _saberClashChecker.enabled = false;
+                _saberBurnMarkArea.enabled = false;
+                _saberBurnMarkSparkles.enabled = false;
+            }
+
+            if (Config.boxing)
+            {
+                SetTrailWidth(0.05f);
+            }
+
+            _init = true;
+        }
+
+        private void Start()
+        {
+            Logger.log?.Debug($"{name}: Start()");
+        }
+
+        private Vector3 _prevHeadPos;
+        private Vector3 _prevLeftHandlePos;
+        private Vector3 _prevRightHandlePos;
+
+        private void Update()
+        {
+            if (!_init)
+            {
+                return;
+            }
+                
+            if (Config.boxing)
+            {
+                _rightSaberTransform.Translate(0, 0, -0.23f, Space.Self);
+                _leftSaberTransform.Translate(0, 0, -0.23f, Space.Self);
+
+                _rightSaberTransform.localScale = new Vector3(4, 4, 0.25f);
+                _leftSaberTransform.localScale = new Vector3(4, 4, 0.25f);
+            }
+
+            if (Config.headbang)
+            {
+                _rightSaberTransform.rotation = _playerController.headRot;
+                _leftSaberTransform.rotation = _playerController.headRot;
+
+                _rightSaberTransform.Rotate(new Vector3(270, 0, 0));
+                _leftSaberTransform.Rotate(new Vector3(270, 0, 0));
+
+                _rightSaberTransform.position = _playerController.headPos;
+                _leftSaberTransform.position = _playerController.headPos;
+
+                _rightSaberTransform.Translate(0.05f, 0, -0.2f, Space.Self);
+                _leftSaberTransform.Translate(-0.05f, 0, -0.2f, Space.Self);
+
+                _rightSaberTransform.localScale = new Vector3(2, 2, 0.5f);
+                _leftSaberTransform.localScale = new Vector3(2, 2, 0.5f);
+            }
+
+            if (Config.superhot)
+            {
+                float distance = 0;// = Vector3.Distance(_playerController.headPos, prevHeadPos);
+                distance = Mathf.Max(distance, Vector3.Distance(_playerController.leftSaber.handlePos, _prevLeftHandlePos));
+                distance = Mathf.Max(distance, Vector3.Distance(_playerController.rightSaber.handlePos, _prevRightHandlePos));
+                distance = Mathf.Clamp01(distance * 50f);
+                SetTimeScale(distance);
+
+                _prevHeadPos = _playerController.headPos;
+                _prevLeftHandlePos = _playerController.leftSaber.handlePos;
+                _prevRightHandlePos = _playerController.rightSaber.handlePos;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.activeSceneChanged -= OnActiveSceneChanged;
+
+            Logger.log?.Debug($"{name}: OnDestroy()");
+            instance = null;
         }
 
         private void SetSaberVisible(Saber saber, bool active)
@@ -74,78 +213,22 @@ namespace NalulunaModifier
             }
         }
 
-        private IEnumerator OnGameCore()
+        private IEnumerator SetTimeScaleCoroutine(float timeScale)
         {
-            if (Config.centering)
+            float amount = 0;
+            float currentTimeScale = _audioTimeSyncController.timeScale;
+            while (amount < 1)
             {
-                if (_beatmapObjectSpawnController == null)
-                    _beatmapObjectSpawnController = Resources.FindObjectsOfTypeAll<BeatmapObjectSpawnController>().FirstOrDefault();
-                BeatmapObjectSpawnMovementData beatmapObjectSpawnMovementData = _beatmapObjectSpawnController.GetPrivateField<BeatmapObjectSpawnMovementData>("_beatmapObjectSpawnMovementData");
-                Vector3 leftBase = beatmapObjectSpawnMovementData.GetNoteOffset(0, NoteLineLayer.Base);
-                Vector3 rightTop = beatmapObjectSpawnMovementData.GetNoteOffset(3, NoteLineLayer.Top);
-                NoteJumpManualUpdate.center = (leftBase + rightTop) / 2;
-                //Logger.log.Debug($"leftBase={leftBase}, rightTop={rightTop}");
-            }
-
-            // wait for custom saber
-            yield return new WaitUntil(() => Resources.FindObjectsOfTypeAll<Saber>().Any());
-            yield return new WaitForSecondsRealtime(0.1f);
-
-            if (_playerController == null)
-                _playerController = Resources.FindObjectsOfTypeAll<PlayerController>().FirstOrDefault();
-            if (_rightSaberTransform == null)
-                _rightSaberTransform = _playerController.rightSaber.transform;
-            if (_leftSaberTransform == null)
-                _leftSaberTransform = _playerController.leftSaber.transform;
-            if (_saberClashChecker == null)
-                _saberClashChecker = Resources.FindObjectsOfTypeAll<SaberClashChecker>().FirstOrDefault();
-            if (_saberBurnMarkArea == null)
-                _saberBurnMarkArea = Resources.FindObjectsOfTypeAll<SaberBurnMarkArea>().FirstOrDefault();
-            if (_saberBurnMarkSparkles == null)
-                _saberBurnMarkSparkles = Resources.FindObjectsOfTypeAll<SaberBurnMarkSparkles>().FirstOrDefault();
-
-            _playerController.rightSaber.gameObject.SetActive(Config.blueToRed || !(Config.noRed || Config.redToBlue));
-            _playerController.leftSaber.gameObject.SetActive(Config.redToBlue || !(Config.noBlue || Config.blueToRed));
-
-            if (Config.hideSabers)
-            {
-                SetSaberVisible(_playerController.rightSaber, false);
-                SetSaberVisible(_playerController.leftSaber, false);
-                SetTrailWidth(0f);
-                _saberClashChecker.enabled = false;
-                _saberBurnMarkArea.enabled = false;
-                _saberBurnMarkSparkles.enabled = false;
-            }
-
-            if (Config.boxing)
-            {
-                SetTrailWidth(0.05f);
+                SetTimeScale(Mathf.Lerp(currentTimeScale, timeScale, amount));
+                amount += 0.1f;
+                yield return new WaitForFixedUpdate();
             }
         }
 
-        private void Start()
+        private void SetTimeScale(float timeScale)
         {
-            Logger.log?.Debug($"{name}: Start()");
-        }
-
-        private void Update()
-        {
-            if (Config.boxing)
-            {
-                _rightSaberTransform.Translate(0, 0, -0.23f, Space.Self);
-                _leftSaberTransform.Translate(0, 0, -0.23f, Space.Self);
-
-                _rightSaberTransform.localScale = new Vector3(4, 4, 0.25f);
-                _leftSaberTransform.localScale = new Vector3(4, 4, 0.25f);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            SceneManager.activeSceneChanged -= OnActiveSceneChanged;
-
-            Logger.log?.Debug($"{name}: OnDestroy()");
-            instance = null;
+            _audioTimeSyncController.SetPrivateField("_timeScale", timeScale);
+            _audioSource.pitch = timeScale;
         }
     }
 }
