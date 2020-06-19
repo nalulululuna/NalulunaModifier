@@ -18,6 +18,7 @@
 
         public static bool headbang = false;
         public static bool superhot = false;
+        public static bool vacuum = false;
 
         public static void Read()
         {
@@ -35,6 +36,7 @@
 
             headbang = config.GetBool(Plugin.Name, "headbang", false, true);
             superhot = config.GetBool(Plugin.Name, "superhot", false, true);
+            vacuum = config.GetBool(Plugin.Name, "vacuum", false, true);
         }
 
         public static void Write()
@@ -53,6 +55,7 @@
 
             config.SetBool(Plugin.Name, "headbang", headbang);
             config.SetBool(Plugin.Name, "superhot", superhot);
+            config.SetBool(Plugin.Name, "vacuum", vacuum);
         }
     }
 }

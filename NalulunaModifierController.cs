@@ -21,6 +21,8 @@ namespace NalulunaModifier
         private SaberBurnMarkArea _saberBurnMarkArea;
         private SaberBurnMarkSparkles _saberBurnMarkSparkles;
         private BeatmapObjectSpawnController _beatmapObjectSpawnController;
+        private GameEnergyCounter _gameEnergyCounter;
+        private GamePause _gamePause;
 
         private bool _init;
         private float _originalTimeScale;
@@ -47,7 +49,7 @@ namespace NalulunaModifier
             if (newScene.name == "GameCore")
             {
                 Config.Read();
-                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering || Config.superhot)
+                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering || Config.superhot || Config.vacuum)
                 {
                     ScoreSubmission.ProlongedDisableSubmission(Plugin.Name);
                 }
@@ -60,13 +62,34 @@ namespace NalulunaModifier
             }
         }
 
+        public void OnPauseResume()
+        {
+            UpdateSaberActive();
+        }
+
+        private void UpdateSaberActive()
+        {
+            _playerController.leftSaber.gameObject.SetActive(Config.blueToRed || !(Config.noRed || Config.redToBlue));
+            _playerController.rightSaber.gameObject.SetActive(Config.redToBlue || !(Config.noBlue || Config.blueToRed));
+
+            if (Config.vacuum)
+            {
+                _playerController.leftSaber.gameObject.SetActive(false);
+            }
+        }
+
         private IEnumerator OnGameCore()
         {
             if (_audioTimeSyncController == null)
+            {
                 _audioTimeSyncController = Resources.FindObjectsOfTypeAll<AudioTimeSyncController>().FirstOrDefault();
-            if (_audioSource == null)
                 _audioSource = _audioTimeSyncController.GetPrivateField<AudioSource>("_audioSource");
+            }
             _originalTimeScale = _audioTimeSyncController.timeScale;
+
+            if (_gamePause == null)
+                _gamePause = Resources.FindObjectsOfTypeAll<GamePause>().FirstOrDefault();
+            _gamePause.didResumeEvent += OnPauseResume;
 
             // wait for custom saber
             yield return new WaitUntil(() => Resources.FindObjectsOfTypeAll<Saber>().Any());
@@ -84,9 +107,6 @@ namespace NalulunaModifier
                 _saberBurnMarkArea = Resources.FindObjectsOfTypeAll<SaberBurnMarkArea>().FirstOrDefault();
             if (_saberBurnMarkSparkles == null)
                 _saberBurnMarkSparkles = Resources.FindObjectsOfTypeAll<SaberBurnMarkSparkles>().FirstOrDefault();
-
-            _playerController.leftSaber.gameObject.SetActive(Config.blueToRed || !(Config.noRed || Config.redToBlue));
-            _playerController.rightSaber.gameObject.SetActive(Config.redToBlue || !(Config.noBlue || Config.blueToRed));
 
             // need some wait to GetNoteOffset
             if (Config.centering)
@@ -123,6 +143,25 @@ namespace NalulunaModifier
             {
                 SetTrailWidth(0.05f);
             }
+
+            if (Config.headbang)
+            {
+                SetTrailWidth(0f);
+            }
+
+            if (Config.vacuum)
+            {
+                if (_gameEnergyCounter == null)
+                    _gameEnergyCounter = Resources.FindObjectsOfTypeAll<GameEnergyCounter>().FirstOrDefault();
+                _gameEnergyCounter.SetPrivateField("_hitBombEnergyDrain", 0f);
+            }
+
+            if (GameObject.Find("vacuum_saber_right"))
+            {
+                SetTrailWidth(0f);
+            }
+
+            UpdateSaberActive();
 
             _init = true;
         }

@@ -18,6 +18,7 @@
       <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
         <modifier value='boxing' on-change='setBoxing' source='NalulunaModifier.UI.Boxing.png' text='Boxing' hover-hint='Hit the notes with your hands. Highly recommended to turn on the Hide Sabers and Centering option below.'></modifier>
         <modifier value='hideSabers' on-change='setHideSabers' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
+        <modifier value='hideSaberEffects' on-change='setHideSaberEffects' source='NalulunaModifier.UI.No.png' text='Hide Saber Effects' hover-hint='Make your saber effects invisible. No clash effect and burn mark.'></modifier>
         <modifier value='centering' on-change='setCentering' source='NalulunaModifier.UI.Centering.png' text='Centering Notes' hover-hint='[Disable Score] Move notes to the center for the Boxing modifier. Those notes are a little smaller.'></modifier>
       </vertical>
     </tab>
@@ -26,6 +27,7 @@
       <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
         <modifier value='headbang' on-change='setHeadbang' text='Headbang' source='NalulunaModifier.UI.Question.png' hover-hint='!!!!CAUTION!!!! !!!!Head and neck injury risk!!!! Hit the notes with your head. Make sure to move slowly.'></modifier>
         <modifier value='superhot' on-change='setSuperhot' text='SUPER H0T' source='NalulunaModifier.UI.Question.png' hover-hint='[Disable Score] SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER'></modifier>
+        <modifier value='vacuum' on-change='setVacuum' text='Vacuum' source='NalulunaModifier.UI.Question.png' hover-hint='[Disable Score] You will have the most powerful suction of any saber. No particles. No debris. No flying scores. It sucks all.'></modifier>
       </vertical>
     </tab>
 

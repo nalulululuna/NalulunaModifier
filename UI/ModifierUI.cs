@@ -147,7 +147,6 @@ namespace NalulunaModifier.UI
             centering = value;
         }
 
-
         [UIValue("hideSabers")]
         public bool hideSabers
         {
@@ -163,6 +162,23 @@ namespace NalulunaModifier.UI
         void setHideSabers(bool value)
         {
             hideSabers = value;
+        }
+
+        [UIValue("hideSaberEffects")]
+        public bool hideSaberEffects
+        {
+            get => Config.hideSaberEffects;
+            set
+            {
+                Config.hideSaberEffects = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setHideSaberEffects")]
+        void setHideSaberEffects(bool value)
+        {
+            hideSaberEffects = value;
         }
 
         [UIValue("headbang")]
@@ -197,6 +213,23 @@ namespace NalulunaModifier.UI
         void setSuperhot(bool value)
         {
             superhot = value;
+        }
+
+        [UIValue("vacuum")]
+        public bool vacuum
+        {
+            get => Config.vacuum;
+            set
+            {
+                Config.vacuum = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setVacuum")]
+        void setVacuum(bool value)
+        {
+            vacuum = value;
         }
     }
 }

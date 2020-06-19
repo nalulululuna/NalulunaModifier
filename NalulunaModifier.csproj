@@ -86,6 +86,9 @@
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
@@ -104,6 +107,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarmonyPatches\BombNoteControllerPatch.cs" />
+    <Compile Include="HarmonyPatches\BombCutSoundEffectManagerPatch.cs" />
+    <Compile Include="HarmonyPatches\NoteCutEffectSpawnerPatch.cs" />
     <Compile Include="NalulunaModifierController.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="HarmonyPatches\BeatmapObjectManagerPatch.cs" />

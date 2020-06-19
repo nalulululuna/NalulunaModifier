@@ -15,9 +15,18 @@ namespace NalulunaModifier
 	{
         static void Prefix(ref float saberBladeSpeed)
         {
-            if (Config.boxing)
+            if (Config.boxing || Config.vacuum)
             {
                 saberBladeSpeed = 3.0f;
+            }
+        }
+
+        static void Postfix(NoteType noteType, ref bool directionOK, ref bool speedOK, ref bool saberTypeOK)
+        {
+            if (Config.vacuum && (noteType != NoteType.Bomb))
+            {
+                directionOK = true;
+                saberTypeOK = true;
             }
         }
     }
