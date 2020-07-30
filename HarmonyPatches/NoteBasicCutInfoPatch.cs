@@ -15,9 +15,13 @@ namespace NalulunaModifier
 	{
         static void Prefix(ref float saberBladeSpeed)
         {
-            if (Config.boxing || Config.vacuum)
+            if (Config.boxing || Config.headbang || Config.vacuum || Config.contact)
             {
                 saberBladeSpeed = 3.0f;
+            }
+            else if (Config.foot)
+            {
+                saberBladeSpeed = saberBladeSpeed * 2f;
             }
         }
 

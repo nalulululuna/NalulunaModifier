@@ -72,6 +72,13 @@ namespace NalulunaModifier
                     }
                 }
             }
+
+            if (Config.foot)
+            {
+                ____localPosition.y = 0.1f;
+                __result = ____worldRotation * ____localPosition;
+                __instance.transform.position = __result;
+            }
         }
     }
 }

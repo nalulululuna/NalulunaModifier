@@ -23,6 +23,9 @@ namespace NalulunaModifier
         private BeatmapObjectSpawnController _beatmapObjectSpawnController;
         private GameEnergyCounter _gameEnergyCounter;
         private GamePause _gamePause;
+        private GameObject _vmcReceiver;
+        private Transform _footL;
+        private Transform _footR;
 
         private bool _init;
         private float _originalTimeScale;
@@ -49,7 +52,8 @@ namespace NalulunaModifier
             if (newScene.name == "GameCore")
             {
                 Config.Read();
-                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering || Config.superhot || Config.vacuum)
+                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
+                    Config.foot || Config.contact || Config.superhot || Config.vacuum)
                 {
                     ScoreSubmission.ProlongedDisableSubmission(Plugin.Name);
                 }
@@ -69,12 +73,48 @@ namespace NalulunaModifier
 
         private void UpdateSaberActive()
         {
-            _playerController.leftSaber.gameObject.SetActive(Config.blueToRed || !(Config.noRed || Config.redToBlue));
-            _playerController.rightSaber.gameObject.SetActive(Config.redToBlue || !(Config.noBlue || Config.blueToRed));
+            if (!(Config.blueToRed || !(Config.noRed || Config.redToBlue)))
+            {
+                _playerController.leftSaber.gameObject.SetActive(false);
+            }
+
+            if (!(Config.redToBlue || !(Config.noBlue || Config.blueToRed)))
+            {
+                _playerController.rightSaber.gameObject.SetActive(false);
+            }
 
             if (Config.vacuum)
             {
                 _playerController.leftSaber.gameObject.SetActive(false);
+            }
+        }
+
+        private void GetFootTransforms(GameObject obj, string indent = "")
+        {
+            Transform children = obj.GetComponentInChildren<Transform>();
+            if (children.childCount == 0)
+            {
+                return;
+            }
+            foreach (Transform transform in children)
+            {
+                Logger.log.Debug(indent + transform.gameObject.name);
+
+                if (transform.gameObject.name.ToLower().IndexOf(Config.vmcAvatarFoot) >= 0)
+                {
+                    if (transform.gameObject.name.ToLower().IndexOf(Config.vmcAvatarLeft) >= 0)
+                    {
+                        _footL = transform;
+                        Logger.log.Debug($"_footL: {_footL.gameObject.name}, {_footL.transform.position}");
+                    }
+                    if (transform.gameObject.name.ToLower().IndexOf(Config.vmcAvatarRight) >= 0)
+                    {
+                        _footR = transform;
+                        Logger.log.Debug($"_footR: {_footR.gameObject.name}, {_footR.transform.position}");
+                    }
+                }
+
+                GetFootTransforms(transform.gameObject, indent + "  ");
             }
         }
 
@@ -161,6 +201,23 @@ namespace NalulunaModifier
                 SetTrailWidth(0f);
             }
 
+            if (Config.vmcAvatar)
+            {
+                _vmcReceiver = GameObject.Find("VMCReceiver");
+                if (_vmcReceiver)
+                {
+                    SetTrailWidth(0.25f);
+
+                    GetFootTransforms(_vmcReceiver);
+
+                    if (_footL != null && _footR != null)
+                    {
+                        SetSaberVisible(_playerController.rightSaber, false);
+                        SetSaberVisible(_playerController.leftSaber, false);
+                    }
+                }
+            }
+
             UpdateSaberActive();
 
             _init = true;
@@ -207,6 +264,19 @@ namespace NalulunaModifier
 
                 _rightSaberTransform.localScale = new Vector3(2, 2, 0.5f);
                 _leftSaberTransform.localScale = new Vector3(2, 2, 0.5f);
+            }
+
+            if (Config.vmcAvatar)
+            {
+                if ((_footR != null) && (_footL != null))
+                {
+                    _rightSaberTransform.position = _footR.position;
+                    _leftSaberTransform.position = _footL.position;
+                    _rightSaberTransform.rotation = _footR.rotation;
+                    _leftSaberTransform.rotation = _footL.rotation;
+                    _rightSaberTransform.localScale = new Vector3(2, 2, 0.25f);
+                    _leftSaberTransform.localScale = new Vector3(2, 2, 0.25f);
+                }
             }
 
             if (Config.superhot)

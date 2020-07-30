@@ -18,12 +18,20 @@
       <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
         <modifier value='boxing' on-change='setBoxing' source='NalulunaModifier.UI.Boxing.png' text='Boxing' hover-hint='Hit the notes with your hands. Highly recommended to turn on the Hide Sabers and Centering option below.'></modifier>
         <modifier value='hideSabers' on-change='setHideSabers' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
-        <modifier value='hideSaberEffects' on-change='setHideSaberEffects' source='NalulunaModifier.UI.No.png' text='Hide Saber Effects' hover-hint='Make your saber effects invisible. No clash effect and burn mark.'></modifier>
+        <!-- <modifier value='hideSaberEffects' on-change='setHideSaberEffects' source='NalulunaModifier.UI.No.png' text='Hide Saber Effects' hover-hint='Make your saber effects invisible. No clash effect and burn mark.'></modifier> -->
         <modifier value='centering' on-change='setCentering' source='NalulunaModifier.UI.Centering.png' text='Centering Notes' hover-hint='[Disable Score] Move notes to the center for the Boxing modifier. Those notes are a little smaller.'></modifier>
       </vertical>
     </tab>
 
-    <tab tags='settings-tab' tab-name='Jokes'>
+    <tab tags='settings-tab' tab-name='Foot'>
+      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+        <modifier value='foot' on-change='setFoot' source='NalulunaModifier.UI.Foot.png' text='Foot' hover-hint='[Disable Score] Move all the notes to foot-level. You can play by fastening the controller to your feet.'></modifier>
+        <modifier value='contact' on-change='setContact' source='NalulunaModifier.UI.Stop.png' text='No Step' hover-hint="[Disable Score] You don't have to kick or step on the notes. Just making contact is treated as a hit."></modifier>
+        <modifier value='vmcAvatar' on-change='setVMCAvatar' source='NalulunaModifier.UI.VMC.png' text='VMCAvatar' hover-hint='If you have VirtualMotionCapture, VMCAvatar mod and FullBodyTracking, you can cut notes with your feet. (It might not work for other than VRoid models.)'></modifier>
+      </vertical>
+    </tab>
+
+    <tab tags='settings-tab' tab-name='Joke'>
       <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
         <modifier value='headbang' on-change='setHeadbang' text='Headbang' source='NalulunaModifier.UI.Question.png' hover-hint='!!!!CAUTION!!!! !!!!Head and neck injury risk!!!! Hit the notes with your head. Make sure to move slowly.'></modifier>
         <modifier value='superhot' on-change='setSuperhot' text='SUPER H0T' source='NalulunaModifier.UI.Question.png' hover-hint='[Disable Score] SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER'></modifier>
@@ -36,6 +44,7 @@
         <clickable-text font-size='4' align='Center' underlined='true' text='Author: nalulululuna (Twitter)' on-click='twitterLinkClick' hover-hint='Open browser in your monitor. I tweet in Japanese, but you can respond in English.'></clickable-text>
         <clickable-text font-size='4' align='Center' underlined='true' text='Badminton description (YouTube)' on-click='badmintonLinkClick' hover-hint='Open browser in your monitor. There is a link to download the latest mod.'></clickable-text>
         <clickable-text font-size='4' align='Center' underlined='true' text='Boxing description (YouTube)' on-click='boxingLinkClick' hover-hint='Open browser in your monitor. There is a link to download the latest mod.'></clickable-text>
+        <clickable-text font-size='4' align='Center' underlined='true' text='FootSaber description (YouTube)' on-click='footLinkClick' hover-hint='Open browser in your monitor. There is a link to download the latest mod.'></clickable-text>
         <clickable-text font-size='4' align='Center' underlined='true' text='Beat Saber Jokes (YouTube Playlist)' on-click='jokeLinkClick' hover-hint='Open browser in your monitor. It would be great it if you could subscribe to my channel.'></clickable-text>
       </vertical>
     </tab>    

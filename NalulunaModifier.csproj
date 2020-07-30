@@ -163,6 +163,15 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\Question.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Foot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\VMC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Stop.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="BuildTargets.targets" />
   <PropertyGroup>

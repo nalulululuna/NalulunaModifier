@@ -107,6 +107,12 @@ namespace NalulunaModifier.UI
             System.Diagnostics.Process.Start("https://youtu.be/JCZbdFYst5E");
         }
 
+        [UIAction("footLinkClick")]
+        void footLinkClick()
+        {
+            System.Diagnostics.Process.Start("https://youtu.be/QtLNweiiQPU");
+        }
+
         [UIAction("jokeLinkClick")]
         void jokeLinkClick()
         {
@@ -163,7 +169,7 @@ namespace NalulunaModifier.UI
         {
             hideSabers = value;
         }
-
+        /*
         [UIValue("hideSaberEffects")]
         public bool hideSaberEffects
         {
@@ -179,6 +185,58 @@ namespace NalulunaModifier.UI
         void setHideSaberEffects(bool value)
         {
             hideSaberEffects = value;
+        }
+        */
+
+        [UIValue("foot")]
+        public bool foot
+        {
+            get => Config.foot;
+            set
+            {
+                Config.foot = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setFoot")]
+        void setFoot(bool value)
+        {
+            foot = value;
+        }
+
+        [UIValue("contact")]
+        public bool contact
+        {
+            get => Config.contact;
+            set
+            {
+                Config.contact = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setContact")]
+        void setContact(bool value)
+        {
+            contact = value;
+        }
+
+        [UIValue("vmcAvatar")]
+        public bool vmcAvatar
+        {
+            get => Config.vmcAvatar;
+            set
+            {
+                Config.vmcAvatar = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setVMCAvatar")]
+        void setVMCAvatar(bool value)
+        {
+            vmcAvatar = value;
         }
 
         [UIValue("headbang")]

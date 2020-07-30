@@ -25,6 +25,13 @@ namespace NalulunaModifier
                 jumpEndPos.y = jumpEndPos.y + offsetY;
                 //Logger.log.Debug($"NoteMovementInit:2: moveStartPos={moveStartPos}, moveEndPos={moveEndPos}, jumpEndPos={jumpEndPos}");
             }
+
+            if (Config.foot)
+            {
+                moveStartPos.y = 0.1f;
+                moveEndPos.y = 0.1f;
+                jumpEndPos.y = 0.1f;
+            }
         }
     }
 }

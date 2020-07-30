@@ -20,6 +20,13 @@
         public static bool superhot = false;
         public static bool vacuum = false;
 
+        public static bool foot = false;
+        public static bool contact = false;
+        public static bool vmcAvatar = false;
+        public static string vmcAvatarFoot = "foot";
+        public static string vmcAvatarLeft = "l";
+        public static string vmcAvatarRight = "r";
+
         public static void Read()
         {
             parabola = config.GetBool(Plugin.Name, "parabola", false, true);
@@ -33,6 +40,13 @@
             hideSabers = config.GetBool(Plugin.Name, "hideSabers", false, true);
             hideSaberEffects = config.GetBool(Plugin.Name, "hideSaberEffects", false, true);
             centering = config.GetBool(Plugin.Name, "centering", false, true);
+
+            foot = config.GetBool(Plugin.Name, "foot", false, true);
+            contact = config.GetBool(Plugin.Name, "contact", false, true);
+            vmcAvatar = config.GetBool(Plugin.Name, "vmcAvatar", false, true);
+            vmcAvatarFoot = config.GetString(Plugin.Name, "vmcAvatarFoot", "foot", true);
+            vmcAvatarLeft = config.GetString(Plugin.Name, "vmcAvatarLeft", "l", true);
+            vmcAvatarRight = config.GetString(Plugin.Name, "vmcAvatarRight", "r", true);
 
             headbang = config.GetBool(Plugin.Name, "headbang", false, true);
             superhot = config.GetBool(Plugin.Name, "superhot", false, true);
@@ -52,6 +66,10 @@
             config.SetBool(Plugin.Name, "noRed", noRed);
             config.SetBool(Plugin.Name, "redToBlue", redToBlue);
             config.SetBool(Plugin.Name, "blueToRed", blueToRed);
+
+            config.SetBool(Plugin.Name, "foot", foot);
+            config.SetBool(Plugin.Name, "contact", contact);
+            config.SetBool(Plugin.Name, "vmcAvatar", vmcAvatar);
 
             config.SetBool(Plugin.Name, "headbang", headbang);
             config.SetBool(Plugin.Name, "superhot", superhot);
