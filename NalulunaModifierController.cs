@@ -52,6 +52,10 @@ namespace NalulunaModifier
             if (newScene.name == "GameCore")
             {
                 Config.Read();
+
+                /* BS_Utils' RemoveProlongedDisable not work anymore? (checked on BeatSaber 1.10.0, ScoreSaber 2.3.4, BS_Utils 1.4.10)
+                 * It looks like it's working on the result screen, but it doesn't actually send the score.
+                 * 
                 if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
                     Config.foot || Config.contact || Config.superhot || Config.vacuum)
                 {
@@ -60,6 +64,13 @@ namespace NalulunaModifier
                 else
                 {
                     ScoreSubmission.RemoveProlongedDisable(Plugin.Name);
+                }
+                */
+
+                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
+                    Config.foot || Config.contact || Config.superhot || Config.vacuum)
+                {
+                    ScoreSubmission.DisableSubmission(Plugin.Name);
                 }
 
                 StartCoroutine(OnGameCore());
