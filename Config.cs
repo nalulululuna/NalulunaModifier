@@ -20,12 +20,12 @@
         public static bool superhot = false;
         public static bool vacuum = false;
 
-        public static bool foot = false;
+        public static bool feet = false;
+        public static bool flatNotes = false;
         public static bool contact = false;
-        public static bool vmcAvatar = false;
-        public static string vmcAvatarFoot = "foot";
-        public static string vmcAvatarLeft = "l";
-        public static string vmcAvatarRight = "r";
+        public static bool ignoreBadColor = false;
+        public static bool feetAvatar = false;
+        public static float customAvatarFootRotateY = -135f;
 
         public static void Read()
         {
@@ -41,12 +41,12 @@
             hideSaberEffects = config.GetBool(Plugin.Name, "hideSaberEffects", false, true);
             centering = config.GetBool(Plugin.Name, "centering", false, true);
 
-            foot = config.GetBool(Plugin.Name, "foot", false, true);
+            feet = config.GetBool(Plugin.Name, "feet", false, true);
             contact = config.GetBool(Plugin.Name, "contact", false, true);
-            vmcAvatar = config.GetBool(Plugin.Name, "vmcAvatar", false, true);
-            vmcAvatarFoot = config.GetString(Plugin.Name, "vmcAvatarFoot", "foot", true);
-            vmcAvatarLeft = config.GetString(Plugin.Name, "vmcAvatarLeft", "l", true);
-            vmcAvatarRight = config.GetString(Plugin.Name, "vmcAvatarRight", "r", true);
+            ignoreBadColor = config.GetBool(Plugin.Name, "ignoreBadColor", false, true);
+            flatNotes = config.GetBool(Plugin.Name, "flatNotes", false, true);
+            feetAvatar = config.GetBool(Plugin.Name, "feetAvatar", false, true);
+            customAvatarFootRotateY = config.GetFloat(Plugin.Name, "customAvatarFootRotateY", -135f, true);
 
             headbang = config.GetBool(Plugin.Name, "headbang", false, true);
             superhot = config.GetBool(Plugin.Name, "superhot", false, true);
@@ -67,9 +67,11 @@
             config.SetBool(Plugin.Name, "redToBlue", redToBlue);
             config.SetBool(Plugin.Name, "blueToRed", blueToRed);
 
-            config.SetBool(Plugin.Name, "foot", foot);
+            config.SetBool(Plugin.Name, "feet", feet);
             config.SetBool(Plugin.Name, "contact", contact);
-            config.SetBool(Plugin.Name, "vmcAvatar", vmcAvatar);
+            config.SetBool(Plugin.Name, "ignoreBadColor", ignoreBadColor);
+            config.SetBool(Plugin.Name, "flatNotes", flatNotes);
+            config.SetBool(Plugin.Name, "feetAvatar", feetAvatar);
 
             config.SetBool(Plugin.Name, "headbang", headbang);
             config.SetBool(Plugin.Name, "superhot", superhot);

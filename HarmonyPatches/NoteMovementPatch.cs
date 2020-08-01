@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NalulunaModifier
 {
     [HarmonyPatch(typeof(NoteMovement), "Init")]
-    class NoteMovementInit
+    static class NoteMovementInit
     {
         static void Prefix(ref Vector3 moveStartPos, ref Vector3 moveEndPos, ref Vector3 jumpEndPos)
         {
@@ -26,7 +26,7 @@ namespace NalulunaModifier
                 //Logger.log.Debug($"NoteMovementInit:2: moveStartPos={moveStartPos}, moveEndPos={moveEndPos}, jumpEndPos={jumpEndPos}");
             }
 
-            if (Config.foot)
+            if (Config.feet)
             {
                 moveStartPos.y = 0.1f;
                 moveEndPos.y = 0.1f;

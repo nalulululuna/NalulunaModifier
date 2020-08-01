@@ -5,12 +5,12 @@ using UnityEngine;
 namespace NalulunaModifier
 {
     [HarmonyPatch(typeof(NoteJump), "ManualUpdate")]
-    class NoteJumpManualUpdate
+    static class NoteJumpManualUpdate
     {
         //static int tick = 0;
         public static Vector3 center = new Vector3(0, 0.9f, 0);
 
-        private static PlayerController playerController = null;
+        static PlayerController playerController = null;
 
         static void Postfix(
             NoteJump __instance,
@@ -73,11 +73,16 @@ namespace NalulunaModifier
                 }
             }
 
-            if (Config.foot)
+            if (Config.feet)
             {
                 ____localPosition.y = 0.1f;
                 __result = ____worldRotation * ____localPosition;
                 __instance.transform.position = __result;
+
+                if (Config.centering)
+                {
+                    ____localPosition.y = ____localPosition.y / 2f + center.y / 2f;
+                }
             }
         }
     }

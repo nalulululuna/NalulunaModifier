@@ -4,7 +4,7 @@ using System.Reflection;
 namespace NalulunaModifier
 {
     [HarmonyPatch(typeof(BombCutSoundEffectManager), "HandleNoteWasCut")]
-    class BombCutSoundEffectManagerHandleNoteWasCut
+    static class BombCutSoundEffectManagerHandleNoteWasCut
     {
         static bool Prefix()
         {

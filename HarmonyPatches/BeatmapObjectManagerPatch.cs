@@ -4,7 +4,7 @@ using System.Reflection;
 namespace NalulunaModifier
 {
     [HarmonyPatch(typeof(BeatmapObjectManager), "SpawnBasicNote")]
-    class BeatmapObjectManagerSpawnBasicNote
+    static class BeatmapObjectManagerSpawnBasicNote
     {
         static bool Prefix(ref NoteData noteData)
         {

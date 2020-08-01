@@ -5,7 +5,7 @@
 [![](https://img.youtube.com/vi/7DqtCf-v2lA/0.jpg)](https://www.youtube.com/watch?v=7DqtCf-v2lA)  
 [![](https://img.youtube.com/vi/QtLNweiiQPU/0.jpg)](https://www.youtube.com/watch?v=QtLNweiiQPU)
   
-Download (0.0.7 for BeatSaber1.10.0): https://drive.google.com/file/d/1_SBIPLRQB-C7LNnwJK4BrtsOK-XakpnX
+Download (0.0.8 for BeatSaber1.10.0): https://drive.google.com/file/d/1QqZGqPuJXYYsnfBcaYZ3IhOMRsVTLBfu
 
 See the description section of the video pages for more details.  
 詳細は動画の説明欄を参照してください。

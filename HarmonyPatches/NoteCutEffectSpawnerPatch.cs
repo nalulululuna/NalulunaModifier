@@ -5,7 +5,7 @@ using UnityEngine;
 namespace NalulunaModifier
 {
     [HarmonyPatch(typeof(NoteCutEffectSpawner), "SpawnNoteCutEffect")]
-    class NoteCutEffectSpawnerSpawnNoteCutEffect
+    static class NoteCutEffectSpawnerSpawnNoteCutEffect
     {
         static bool Prefix()
         {
@@ -14,7 +14,7 @@ namespace NalulunaModifier
     }
 
     [HarmonyPatch(typeof(NoteCutEffectSpawner), "SpawnBombCutEffect")]
-    class NoteCutEffectSpawnerSpawnSpawnBombCutEffect
+    static class NoteCutEffectSpawnerSpawnSpawnBombCutEffect
     {
         static bool Prefix()
         {

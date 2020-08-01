@@ -9,9 +9,8 @@ using UnityEngine;
 
 namespace NalulunaModifier
 {
-    [HarmonyPatch(typeof(NoteBasicCutInfo))]
-	[HarmonyPatch("GetBasicCutInfo")]
-	internal static class NoteBasicCutInfoGetBasicCutInfo
+    [HarmonyPatch(typeof(NoteBasicCutInfo), "GetBasicCutInfo")]
+	static class NoteBasicCutInfoGetBasicCutInfo
 	{
         static void Prefix(ref float saberBladeSpeed)
         {
@@ -19,7 +18,7 @@ namespace NalulunaModifier
             {
                 saberBladeSpeed = 3.0f;
             }
-            else if (Config.foot)
+            else if (Config.feet)
             {
                 saberBladeSpeed = saberBladeSpeed * 2f;
             }

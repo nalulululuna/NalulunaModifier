@@ -1,4 +1,5 @@
 ﻿using BS_Utils.Gameplay;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace NalulunaModifier
 {
     public class NalulunaModifierController : MonoBehaviour
     {
+        enum AvatarType { None, VMCAvatar, CustomAvatar }
+
         public static NalulunaModifierController instance { get; private set; }
 
         private AudioTimeSyncController _audioTimeSyncController;
@@ -23,9 +26,9 @@ namespace NalulunaModifier
         private BeatmapObjectSpawnController _beatmapObjectSpawnController;
         private GameEnergyCounter _gameEnergyCounter;
         private GamePause _gamePause;
-        private GameObject _vmcReceiver;
         private Transform _footL;
         private Transform _footR;
+        private AvatarType _avatarType;
 
         private bool _init;
         private float _originalTimeScale;
@@ -53,27 +56,13 @@ namespace NalulunaModifier
             {
                 Config.Read();
 
-                /* BS_Utils' RemoveProlongedDisable not work anymore? (checked on BeatSaber 1.10.0, ScoreSaber 2.3.4, BS_Utils 1.4.10)
-                 * It looks like it's working on the result screen, but it doesn't actually send the score.
-                 * 
                 if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
-                    Config.foot || Config.contact || Config.superhot || Config.vacuum)
-                {
-                    ScoreSubmission.ProlongedDisableSubmission(Plugin.Name);
-                }
-                else
-                {
-                    ScoreSubmission.RemoveProlongedDisable(Plugin.Name);
-                }
-                */
-
-                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
-                    Config.foot || Config.contact || Config.superhot || Config.vacuum)
+                    Config.feet || Config.contact || Config.flatNotes || Config.superhot || Config.vacuum)
                 {
                     ScoreSubmission.DisableSubmission(Plugin.Name);
                 }
 
-                StartCoroutine(OnGameCore());
+                StartCoroutine(OnGameCoreCoroutine());
             }
         }
 
@@ -100,36 +89,25 @@ namespace NalulunaModifier
             }
         }
 
-        private void GetFootTransforms(GameObject obj, string indent = "")
+        private void EnumChildren(GameObject gameObject, string indent)
         {
-            Transform children = obj.GetComponentInChildren<Transform>();
-            if (children.childCount == 0)
+            Logger.log.Debug(indent + gameObject.name);
+            foreach (Transform transform in gameObject.GetComponentInChildren<Transform>())
             {
-                return;
-            }
-            foreach (Transform transform in children)
-            {
-                Logger.log.Debug(indent + transform.gameObject.name);
-
-                if (transform.gameObject.name.ToLower().IndexOf(Config.vmcAvatarFoot) >= 0)
-                {
-                    if (transform.gameObject.name.ToLower().IndexOf(Config.vmcAvatarLeft) >= 0)
-                    {
-                        _footL = transform;
-                        Logger.log.Debug($"_footL: {_footL.gameObject.name}, {_footL.transform.position}");
-                    }
-                    if (transform.gameObject.name.ToLower().IndexOf(Config.vmcAvatarRight) >= 0)
-                    {
-                        _footR = transform;
-                        Logger.log.Debug($"_footR: {_footR.gameObject.name}, {_footR.transform.position}");
-                    }
-                }
-
-                GetFootTransforms(transform.gameObject, indent + "  ");
+                EnumChildren(transform.gameObject, indent + "  ");
             }
         }
 
-        private IEnumerator OnGameCore()
+        private IEnumerator EnumAllObjectsCoroutine()
+        {
+            foreach (GameObject g in Array.FindAll(FindObjectsOfType<GameObject>(), x => x.transform.parent == null))
+            {
+                EnumChildren(g, "");
+                yield return null;
+            }
+        }
+
+        private IEnumerator OnGameCoreCoroutine()
         {
             if (_audioTimeSyncController == null)
             {
@@ -142,7 +120,7 @@ namespace NalulunaModifier
                 _gamePause = Resources.FindObjectsOfTypeAll<GamePause>().FirstOrDefault();
             _gamePause.didResumeEvent += OnPauseResume;
 
-            // wait for custom saber
+            // wait for CustomSaber mod
             yield return new WaitUntil(() => Resources.FindObjectsOfTypeAll<Saber>().Any());
             yield return new WaitForSecondsRealtime(0.1f);
 
@@ -212,26 +190,83 @@ namespace NalulunaModifier
                 SetTrailWidth(0f);
             }
 
-            if (Config.vmcAvatar)
+            if (Config.feetAvatar)
             {
-                _vmcReceiver = GameObject.Find("VMCReceiver");
-                if (_vmcReceiver)
-                {
-                    SetTrailWidth(0.25f);
-
-                    GetFootTransforms(_vmcReceiver);
-
-                    if (_footL != null && _footR != null)
-                    {
-                        SetSaberVisible(_playerController.rightSaber, false);
-                        SetSaberVisible(_playerController.leftSaber, false);
-                    }
-                }
+                StartCoroutine(FindAvatarCoroutine());
             }
 
             UpdateSaberActive();
 
             _init = true;
+        }
+
+        private IEnumerator FindAvatarCoroutine()
+        {
+            // need some wait
+            for (int i = 0; i < 3; i++)
+            {
+                Logger.log.Debug("VRM Search");
+                GameObject vrm = GameObject.Find("VMCReceiver/VRM");
+                if (vrm == null)
+                {
+                    Logger.log.Debug("VRM Search2");
+                    vrm = GameObject.Find("VRM");
+                }
+
+                if (vrm != null)
+                {
+                    Logger.log.Debug("VRM Found");
+                    _footL = vrm.GetComponent<Animator>()?.GetBoneTransform(HumanBodyBones.LeftFoot)?.transform;
+                    _footR = vrm.GetComponent<Animator>()?.GetBoneTransform(HumanBodyBones.RightFoot)?.transform;
+                    if (_footL != null && _footR != null)
+                    {
+                        _avatarType = AvatarType.VMCAvatar;
+                    }
+                    break;
+                }
+                else
+                {
+                    Logger.log.Debug("VRM NotFound");
+                    Logger.log.Debug("CustomAvatar Search");
+                    GameObject customAvatar = GameObject.Find("_CustomAvatar(Clone)");
+                    if (customAvatar != null)
+                    {
+                        Logger.log.Debug("CustomAvatar Found");
+                        _footL = customAvatar.GetComponentInChildren<Animator>()?.GetBoneTransform(HumanBodyBones.LeftFoot)?.transform;
+                        _footR = customAvatar.GetComponentInChildren<Animator>()?.GetBoneTransform(HumanBodyBones.RightFoot)?.transform;
+                        if (_footL != null && _footR != null)
+                        {
+                            _avatarType = AvatarType.CustomAvatar;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        Logger.log.Debug("CustomAvatar NotFound");
+                    }
+                }
+
+                yield return new WaitForSecondsRealtime(0.1f);
+            }
+
+            if (_footL != null && _footR != null)
+            {
+                Logger.log.Debug($"FootL: {_footL.position.x}, {_footL.position.y}, {_footL.position.z}");
+                Logger.log.Debug($"FootR: {_footR.position.x}, {_footR.position.y}, {_footR.position.z}");
+
+                SetTrailWidth(0.25f);
+                SetSaberVisible(_playerController.rightSaber, false);
+                SetSaberVisible(_playerController.leftSaber, false);
+            }
+            else
+            {
+                Logger.log.Debug($"Foot NotFound");
+
+                _avatarType = AvatarType.None;
+
+                // for debug
+                //StartCoroutine(EnumAllObjectsCoroutine());
+            }
         }
 
         private void Start()
@@ -277,7 +312,7 @@ namespace NalulunaModifier
                 _leftSaberTransform.localScale = new Vector3(2, 2, 0.5f);
             }
 
-            if (Config.vmcAvatar)
+            if (Config.feetAvatar)
             {
                 if ((_footR != null) && (_footL != null))
                 {
@@ -287,6 +322,12 @@ namespace NalulunaModifier
                     _leftSaberTransform.rotation = _footL.rotation;
                     _rightSaberTransform.localScale = new Vector3(2, 2, 0.25f);
                     _leftSaberTransform.localScale = new Vector3(2, 2, 0.25f);
+
+                    if (_avatarType == AvatarType.CustomAvatar)
+                    {
+                        _rightSaberTransform.Rotate(new Vector3(Config.customAvatarFootRotateY, 0, 0));
+                        _leftSaberTransform.Rotate(new Vector3(Config.customAvatarFootRotateY, 0, 0));
+                    }
                 }
             }
 

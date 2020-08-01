@@ -188,21 +188,21 @@ namespace NalulunaModifier.UI
         }
         */
 
-        [UIValue("foot")]
-        public bool foot
+        [UIValue("feet")]
+        public bool feet
         {
-            get => Config.foot;
+            get => Config.feet;
             set
             {
-                Config.foot = value;
+                Config.feet = value;
                 Config.Write();
             }
         }
 
-        [UIAction("setFoot")]
+        [UIAction("setFeet")]
         void setFoot(bool value)
         {
-            foot = value;
+            feet = value;
         }
 
         [UIValue("contact")]
@@ -222,21 +222,55 @@ namespace NalulunaModifier.UI
             contact = value;
         }
 
-        [UIValue("vmcAvatar")]
-        public bool vmcAvatar
+        [UIValue("ignoreBadColor")]
+        public bool ignoreBadColor
         {
-            get => Config.vmcAvatar;
+            get => Config.ignoreBadColor;
             set
             {
-                Config.vmcAvatar = value;
+                Config.ignoreBadColor = value;
                 Config.Write();
             }
         }
 
-        [UIAction("setVMCAvatar")]
-        void setVMCAvatar(bool value)
+        [UIAction("setIgnoreBadColor")]
+        void setIgnoreBadColor(bool value)
         {
-            vmcAvatar = value;
+            ignoreBadColor = value;
+        }
+
+        [UIValue("flatNotes")]
+        public bool flatNotes
+        {
+            get => Config.flatNotes;
+            set
+            {
+                Config.flatNotes = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setFlatNotes")]
+        void setFlatNotes(bool value)
+        {
+            flatNotes = value;
+        }
+
+        [UIValue("feetAvatar")]
+        public bool feetAvatar
+        {
+            get => Config.feetAvatar;
+            set
+            {
+                Config.feetAvatar = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setFeetAvatar")]
+        void setFeetAvatar(bool value)
+        {
+            feetAvatar = value;
         }
 
         [UIValue("headbang")]

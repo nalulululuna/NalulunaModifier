@@ -8,28 +8,69 @@ namespace NalulunaModifier
 	{
 		public static void SetPrivateField(this object obj, string fieldName, object value)
 		{
-			var prop = obj.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-			prop.SetValue(obj, value);
+			Type t = obj.GetType();
+			FieldInfo fi = null;
+			while (t != null)
+			{
+				fi = t.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				if (fi != null) break;
+				t = t.BaseType;
+			}
+			fi.SetValue(obj, value);
 		}
-		
+
 		public static T GetPrivateField<T>(this object obj, string fieldName)
 		{
-			var prop = obj.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
-			var value = prop.GetValue(obj);
-			return (T) value;
+			Type t = obj.GetType();
+			FieldInfo fi = null;
+			while (t != null)
+			{
+				fi = t.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				if (fi != null) break;
+				t = t.BaseType;
+			}
+			var value = fi.GetValue(obj);
+			return (T)value;
 		}
 		
 		public static void SetPrivateProperty(this object obj, string propertyName, object value)
 		{
-			var prop = obj.GetType()
-				.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-			prop.SetValue(obj, value, null);
+			Type t = obj.GetType();
+			PropertyInfo pi = null;
+			while (t != null)
+			{
+				pi = t.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				if (pi != null) break;
+				t = t.BaseType;
+			}
+			pi.SetValue(obj, value, null);
+		}
+
+		public static T GetPrivateProperty<T>(this object obj, string propertyName)
+		{
+			Type t = obj.GetType();
+			PropertyInfo pi = null;
+			while (t != null)
+			{
+				pi = t.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				if (pi != null) break;
+				t = t.BaseType;
+			}
+			var value = pi.GetValue(obj);
+			return (T)value;
 		}
 
 		public static void InvokePrivateMethod(this object obj, string methodName, object[] methodParams)
 		{
-			MethodInfo dynMethod = obj.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
-			dynMethod.Invoke(obj, methodParams);
+			Type t = obj.GetType();
+			MethodInfo mi = null;
+			while (t != null)
+			{
+				mi = t.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+				if (mi != null) break;
+				t = t.BaseType;
+			}
+			mi.Invoke(obj, methodParams);
 		}
 
 		public static Component CopyComponent(Component original, Type originalType, Type overridingType,

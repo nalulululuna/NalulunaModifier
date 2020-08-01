@@ -4,7 +4,7 @@ using System.Reflection;
 namespace NalulunaModifier
 {
     [HarmonyPatch(typeof(BombNoteController), "HandleDidPassHalfJump")]
-    class BombNoteControllerHandleDidPassHalfJump
+    static class BombNoteControllerHandleDidPassHalfJump
     {
         static bool Prefix()
         {
