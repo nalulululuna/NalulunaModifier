@@ -205,21 +205,21 @@ namespace NalulunaModifier.UI
             feet = value;
         }
 
-        [UIValue("contact")]
-        public bool contact
+        [UIValue("noDirection")]
+        public bool noDirection
         {
-            get => Config.contact;
+            get => Config.noDirection;
             set
             {
-                Config.contact = value;
+                Config.noDirection = value;
                 Config.Write();
             }
         }
 
-        [UIAction("setContact")]
-        void setContact(bool value)
+        [UIAction("setNoDirection")]
+        void setNoDirection(bool value)
         {
-            contact = value;
+            noDirection = value;
         }
 
         [UIValue("ignoreBadColor")]

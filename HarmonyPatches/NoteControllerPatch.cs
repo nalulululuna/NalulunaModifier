@@ -12,6 +12,17 @@ namespace NalulunaModifier
     [HarmonyPatch(typeof(NoteController), "Init")]
 	static class NoteControllerInit
 	{
+		static void Prefix(ref NoteData noteData)
+		{
+			if (Config.noDirection)
+			{
+				if (noteData.cutDirection != NoteCutDirection.None)
+				{
+					noteData.SetNonPublicProperty("cutDirection", NoteCutDirection.Any);
+				}
+			}
+		}
+
 		static void Postfix(Transform ____noteTransform)
 		{
 			if (Config.centering)

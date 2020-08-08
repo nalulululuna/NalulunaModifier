@@ -4,6 +4,7 @@ using UnityEngine;
 namespace NalulunaModifier
 {
     [HarmonyPatch(typeof(NoteMovement), "Init")]
+    [HarmonyPriority(Priority.VeryLow)]
     static class NoteMovementInit
     {
         static void Prefix(ref Vector3 moveStartPos, ref Vector3 moveEndPos, ref Vector3 jumpEndPos)

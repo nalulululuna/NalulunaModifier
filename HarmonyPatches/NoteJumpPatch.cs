@@ -5,6 +5,7 @@ using UnityEngine;
 namespace NalulunaModifier
 {
     [HarmonyPatch(typeof(NoteJump), "ManualUpdate")]
+    [HarmonyPriority(Priority.VeryLow)]
     static class NoteJumpManualUpdate
     {
         //static int tick = 0;

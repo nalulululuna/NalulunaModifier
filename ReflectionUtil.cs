@@ -46,6 +46,19 @@ namespace NalulunaModifier
 			pi.SetValue(obj, value, null);
 		}
 
+		public static void SetNonPublicProperty(this object obj, string propertyName, object value)
+		{
+			Type t = obj.GetType();
+			PropertyInfo pi = null;
+			while (t != null)
+			{
+				pi = t.GetProperty(propertyName);
+				if (pi != null) break;
+				t = t.BaseType;
+			}
+			pi = pi.DeclaringType.GetProperty(propertyName);
+			pi.GetSetMethod(true).Invoke(obj, new object[] { value });
+		}
 		public static T GetPrivateProperty<T>(this object obj, string propertyName)
 		{
 			Type t = obj.GetType();

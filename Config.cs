@@ -22,10 +22,21 @@
 
         public static bool feet = false;
         public static bool flatNotes = false;
-        public static bool contact = false;
+        public static bool noDirection = false;
         public static bool ignoreBadColor = false;
         public static bool feetAvatar = false;
-        public static float customAvatarFootRotateY = -135f;
+        public static float vmcAvatarFootPosX = 0;
+        public static float vmcAvatarFootPosY = 0;
+        public static float vmcAvatarFootPosZ = 0;
+        public static float vmcAvatarFootRotX = 0;
+        public static float vmcAvatarFootRotY = 0;
+        public static float vmcAvatarFootRotZ = 0;
+        public static float customAvatarFootPosX = 0;
+        public static float customAvatarFootPosY = 0;
+        public static float customAvatarFootPosZ = 0;
+        public static float customAvatarFootRotX = -135f;
+        public static float customAvatarFootRotY = 0;
+        public static float customAvatarFootRotZ = 0;
 
         public static void Read()
         {
@@ -42,15 +53,34 @@
             centering = config.GetBool(Plugin.Name, "centering", false, true);
 
             feet = config.GetBool(Plugin.Name, "feet", false, true);
-            contact = config.GetBool(Plugin.Name, "contact", false, true);
+            noDirection = config.GetBool(Plugin.Name, "noDirection", false, true);
             ignoreBadColor = config.GetBool(Plugin.Name, "ignoreBadColor", false, true);
             flatNotes = config.GetBool(Plugin.Name, "flatNotes", false, true);
             feetAvatar = config.GetBool(Plugin.Name, "feetAvatar", false, true);
-            customAvatarFootRotateY = config.GetFloat(Plugin.Name, "customAvatarFootRotateY", -135f, true);
+            ReadFeetPosRot();
 
             headbang = config.GetBool(Plugin.Name, "headbang", false, true);
             superhot = config.GetBool(Plugin.Name, "superhot", false, true);
             vacuum = config.GetBool(Plugin.Name, "vacuum", false, true);
+        }
+
+        public static void ReadFeetPosRot()
+        {
+            vmcAvatarFootPosX = config.GetFloat(Plugin.Name, "vmcAvatarFootPosX", 0, true);
+            vmcAvatarFootPosY = config.GetFloat(Plugin.Name, "vmcAvatarFootPosY", 0, true);
+            vmcAvatarFootPosZ = config.GetFloat(Plugin.Name, "vmcAvatarFootPosZ", 0, true);
+
+            vmcAvatarFootRotX = config.GetFloat(Plugin.Name, "vmcAvatarFootRotX", 0, true);
+            vmcAvatarFootRotY = config.GetFloat(Plugin.Name, "vmcAvatarFootRotY", 0, true);
+            vmcAvatarFootRotZ = config.GetFloat(Plugin.Name, "vmcAvatarFootRotZ", 0, true);
+
+            customAvatarFootPosX = config.GetFloat(Plugin.Name, "customAvatarFootPosX", 0, true);
+            customAvatarFootPosY = config.GetFloat(Plugin.Name, "customAvatarFootPosY", 0, true);
+            customAvatarFootPosZ = config.GetFloat(Plugin.Name, "customAvatarFootPosZ", 0, true);
+
+            customAvatarFootRotX = config.GetFloat(Plugin.Name, "customAvatarFootRotX", -135f, true);
+            customAvatarFootRotY = config.GetFloat(Plugin.Name, "customAvatarFootRotY", 0, true);
+            customAvatarFootRotZ = config.GetFloat(Plugin.Name, "customAvatarFootRotZ", 0, true);
         }
 
         public static void Write()
@@ -68,7 +98,7 @@
             config.SetBool(Plugin.Name, "blueToRed", blueToRed);
 
             config.SetBool(Plugin.Name, "feet", feet);
-            config.SetBool(Plugin.Name, "contact", contact);
+            config.SetBool(Plugin.Name, "noDirection", noDirection);
             config.SetBool(Plugin.Name, "ignoreBadColor", ignoreBadColor);
             config.SetBool(Plugin.Name, "flatNotes", flatNotes);
             config.SetBool(Plugin.Name, "feetAvatar", feetAvatar);

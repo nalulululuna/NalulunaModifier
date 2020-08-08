@@ -57,7 +57,7 @@ namespace NalulunaModifier
                 Config.Read();
 
                 if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
-                    Config.feet || Config.contact || Config.flatNotes || Config.superhot || Config.vacuum)
+                    Config.feet || Config.noDirection || Config.flatNotes || Config.superhot || Config.vacuum)
                 {
                     ScoreSubmission.DisableSubmission(Plugin.Name);
                 }
@@ -316,18 +316,26 @@ namespace NalulunaModifier
             {
                 if ((_footR != null) && (_footL != null))
                 {
-                    _rightSaberTransform.position = _footR.position;
-                    _leftSaberTransform.position = _footL.position;
                     _rightSaberTransform.rotation = _footR.rotation;
                     _leftSaberTransform.rotation = _footL.rotation;
+
+                    if (_avatarType == AvatarType.VMCAvatar)
+                    {
+                        _rightSaberTransform.position = _footR.position + new Vector3(Config.vmcAvatarFootPosX, Config.vmcAvatarFootPosY, Config.vmcAvatarFootPosZ);
+                        _leftSaberTransform.position = _footL.position + new Vector3(-1 * Config.vmcAvatarFootPosX, Config.vmcAvatarFootPosY, Config.vmcAvatarFootPosZ);
+                        _rightSaberTransform.Rotate(new Vector3(Config.vmcAvatarFootRotX, Config.vmcAvatarFootRotY, Config.vmcAvatarFootRotZ));
+                        _leftSaberTransform.Rotate(new Vector3(Config.vmcAvatarFootRotX, -1 * Config.vmcAvatarFootRotY, -1 * Config.vmcAvatarFootRotZ));
+                    }
+                    else if (_avatarType == AvatarType.CustomAvatar)
+                    {
+                        _rightSaberTransform.position = _footR.position + new Vector3(Config.customAvatarFootPosX, Config.customAvatarFootPosY, Config.customAvatarFootPosZ);
+                        _leftSaberTransform.position = _footL.position + new Vector3(-1 * Config.customAvatarFootPosX, Config.customAvatarFootPosY, Config.customAvatarFootPosZ);
+                        _rightSaberTransform.Rotate(new Vector3(Config.customAvatarFootRotX, Config.customAvatarFootRotY, Config.customAvatarFootRotZ));
+                        _leftSaberTransform.Rotate(new Vector3(Config.customAvatarFootRotX, -1 * Config.customAvatarFootRotY, -1 * Config.customAvatarFootRotZ));
+                    }
+
                     _rightSaberTransform.localScale = new Vector3(2, 2, 0.25f);
                     _leftSaberTransform.localScale = new Vector3(2, 2, 0.25f);
-
-                    if (_avatarType == AvatarType.CustomAvatar)
-                    {
-                        _rightSaberTransform.Rotate(new Vector3(Config.customAvatarFootRotateY, 0, 0));
-                        _leftSaberTransform.Rotate(new Vector3(Config.customAvatarFootRotateY, 0, 0));
-                    }
                 }
             }
 
@@ -355,14 +363,33 @@ namespace NalulunaModifier
 
         private void SetSaberVisible(Saber saber, bool active)
         {
+            // not hide Skinned Mesh Renderer
+            // (There is a customsaber(shoes) for FeetSaber using this loophole.)
             IEnumerable<MeshFilter> meshFilters = saber.transform.GetComponentsInChildren<MeshFilter>();
             foreach (MeshFilter meshFilter in meshFilters)
             {
                 meshFilter.gameObject.SetActive(active);
 
                 MeshFilter filter = meshFilter.GetComponentInChildren<MeshFilter>();
-                filter?.gameObject.SetActive(active);
+                if (filter != null)
+                {
+                    filter.gameObject.SetActive(active);
+                }
             }
+
+            /* hide Skinned Mesh Renderer
+            IEnumerable<Renderer> renders = saber.transform.GetComponentsInChildren<Renderer>();
+            foreach (Renderer render in renders)
+            {
+                render.gameObject.SetActive(active);
+
+                Renderer r = render.GetComponentInChildren<Renderer>();
+                if (r != null)
+                {
+                    r.gameObject.SetActive(active);
+                }
+            }
+            */
         }
 
         private void SetTrailWidth(float trailWidth)
