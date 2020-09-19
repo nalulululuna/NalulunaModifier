@@ -59,6 +59,7 @@ namespace NalulunaModifier
 			pi = pi.DeclaringType.GetProperty(propertyName);
 			pi.GetSetMethod(true).Invoke(obj, new object[] { value });
 		}
+
 		public static T GetPrivateProperty<T>(this object obj, string propertyName)
 		{
 			Type t = obj.GetType();

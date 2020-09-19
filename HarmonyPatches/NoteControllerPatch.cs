@@ -12,7 +12,7 @@ namespace NalulunaModifier
     [HarmonyPatch(typeof(NoteController), "Init")]
 	static class NoteControllerInit
 	{
-		static void Prefix(ref NoteData noteData)
+		static void Prefix(ref NoteData noteData, ref Vector3 moveStartPos, ref Vector3 moveEndPos, ref Vector3 jumpEndPos, Transform ____noteTransform)
 		{
 			if (Config.noDirection)
 			{
@@ -20,6 +20,37 @@ namespace NalulunaModifier
 				{
 					noteData.SetNonPublicProperty("cutDirection", NoteCutDirection.Any);
 				}
+			}
+
+			if ((Config.topNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Top)) ||
+			  (Config.middleNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Upper)) ||
+			  (Config.bottomNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Base)))
+			{
+				noteData.SetNonPublicProperty("cutDirection", NoteCutDirection.Any);
+				____noteTransform.localScale = new Vector3(1f, 0.5f, 1f);
+			}
+			else
+			{
+				____noteTransform.localScale = Vector3.one;
+			}
+
+			if (Config.topNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Top))
+			{
+				moveStartPos = new Vector3(moveStartPos.x, 0.1f, moveStartPos.z);
+				moveEndPos = new Vector3(moveEndPos.x, 0.1f, moveEndPos.z);
+				jumpEndPos = new Vector3(jumpEndPos.x, 0.1f, jumpEndPos.z);
+			}
+			if (Config.middleNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Upper))
+			{
+				moveStartPos = new Vector3(moveStartPos.x, 0.1f, moveStartPos.z);
+				moveEndPos = new Vector3(moveEndPos.x, 0.1f, moveEndPos.z);
+				jumpEndPos = new Vector3(jumpEndPos.x, 0.1f, jumpEndPos.z);
+			}
+			if (Config.bottomNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Base))
+			{
+				moveStartPos = new Vector3(moveStartPos.x, 0.1f, moveStartPos.z);
+				moveEndPos = new Vector3(moveEndPos.x, 0.1f, moveEndPos.z);
+				jumpEndPos = new Vector3(jumpEndPos.x, 0.1f, jumpEndPos.z);
 			}
 		}
 

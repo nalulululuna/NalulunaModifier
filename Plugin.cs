@@ -41,7 +41,7 @@ namespace NalulunaModifier
         public void OnEnable()
         {
             Config.Read();
-            GameplaySetup.instance.AddTab(TabName, $"{Name}.UI.BSML.ModifierUI.bsml", UI.ModifierUI.instance);
+            GameplaySetup.instance.AddTab(TabName, $"{Name}.UI.ModifierUI.bsml", UI.ModifierUI.instance);
             new GameObject("NalulunaModifierController").AddComponent<NalulunaModifierController>();
             ApplyHarmonyPatches();
         }

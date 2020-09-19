@@ -4,6 +4,22 @@ using UnityEngine;
 
 namespace NalulunaModifier
 {
+    [HarmonyPatch(typeof(NoteJump), "Init")]
+    [HarmonyPriority(Priority.VeryLow)]
+    static class NoteJumpInit
+    {
+        static void Postfix(
+            ref Quaternion ____middleRotation,
+            ref Quaternion ____endRotation)
+        {
+            if (Config.noDirection)
+            {
+                ____middleRotation = Quaternion.identity;
+                ____endRotation = Quaternion.identity;
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(NoteJump), "ManualUpdate")]
     [HarmonyPriority(Priority.VeryLow)]
     static class NoteJumpManualUpdate
@@ -41,7 +57,7 @@ namespace NalulunaModifier
             {
                 ____localPosition.x = ____localPosition.x / 2f + center.x / 2f;
                 ____localPosition.y = ____localPosition.y / 2f + center.y / 2f;
-                ____localPosition.y = ____localPosition.y + 0.3f;
+                ____localPosition.y = ____localPosition.y + Config.centeringOffsetY;
                 __result = ____worldRotation * ____localPosition;
                 __instance.transform.position = __result;
             }
@@ -76,13 +92,23 @@ namespace NalulunaModifier
 
             if (Config.feet)
             {
-                ____localPosition.y = 0.1f;
+                ____localPosition.y = Config.feetNotesY;
                 __result = ____worldRotation * ____localPosition;
                 __instance.transform.position = __result;
 
                 if (Config.centering)
                 {
                     ____localPosition.y = ____localPosition.y / 2f + center.y / 2f;
+                }
+            }
+
+            if (Config.topNotesToFeet || Config.middleNotesToFeet || Config.bottomNotesToFeet)
+            {
+                if (____startPos.y == Config.feetNotesY)
+                {
+                    ____localPosition.y = Config.feetNotesY;
+                    __result = ____worldRotation * ____localPosition;
+                    __instance.transform.position = __result;
                 }
             }
         }

@@ -12,15 +12,16 @@ namespace NalulunaModifier
             if (Config.parabola)
             {
                 //Logger.log.Debug($"NoteMovementInit:1: moveStartPos={moveStartPos}, moveEndPos={moveEndPos}, jumpEndPos={jumpEndPos}");
-                moveStartPos.z = moveStartPos.z * 2;
-                moveEndPos.z = moveEndPos.z * 2;
-                jumpEndPos.z = jumpEndPos.z * 2;
+                moveStartPos.z = moveStartPos.z * 2f;
+                moveEndPos.z = moveEndPos.z * 2f;
+                jumpEndPos.z = jumpEndPos.z * 2f;
 
                 float offsetY = Config.parabolaOffsetY;
                 if (Config.boxing)
                 {
                     offsetY -= 0.3f;
                 }
+
                 moveStartPos.y = moveStartPos.y + offsetY;
                 moveEndPos.y = moveEndPos.y + offsetY;
                 jumpEndPos.y = jumpEndPos.y + offsetY;
@@ -29,9 +30,9 @@ namespace NalulunaModifier
 
             if (Config.feet)
             {
-                moveStartPos.y = 0.1f;
-                moveEndPos.y = 0.1f;
-                jumpEndPos.y = 0.1f;
+                moveStartPos.y = Config.feetNotesY;
+                moveEndPos.y = Config.feetNotesY;
+                jumpEndPos.y = Config.feetNotesY;
             }
         }
     }

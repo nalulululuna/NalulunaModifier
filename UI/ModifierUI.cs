@@ -169,7 +169,7 @@ namespace NalulunaModifier.UI
         {
             hideSabers = value;
         }
-        /*
+
         [UIValue("hideSaberEffects")]
         public bool hideSaberEffects
         {
@@ -186,7 +186,6 @@ namespace NalulunaModifier.UI
         {
             hideSaberEffects = value;
         }
-        */
 
         [UIValue("feet")]
         public bool feet
@@ -273,6 +272,91 @@ namespace NalulunaModifier.UI
             feetAvatar = value;
         }
 
+        [UIValue("fourSabers")]
+        public bool fourSabers
+        {
+            get => Config.fourSabers;
+            set
+            {
+                Config.fourSabers = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setFourSabers")]
+        void setFourSabers(bool value)
+        {
+            fourSabers = value;
+        }
+
+        [UIValue("reverseGrip")]
+        public bool reverseGrip
+        {
+            get => Config.reverseGrip;
+            set
+            {
+                Config.reverseGrip = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setReverseGrip")]
+        void setReverseGrip(bool value)
+        {
+            reverseGrip = value;
+        }
+
+        [UIValue("topNotesToFeet")]
+        public bool topNotesToFeet
+        {
+            get => Config.topNotesToFeet;
+            set
+            {
+                Config.topNotesToFeet = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setTopNotesToFeet")]
+        void setTopNotesToFeet(bool value)
+        {
+            topNotesToFeet = value;
+        }
+
+        [UIValue("middleNotesToFeet")]
+        public bool middleNotesToFeet
+        {
+            get => Config.middleNotesToFeet;
+            set
+            {
+                Config.middleNotesToFeet = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setMiddleNotesToFeet")]
+        void setMiddleNotesToFeet(bool value)
+        {
+            middleNotesToFeet = value;
+        }
+
+        [UIValue("bottomNotesToFeet")]
+        public bool bottomNotesToFeet
+        {
+            get => Config.bottomNotesToFeet;
+            set
+            {
+                Config.bottomNotesToFeet = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setBottomNotesToFeet")]
+        void setBottomNotesToFeet(bool value)
+        {
+            bottomNotesToFeet = value;
+        }
+
         [UIValue("headbang")]
         public bool headbang
         {
@@ -323,5 +407,23 @@ namespace NalulunaModifier.UI
         {
             vacuum = value;
         }
+
+        [UIValue("ninjaMaster")]
+        public bool ninjaMaster
+        {
+            get => Config.ninjaMaster;
+            set
+            {
+                Config.ninjaMaster = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setNinjaMaster")]
+        void setNinjaMaster(bool value)
+        {
+            ninjaMaster = value;
+        }
+
     }
 }

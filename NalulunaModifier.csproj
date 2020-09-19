@@ -92,6 +92,9 @@
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
@@ -108,12 +111,17 @@
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.VRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.XRModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarmonyPatches\SphereCuttableBySaberPatch.cs" />
     <Compile Include="HarmonyPatches\BombNoteControllerPatch.cs" />
     <Compile Include="HarmonyPatches\BombCutSoundEffectManagerPatch.cs" />
     <Compile Include="HarmonyPatches\GameNoteControllerPatch.cs" />
     <Compile Include="HarmonyPatches\NoteCutEffectSpawnerPatch.cs" />
+    <Compile Include="HarmonyPatches\VRControllerPatch.cs" />
     <Compile Include="NalulunaModifierController.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="HarmonyPatches\BeatmapObjectManagerPatch.cs" />
@@ -143,7 +151,7 @@
     <None Include="BuildTargets.targets" />
     <None Include="CreateJunctions.bat" />
     <None Include=".gitignore" />
-    <EmbeddedResource Include="UI\BSML\ModifierUI.bsml" />
+    <EmbeddedResource Include="UI\ModifierUI.bsml" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +192,20 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\Check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\NoDirection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Four.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\BottomNotesToFeet.png" />
+    <EmbeddedResource Include="UI\MiddleNotesToFeet.png" />
+    <EmbeddedResource Include="UI\TopNotesToFeet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\ReverseGrip.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="BuildTargets.targets" />

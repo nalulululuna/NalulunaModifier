@@ -14,7 +14,7 @@ namespace NalulunaModifier
 	{
 		static bool Prefix(GameNoteController __instance, Saber saber)
 		{
-			if (Config.ignoreBadColor)
+			if (Config.ignoreBadColor || Config.fourSabers)
 			{
 				NoteType noteType = __instance.noteData.noteType;
 				SaberType saberType = saber.saberType;
