@@ -497,6 +497,7 @@ namespace NalulunaModifier
                 }
                 else
                 {
+                    /*
                     // customshoes check
                     bool isCustomShoes = false;
                     foreach (Transform transform in _playerController.leftSaber.GetComponentsInChildren<Transform>())
@@ -511,6 +512,7 @@ namespace NalulunaModifier
                     }
 
                     if (!isCustomShoes)
+                    */
                     {
                         SetTrailWidth(0f);
                     }

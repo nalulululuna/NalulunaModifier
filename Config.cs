@@ -114,6 +114,8 @@ namespace NalulunaModifier
             ninjaMaster = config.GetBool(Plugin.Name, "ninjaMaster", false, true);
             ninjaMasterSaberSeparation = config.GetFloat(Plugin.Name, "ninjaMasterSaberSeparation", 0.18f, true);
             ninjaMasterHideHand = config.GetBool(Plugin.Name, "ninjaMasterHideHand", false, true);
+            ninjaMasterHideHandL = config.GetBool(Plugin.Name, "ninjaMasterHideHandL", false, true);
+            ninjaMasterHideHandR = config.GetBool(Plugin.Name, "ninjaMasterHideHandR", false, true);
             ninjaMasterHideFoot = config.GetBool(Plugin.Name, "ninjaMasterHideFoot", false, true);
             ninjaMasterHideWaist = config.GetBool(Plugin.Name, "ninjaMasterHideWaist", false, true);
             ninjaMasterHideMouth = config.GetBool(Plugin.Name, "ninjaMasterHideMouth", false, true);
