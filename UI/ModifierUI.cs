@@ -425,5 +425,23 @@ namespace NalulunaModifier.UI
             ninjaMaster = value;
         }
 
+        /*
+        [UIValue("beatWalker")]
+        public bool beatWalker
+        {
+            get => Config.beatWalker;
+            set
+            {
+                Config.beatWalker = value;
+                Config.Write();
+            }
+        }
+
+        [UIAction("setBeatWalker")]
+        void setBeatWalk(bool value)
+        {
+            beatWalker = value;
+        }
+        */
     }
 }

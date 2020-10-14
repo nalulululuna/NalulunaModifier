@@ -1,4 +1,8 @@
-﻿using BS_Utils.Gameplay;
+﻿//for my mod video
+//change ninjasaber mode to feetsaber 2-player. no meaning without 2-player mod
+//#define ninjasaber_for_2p
+
+using BS_Utils.Gameplay;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,11 +52,18 @@ namespace NalulunaModifier
         private Saber _saberHeadR;
         private Transform _hips;
         private Transform _head;
+#if ninjasaber_for_2p
+        private Transform _footL2;
+        private Transform _footR2;
+#endif
 
         private InputDevice leftFootTracker = new InputDevice();
         private InputDevice rightFootTracker = new InputDevice();
 
-        private bool _init;        
+        private bool _init;
+
+        internal static readonly string saberFootLName = "saberFootL";
+        internal static readonly string saberFootRName = "saberFootR";
 
         private void FindTrackers()
         {
@@ -160,7 +171,7 @@ namespace NalulunaModifier
                 if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
                     Config.feet || Config.noDirection || Config.flatNotes ||
                     Config.fourSabers || Config.topNotesToFeet || Config.middleNotesToFeet || Config.bottomNotesToFeet ||
-                    Config.superhot || Config.vacuum || Config.ninjaMaster)
+                    Config.superhot || Config.vacuum || Config.ninjaMaster || Config.beatWalker)
                 {
                     ScoreSubmission.DisableSubmission(Plugin.Name);
                 }
@@ -173,7 +184,7 @@ namespace NalulunaModifier
                     }
                 }
 
-                if (Config.feetTracker)
+                if (Config.feetTracker || Config.beatWalker)
                 {
                     FindTrackers();
                 }
@@ -412,6 +423,12 @@ namespace NalulunaModifier
                     {
                         _avatarType = AvatarType.VMCAvatar;
                     }
+
+#if ninjasaber_for_2p
+                    vrm = GameObject.Find("VMCReceiver2/VRM");
+                    _footL2 = vrm.GetComponent<Animator>()?.GetBoneTransform(HumanBodyBones.LeftFoot)?.transform;
+                    _footR2 = vrm.GetComponent<Animator>()?.GetBoneTransform(HumanBodyBones.RightFoot)?.transform;
+#endif
                     break;
                 }
                 else
@@ -494,6 +511,14 @@ namespace NalulunaModifier
                     _saberFootR = Instantiate(_playerController.rightSaber);
                     _saberFootL.transform.localScale = new Vector3(2, 2, 0.25f);
                     _saberFootR.transform.localScale = new Vector3(2, 2, 0.25f);
+
+                    _saberFootL.name = saberFootLName;
+                    _saberFootR.name = saberFootRName;
+
+#if ninjasaber_for_2p
+                    _rightSaberTransform.localScale = new Vector3(2, 2, 0.25f);
+                    _leftSaberTransform.localScale = new Vector3(2, 2, 0.25f);
+#endif
                 }
                 else
                 {
@@ -633,6 +658,7 @@ namespace NalulunaModifier
             Logger.log?.Debug($"{name}: Start()");
         }
 
+        private float _prevDistance;
         private Vector3 _prevHeadPos;
         private Vector3 _prevLeftHandlePos;
         private Vector3 _prevRightHandlePos;
@@ -694,6 +720,13 @@ namespace NalulunaModifier
                     {
                         footSaberL = _saberFootL.transform;
                         footSaberR = _saberFootR.transform;
+
+#if ninjasaber_for_2p
+                        _leftSaberTransform.position = _footL2.position;
+                        _leftSaberTransform.rotation = _footL2.rotation;
+                        _rightSaberTransform.position = _footR2.position;
+                        _rightSaberTransform.rotation = _footR2.rotation;
+#endif
                     }
                     else
                     {
@@ -878,6 +911,16 @@ namespace NalulunaModifier
                 _prevHeadPos = _playerController.headPos;
                 _prevLeftHandlePos = _playerController.leftSaber.handlePos;
                 _prevRightHandlePos = _playerController.rightSaber.handlePos;
+            }
+            else if (Config.beatWalker)
+            {
+                leftFootTracker.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 footPositionL);
+                rightFootTracker.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 footPositionR);
+
+                float currentDistance = Mathf.Max(Vector3.Distance(footPositionL, _prevLeftHandlePos), Vector3.Distance(footPositionR, _prevRightHandlePos));
+                //float distance = Mathf.Lerp(_prevDistance, currentDistance, Time.deltaTime);
+                SetTimeScale(Mathf.Clamp01(currentDistance * 50f));
+                _prevDistance = currentDistance;
             }
         }
 

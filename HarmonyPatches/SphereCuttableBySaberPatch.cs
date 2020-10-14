@@ -26,10 +26,15 @@ namespace NalulunaModifier
     {
         static bool Prefix(SphereCuttableBySaber __instance, Saber saber, Vector3 cutPoint, SphereCollider ____collider)
         {
-            if (Config.feet && __instance.canBeCut)
+            if (__instance.canBeCut)
             {
-                //Logger.log.Debug($"distance={Vector3.Distance(__instance.transform.position, saber.transform.position)}, instance={__instance.transform.position}, saber={saber.transform.position}, {saber.saberBladeBottomPos}, {saber.saberBladeTopPos}, cutPoint={cutPoint}");
-                return (Vector3.Distance(__instance.transform.position, saber.transform.position) < ____collider.radius);
+                if (Config.feet ||
+                    saber.name == NalulunaModifierController.saberFootLName ||
+                    saber.name == NalulunaModifierController.saberFootRName)
+                {
+                    //Logger.log.Debug($"distance={Vector3.Distance(__instance.transform.position, saber.transform.position)}, instance={__instance.transform.position}, saber={saber.transform.position}, {saber.saberBladeBottomPos}, {saber.saberBladeTopPos}, cutPoint={cutPoint}");
+                    return (Vector3.Distance(__instance.transform.position, saber.transform.position) < ____collider.radius);
+                }
             }
             return true;
         }

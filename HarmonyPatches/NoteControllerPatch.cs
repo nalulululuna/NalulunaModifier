@@ -58,10 +58,13 @@ namespace NalulunaModifier
 		{
 			if (Config.centering)
 			{
-				____noteTransform.localScale = Vector3.one * 0.75f;
+				noteTransform.localScale = Vector3.one * Config.centeringNotesScale;
+				if (Config.flatNotes)
+				{
+					____noteTransform.localScale = new Vector3(____noteTransform.localScale.x, ____noteTransform.localScale.y * 0.5f, ____noteTransform.localScale.z);
+				}
 			}
-
-			if (Config.flatNotes)
+			else if (Config.flatNotes)
 			{
 				____noteTransform.localScale = new Vector3(____noteTransform.localScale.x, 0.5f, ____noteTransform.localScale.z);
 			}

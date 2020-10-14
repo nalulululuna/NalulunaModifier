@@ -49,6 +49,7 @@
         <modifier value='superhot' on-change='setSuperhot' text='SUPER H0T' source='NalulunaModifier.UI.Question.png' hover-hint='[Disable Score] SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER H0T SUPER'></modifier>
         <modifier value='vacuum' on-change='setVacuum' text='Vacuum' source='NalulunaModifier.UI.Question.png' hover-hint='[Disable Score] You will have the most powerful suction of any saber. No particles. No debris. No flying scores. It sucks all.'></modifier>
         <modifier value='ninjaMaster' on-change='setNinjaMaster' text='Ninja Master (14-saber) (avatar mod required)' source='NalulunaModifier.UI.Question.png' hover-hint='[Disable Score] You need to have FullBodyTracking and Avatar mod to be a ninja master.'></modifier>
+        <!-- <modifier value='beatWalker' on-change='setBeatWalker' text='Beat Walker (foot tracker required)' source='NalulunaModifier.UI.Question.png' hover-hint='[Disable Score] Walk to play. You need to have FullBodyTracking.'></modifier> -->
       </vertical>
     </tab>
 

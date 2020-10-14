@@ -25,6 +25,7 @@ namespace NalulunaModifier
         public static bool hideSaberEffects = false;
         public static bool centering = false;
         public static float centeringOffsetY = 0.3f;
+        public static float centeringNotesScale = 0.75f;
 
         public static bool headbang = false;
         public static bool superhot = false;
@@ -38,6 +39,7 @@ namespace NalulunaModifier
         public static bool ninjaMasterHideWaist = false;
         public static bool ninjaMasterHideMouth = false;
         public static bool ninjaMasterHideHead = false;
+        public static bool beatWalker = false;
 
         public static bool feet = false;
         public static float feetNotesY = 0.1f;
@@ -92,6 +94,7 @@ namespace NalulunaModifier
             hideSaberEffects = config.GetBool(Plugin.Name, "hideSaberEffects", false, true);
             centering = config.GetBool(Plugin.Name, "centering", false, true);
             centeringOffsetY = config.GetFloat(Plugin.Name, "centeringOffsetY", 0.3f, true);
+            centeringNotesScale = config.GetFloat(Plugin.Name, "centeringNotesScale", 0.75f, true);
 
             feet = config.GetBool(Plugin.Name, "feet", false, true);
             feetNotesY = config.GetFloat(Plugin.Name, "feetNotesY", 0.1f, true);
