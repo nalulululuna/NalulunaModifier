@@ -2,7 +2,7 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace NalulunaModifier
+namespace NalulunaModifier.HarmonyPatches
 {
     // not use for now
     /*

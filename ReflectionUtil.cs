@@ -12,7 +12,7 @@ namespace NalulunaModifier
 			FieldInfo fi = null;
 			while (t != null)
 			{
-				fi = t.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				fi = t.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				if (fi != null) break;
 				t = t.BaseType;
 			}
@@ -21,25 +21,26 @@ namespace NalulunaModifier
 
 		public static T GetPrivateField<T>(this object obj, string fieldName)
 		{
+			Logger.log.Debug($"GetPrivateField1-{fieldName}");
 			Type t = obj.GetType();
 			FieldInfo fi = null;
 			while (t != null)
 			{
-				fi = t.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				fi = t.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				if (fi != null) break;
 				t = t.BaseType;
 			}
 			var value = fi.GetValue(obj);
 			return (T)value;
 		}
-		
+
 		public static void SetPrivateProperty(this object obj, string propertyName, object value)
 		{
 			Type t = obj.GetType();
 			PropertyInfo pi = null;
 			while (t != null)
 			{
-				pi = t.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				pi = t.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				if (pi != null) break;
 				t = t.BaseType;
 			}
@@ -66,7 +67,7 @@ namespace NalulunaModifier
 			PropertyInfo pi = null;
 			while (t != null)
 			{
-				pi = t.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+				pi = t.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				if (pi != null) break;
 				t = t.BaseType;
 			}
@@ -80,7 +81,7 @@ namespace NalulunaModifier
 			MethodInfo mi = null;
 			while (t != null)
 			{
-				mi = t.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+				mi = t.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 				if (mi != null) break;
 				t = t.BaseType;
 			}
@@ -91,7 +92,7 @@ namespace NalulunaModifier
 			GameObject destination)
 		{
 			var copy = destination.AddComponent(overridingType);
-			var fields = originalType.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance |
+			var fields = originalType.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static |
 			                                    BindingFlags.GetField);
 			foreach (var field in fields)
 			{

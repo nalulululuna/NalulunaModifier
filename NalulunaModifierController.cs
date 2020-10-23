@@ -11,7 +11,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR;
-using Xft;
 
 namespace NalulunaModifier
 {
@@ -23,16 +22,24 @@ namespace NalulunaModifier
 
         private AudioTimeSyncController _audioTimeSyncController;
         private AudioSource _audioSource;
-        private PlayerController _playerController;
+        private PauseController _pauseController;
+
+        private SaberManager _saberManager;
+        private PlayerTransforms _playerTransform;
         private Transform _rightSaberTransform;
         private Transform _leftSaberTransform;
+
         private SaberClashChecker _saberClashChecker;
         private SaberBurnMarkArea _saberBurnMarkArea;
         private SaberBurnMarkSparkles _saberBurnMarkSparkles;
+
+        private GameEnergyCounter _gameEnergyCounter;
+
         private BeatmapObjectManager _beatmapObjectManager;
         private BeatmapObjectSpawnController _beatmapObjectSpawnController;
-        private GameEnergyCounter _gameEnergyCounter;
-        private GamePause _gamePause;
+
+        private ColorManager _colorManager;
+
         private Transform _footL;
         private Transform _footR;
         private AvatarType _avatarType;
@@ -151,17 +158,17 @@ namespace NalulunaModifier
         private void OnEnable()
         {
             SceneManager.activeSceneChanged += OnActiveSceneChanged;
-            Config.watcher.Changed += OnConfigChanged;
         }
 
         private void OnDisable()
         {
             SceneManager.activeSceneChanged -= OnActiveSceneChanged;
-            Config.watcher.Changed -= OnConfigChanged;
         }
 
         public void OnActiveSceneChanged(Scene oldScene, Scene newScene)
         {
+            Logger.log.Debug($"OnActiveSceneChanged: {newScene.name}");
+
             _init = false;
 
             if (newScene.name == "GameCore")
@@ -195,12 +202,6 @@ namespace NalulunaModifier
             {
                 OnNotGameCore();
             }
-        }
-
-        private void OnConfigChanged(object sender, FileSystemEventArgs fileSystemEventArgs)
-        {
-            Logger.log.Debug("OnConfigChanged");
-            Config.ReadFeetPosRot();
         }
 
         public void OnPause()
@@ -241,17 +242,17 @@ namespace NalulunaModifier
         {
             if (!(Config.blueToRed || !(Config.noRed || Config.redToBlue)))
             {
-                _playerController.leftSaber.gameObject.SetActive(false);
+                _saberManager.leftSaber.gameObject.SetActive(false);
             }
 
             if (!(Config.redToBlue || !(Config.noBlue || Config.blueToRed)))
             {
-                _playerController.rightSaber.gameObject.SetActive(false);
+                _saberManager.rightSaber.gameObject.SetActive(false);
             }
 
             if (Config.vacuum && !Config.ninjaMaster)
             {
-                _playerController.leftSaber.gameObject.SetActive(false);
+                _saberManager.leftSaber.gameObject.SetActive(false);
             }
         }
 
@@ -293,23 +294,33 @@ namespace NalulunaModifier
                 _audioTimeSyncController = Resources.FindObjectsOfTypeAll<AudioTimeSyncController>().FirstOrDefault();
             _audioSource = _audioTimeSyncController.GetPrivateField<AudioSource>("_audioSource");
 
-            if (_gamePause == null)
-                _gamePause = Resources.FindObjectsOfTypeAll<GamePause>().FirstOrDefault();
-            _gamePause.didPauseEvent += OnPause;
-            _gamePause.didResumeEvent += OnPauseResume;
+            if (_pauseController == null)
+            {
+                _pauseController = Resources.FindObjectsOfTypeAll<PauseController>().FirstOrDefault();
+                _pauseController.didPauseEvent += OnPause;
+                _pauseController.didResumeEvent += OnPauseResume;
+            }
 
             // wait for CustomSaber mod
             yield return new WaitUntil(() => Resources.FindObjectsOfTypeAll<Saber>().Any());
             yield return new WaitForSecondsRealtime(0.1f);
 
-            if (_playerController == null)
-                _playerController = Resources.FindObjectsOfTypeAll<PlayerController>().FirstOrDefault();
+            if (_saberManager == null)
+                _saberManager = Resources.FindObjectsOfTypeAll<SaberManager>().FirstOrDefault();
+            if (_playerTransform == null)
+                _playerTransform = Resources.FindObjectsOfTypeAll<PlayerTransforms>().FirstOrDefault();
             if (_rightSaberTransform == null)
-                _rightSaberTransform = _playerController.rightSaber.transform;
+                _rightSaberTransform = _saberManager.rightSaber.transform;
             if (_leftSaberTransform == null)
-                _leftSaberTransform = _playerController.leftSaber.transform;
+                _leftSaberTransform = _saberManager.leftSaber.transform;
             if (_saberClashChecker == null)
-                _saberClashChecker = Resources.FindObjectsOfTypeAll<SaberClashChecker>().FirstOrDefault();
+            {
+                SaberClashEffect saberClashEffect = Resources.FindObjectsOfTypeAll<SaberClashEffect>().FirstOrDefault();
+                if (saberClashEffect != null)
+                {
+                    _saberClashChecker = saberClashEffect.GetPrivateField<SaberClashChecker>("_saberClashChecker");
+                }
+            }
             if (_saberBurnMarkArea == null)
                 _saberBurnMarkArea = Resources.FindObjectsOfTypeAll<SaberBurnMarkArea>().FirstOrDefault();
             if (_saberBurnMarkSparkles == null)
@@ -323,17 +334,17 @@ namespace NalulunaModifier
                 BeatmapObjectSpawnMovementData beatmapObjectSpawnMovementData = _beatmapObjectSpawnController.GetPrivateField<BeatmapObjectSpawnMovementData>("_beatmapObjectSpawnMovementData");
                 Vector3 leftBase = beatmapObjectSpawnMovementData.GetNoteOffset(0, NoteLineLayer.Base);
                 Vector3 rightTop = beatmapObjectSpawnMovementData.GetNoteOffset(3, NoteLineLayer.Top);
-                NoteJumpManualUpdate.center = (leftBase + rightTop) / 2;
+                HarmonyPatches.NoteJumpManualUpdate.center = (leftBase + rightTop) / 2;
                 //Logger.log.Debug($"leftBase={leftBase.x}, {leftBase.y}, {leftBase.z}");
                 //Logger.log.Debug($"rightTop={rightTop.x}, {rightTop.y}, {rightTop.z}");
             }
 
             if (Config.hideSabers)
             {
-                SetSaberVisible(_playerController.rightSaber, false);
-                SetSaberVisible(_playerController.leftSaber, false);
+                SetSaberVisible(_saberManager.rightSaber, false);
+                SetSaberVisible(_saberManager.leftSaber, false);
                 SetTrailWidth(0f);
-                _saberClashChecker.enabled = false;
+                HarmonyPatches.SaberClashCheckerAreSabersClashing.disabled = true;
                 _saberBurnMarkArea.enabled = false;
                 _saberBurnMarkSparkles.enabled = false;
             }
@@ -341,7 +352,7 @@ namespace NalulunaModifier
             if (Config.hideSaberEffects)
             {
                 SetTrailWidth(0f);
-                _saberClashChecker.enabled = false;
+                HarmonyPatches.SaberClashCheckerAreSabersClashing.disabled = true;
                 _saberBurnMarkArea.enabled = false;
                 _saberBurnMarkSparkles.enabled = false;
             }
@@ -365,11 +376,11 @@ namespace NalulunaModifier
                 if (_gameEnergyCounter == null)
                     _gameEnergyCounter = Resources.FindObjectsOfTypeAll<GameEnergyCounter>().FirstOrDefault();
                 _gameEnergyCounter.SetPrivateField("_hitBombEnergyDrain", 0f);
-            }
 
-            if (GameObject.Find("vacuum_saber_right"))
-            {
-                SetTrailWidth(0f);
+                if (GameObject.Find("vacuum_saber_right"))
+                {
+                    SetTrailWidth(0f);
+                }
             }
 
             if (Config.feet)
@@ -379,7 +390,7 @@ namespace NalulunaModifier
                 
                 // testing
                 if (_beatmapObjectManager == null)
-                    _beatmapObjectManager = Resources.FindObjectsOfTypeAll<BeatmapObjectManager>().FirstOrDefault();
+                    _beatmapObjectManager = _pauseController.GetPrivateField<BeatmapObjectManager>("_beatmapObjectManager");
                 _beatmapObjectManager.noteWasSpawnedEvent += OnNoteWasSpawned;
 
                 _prevNoteTime = 0;
@@ -404,11 +415,11 @@ namespace NalulunaModifier
             _avatarType = AvatarType.None;
             for (int i = 0; i < 3; i++)
             {
-                Logger.log.Debug("VRM Search");
+                //Logger.log.Debug("VRM Search");
                 GameObject vrm = GameObject.Find("VMCReceiver/VRM");
                 if (vrm == null)
                 {
-                    Logger.log.Debug("VRM Search2");
+                    //Logger.log.Debug("VRM Search2");
                     vrm = GameObject.Find("VRM");
                 }
 
@@ -433,8 +444,8 @@ namespace NalulunaModifier
                 }
                 else
                 {
-                    Logger.log.Debug("VRM NotFound");
-                    Logger.log.Debug("CustomAvatar Search");
+                    //Logger.log.Debug("VRM NotFound");
+                    //Logger.log.Debug("CustomAvatar Search");
                     GameObject customAvatar = GameObject.Find("_CustomAvatar(Clone)");
                     if (customAvatar != null)
                     {
@@ -451,7 +462,7 @@ namespace NalulunaModifier
                     }
                     else
                     {
-                        Logger.log.Debug("CustomAvatar NotFound");
+                        Logger.log.Debug("Avatar NotFound");
                     }
                 }
 
@@ -468,47 +479,47 @@ namespace NalulunaModifier
                 {
                     if (!Config.ninjaMasterHideHand)
                     {
-                        _saberL2 = Instantiate(_playerController.leftSaber);
-                        _saberR2 = Instantiate(_playerController.rightSaber);
+                        _saberL2 = CopySaber(_saberManager.leftSaber);
+                        _saberR2 = CopySaber(_saberManager.rightSaber);
                     }
 
                     if (!Config.ninjaMasterHideFoot)
                     {
-                        _saberFootL = Instantiate(_playerController.leftSaber);
-                        _saberFootR = Instantiate(_playerController.rightSaber);
+                        _saberFootL = CopySaber(_saberManager.leftSaber);
+                        _saberFootR = CopySaber(_saberManager.rightSaber);
                         _saberFootL.transform.localScale = new Vector3(2, 2, 0.25f);
                         _saberFootR.transform.localScale = new Vector3(2, 2, 0.25f);
 
-                        _saberFootL2 = Instantiate(_playerController.leftSaber);
-                        _saberFootR2 = Instantiate(_playerController.rightSaber);
+                        _saberFootL2 = CopySaber(_saberManager.leftSaber);
+                        _saberFootR2 = CopySaber(_saberManager.rightSaber);
                         _saberFootL2.transform.localScale = new Vector3(2, 2, 0.25f);
                         _saberFootR2.transform.localScale = new Vector3(2, 2, 0.25f);
                     }
 
                     if (!Config.ninjaMasterHideWaist)
                     {
-                        _saberWaistL = Instantiate(_playerController.leftSaber);
-                        _saberWaistR = Instantiate(_playerController.rightSaber);
+                        _saberWaistL = CopySaber(_saberManager.leftSaber);
+                        _saberWaistR = CopySaber(_saberManager.rightSaber);
                     }
 
                     if (!Config.ninjaMasterHideMouth)
                     {
-                        _saberMouthL = Instantiate(_playerController.leftSaber);
-                        _saberMouthR = Instantiate(_playerController.rightSaber);
+                        _saberMouthL = CopySaber(_saberManager.leftSaber);
+                        _saberMouthR = CopySaber(_saberManager.rightSaber);
                     }
 
                     if (!Config.ninjaMasterHideHead)
                     {
-                        _saberHeadL = Instantiate(_playerController.leftSaber);
-                        _saberHeadR = Instantiate(_playerController.rightSaber);
+                        _saberHeadL = CopySaber(_saberManager.leftSaber);
+                        _saberHeadR = CopySaber(_saberManager.rightSaber);
                         _saberHeadL.transform.localScale = new Vector3(1, 1, 0.25f);
                         _saberHeadR.transform.localScale = new Vector3(1, 1, 0.25f);
                     }
                 }
                 else if (Config.fourSabers)
                 {
-                    _saberFootL = Instantiate(_playerController.leftSaber);
-                    _saberFootR = Instantiate(_playerController.rightSaber);
+                    _saberFootL = CopySaber(_saberManager.leftSaber);
+                    _saberFootR = CopySaber(_saberManager.rightSaber);
                     _saberFootL.transform.localScale = new Vector3(2, 2, 0.25f);
                     _saberFootR.transform.localScale = new Vector3(2, 2, 0.25f);
 
@@ -525,7 +536,7 @@ namespace NalulunaModifier
                     /*
                     // customshoes check
                     bool isCustomShoes = false;
-                    foreach (Transform transform in _playerController.leftSaber.GetComponentsInChildren<Transform>())
+                    foreach (Transform transform in _saberManager.leftSaber.GetComponentsInChildren<Transform>())
                     {
                         string name = transform.name.ToLower();
                         if ((name.IndexOf("feetsaber") >= 0) || name.IndexOf("shoes") >= 0)
@@ -541,12 +552,10 @@ namespace NalulunaModifier
                     {
                         SetTrailWidth(0f);
                     }
-                    _playerController.rightSaber.transform.localScale = new Vector3(2, 2, 0.25f);
-                    _playerController.leftSaber.transform.localScale = new Vector3(2, 2, 0.25f);
+                    _saberManager.rightSaber.transform.localScale = new Vector3(2, 2, 0.25f);
+                    _saberManager.leftSaber.transform.localScale = new Vector3(2, 2, 0.25f);
                 }
 
-                // need some wait
-                yield return new WaitForSecondsRealtime(0.1f);
                 if (Config.hideSaberEffects)
                 {
                     SetTrailWidth(0f);
@@ -559,13 +568,61 @@ namespace NalulunaModifier
                 if (Config.feetTracker)
                 {
                     SetTrailWidth(0f);
-                    _playerController.rightSaber.transform.localScale = new Vector3(2, 2, 0.25f);
-                    _playerController.leftSaber.transform.localScale = new Vector3(2, 2, 0.25f);
+                    _saberManager.rightSaber.transform.localScale = new Vector3(2, 2, 0.25f);
+                    _saberManager.leftSaber.transform.localScale = new Vector3(2, 2, 0.25f);
                 }
 
                 // for debug
                 //StartCoroutine(EnumAllObjectsCoroutine());
             }
+        }
+
+        private Saber CopySaber(Saber saber)
+        {
+            if (_colorManager == null)
+            {
+                _colorManager = Resources.FindObjectsOfTypeAll<ColorManager>().FirstOrDefault();
+            }
+
+            Saber result = Instantiate(saber);
+            result.transform.SetParent(saber.transform.parent, false);
+            result.transform.localPosition = Vector3.zero;
+            result.transform.localRotation = Quaternion.identity;
+
+            // for check components
+            /*
+            foreach (var monoBehaviour in result.GetComponents<MonoBehaviour>())
+            {
+                Logger.log.Debug($"{result.name} has {monoBehaviour.GetType().Name}");
+            }
+            */
+
+            SaberModelContainer saberModelContainer = result.GetComponent<SaberModelContainer>();
+            DestroyImmediate(saberModelContainer);
+
+            VRController vrController = result.GetComponent<VRController>();
+            DestroyImmediate(vrController);
+
+            // color
+            foreach (SetSaberGlowColor setSaberGlowColor in result.GetComponentsInChildren<SetSaberGlowColor>())
+            {
+                setSaberGlowColor.SetPrivateField("_colorManager", _colorManager);
+                setSaberGlowColor.saberType = saber.saberType;
+                setSaberGlowColor.Start();
+            }
+
+            // trail
+            // it might need some wait for customsabers?
+            Color color = _colorManager.ColorForSaberType(saber.saberType);
+            SaberModelController saberModelController = saber.GetComponentInChildren<SaberModelController>();
+            SaberModelController.InitData initData = saberModelController.GetPrivateField<SaberModelController.InitData>("_initData");
+            Color trailTintColor = initData.trailTintColor;
+            foreach (SaberTrail saberTrail in result.GetComponentsInChildren<SaberTrail>())
+            {
+                saberTrail.Setup((color * trailTintColor).linear, saber.movementData);
+            }
+
+            return result;
         }
 
         private void OnNotGameCore()
@@ -594,7 +651,7 @@ namespace NalulunaModifier
         private void OnNoteWasSpawned(NoteController noteController)
         {
             float time;
-            if (noteController.noteData.noteType == NoteType.Bomb)
+            if (noteController.noteData.colorType == ColorType.None)
             {
                 //Logger.log.Debug($"Spawn Bomb: {noteController.noteData.id} : {noteController.noteData.time}");
 
@@ -687,14 +744,14 @@ namespace NalulunaModifier
 
             if (Config.headbang)
             {
-                _rightSaberTransform.rotation = _playerController.headRot;
-                _leftSaberTransform.rotation = _playerController.headRot;
+                _rightSaberTransform.rotation = _playerTransform.headRot;
+                _leftSaberTransform.rotation = _playerTransform.headRot;
 
                 _rightSaberTransform.Rotate(new Vector3(270, 0, 0));
                 _leftSaberTransform.Rotate(new Vector3(270, 0, 0));
 
-                _rightSaberTransform.position = _playerController.headPos;
-                _leftSaberTransform.position = _playerController.headPos;
+                _rightSaberTransform.position = _playerTransform.headPos;
+                _leftSaberTransform.position = _playerTransform.headPos;
 
                 _rightSaberTransform.Translate(0.05f, 0, -0.2f, Space.Self);
                 _leftSaberTransform.Translate(-0.05f, 0, -0.2f, Space.Self);
@@ -800,14 +857,14 @@ namespace NalulunaModifier
                 {
                     if (Config.ninjaMasterHideHand)
                     {
-                        _playerController.leftSaber.gameObject.SetActive(false);
-                        _playerController.rightSaber.gameObject.SetActive(false);
+                        _saberManager.leftSaber.gameObject.SetActive(false);
+                        _saberManager.rightSaber.gameObject.SetActive(false);
                     }
                     else
                     {
                         if (Config.ninjaMasterHideHandR)
                         {
-                            _playerController.rightSaber.gameObject.SetActive(false);
+                            _saberManager.rightSaber.gameObject.SetActive(false);
                             _saberL2.gameObject.SetActive(false);
                         }
                         else
@@ -821,7 +878,7 @@ namespace NalulunaModifier
 
                         if (Config.ninjaMasterHideHandL)
                         {
-                            _playerController.leftSaber.gameObject.SetActive(false);
+                            _saberManager.leftSaber.gameObject.SetActive(false);
                             _saberR2.gameObject.SetActive(false);
                         }
                         else
@@ -903,14 +960,14 @@ namespace NalulunaModifier
             if (Config.superhot)
             {
                 float distance = 0;// = Vector3.Distance(_playerController.headPos, prevHeadPos);
-                distance = Mathf.Max(distance, Vector3.Distance(_playerController.leftSaber.handlePos, _prevLeftHandlePos));
-                distance = Mathf.Max(distance, Vector3.Distance(_playerController.rightSaber.handlePos, _prevRightHandlePos));
+                distance = Mathf.Max(distance, Vector3.Distance(_saberManager.leftSaber.handlePos, _prevLeftHandlePos));
+                distance = Mathf.Max(distance, Vector3.Distance(_saberManager.rightSaber.handlePos, _prevRightHandlePos));
                 distance = Mathf.Clamp01(distance * 50f);
                 SetTimeScale(distance);
 
-                _prevHeadPos = _playerController.headPos;
-                _prevLeftHandlePos = _playerController.leftSaber.handlePos;
-                _prevRightHandlePos = _playerController.rightSaber.handlePos;
+                _prevHeadPos = _playerTransform.headPos;
+                _prevLeftHandlePos = _saberManager.leftSaber.handlePos;
+                _prevRightHandlePos = _saberManager.rightSaber.handlePos;
             }
             else if (Config.beatWalker)
             {
@@ -957,40 +1014,34 @@ namespace NalulunaModifier
             }
         }
 
-        private void SetTrailWidth(float trailWidth)
+        private Coroutine _setTrailWidthCoroutine;
+
+        private IEnumerator SetTrailWidthCoroutine(float trailWidth)
         {
-            bool left = false;
-            bool right = false;
-            float newTrailWidth;
-            foreach (XWeaponTrail trail in Resources.FindObjectsOfTypeAll<XWeaponTrail>())
+            yield return new WaitUntil(() => Resources.FindObjectsOfTypeAll<SaberTrailRenderer>().Any());
+            
+            // need some wait. 0.02 is not enough for my environment.
+            yield return new WaitForSecondsRealtime(0.03f);
+            foreach (SaberTrailRenderer trail in Resources.FindObjectsOfTypeAll<SaberTrailRenderer>())
             {
-                //Logger.log.Debug($"trail: {trail.name}, {trail.transform?.parent?.name}, {trail.transform?.parent?.parent?.name}, {trail.transform?.parent?.parent?.parent?.name}, trailWidth={trail.GetPrivateField<float>("_trailWidth")}");
-                if ((trail.name == "LeftSaber") || (trail.transform.parent?.name == "LeftSaber"))
-                {
-                    newTrailWidth = left ? 0f : trailWidth;
-                    left = true;
-                }
-                else if ((trail.name == "RightSaber") || (trail.transform.parent?.name == "RightSaber"))
-                {
-                    newTrailWidth = right ? 0 : trailWidth;
-                    right = true;
-                }
-                else
-                {
-                    newTrailWidth = 0;
-                }
-                trail.SetPrivateField("_trailWidth", newTrailWidth);
-                //Logger.log.Debug($"trailWidth={trail.GetPrivateField<float>("_trailWidth")}");
+                trail.SetPrivateField("_trailWidth", trailWidth);
+            }
+
+            // just in case
+            yield return new WaitForSecondsRealtime(0.1f);
+            foreach (SaberTrailRenderer trail in Resources.FindObjectsOfTypeAll<SaberTrailRenderer>())
+            {
+                trail.SetPrivateField("_trailWidth", trailWidth);
             }
         }
 
-        private void SetTrailWidth(GameObject parent, float trailWidth)
+        private void SetTrailWidth(float trailWidth)
         {
-            XWeaponTrail trail = parent.GetComponentInChildren<XWeaponTrail>();
-            if (trail != null)
-            { 
-                trail.SetPrivateField("_trailWidth", trailWidth);
+            if (_setTrailWidthCoroutine != null)
+            {
+                StopCoroutine(_setTrailWidthCoroutine);
             }
+            _setTrailWidthCoroutine = StartCoroutine(SetTrailWidthCoroutine(trailWidth));
         }
 
         private IEnumerator SetTimeScaleCoroutine(float timeScale)

@@ -7,18 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace NalulunaModifier
+namespace NalulunaModifier.HarmonyPatches
 {
     [HarmonyPatch(typeof(GameNoteController), "HandleCut")]
 	static class GameNoteControllerHandleCut
 	{
 		static bool Prefix(GameNoteController __instance, Saber saber)
 		{
-			if (Config.ignoreBadColor || Config.fourSabers)
+			if (Config.ignoreBadColor ||
+				(Config.fourSabers && (saber.name == NalulunaModifierController.saberFootLName || saber.name == NalulunaModifierController.saberFootRName)))
 			{
-				NoteType noteType = __instance.noteData.noteType;
+				ColorType colorType = __instance.noteData.colorType;
 				SaberType saberType = saber.saberType;
-				bool saberTypeOK = ((noteType == NoteType.NoteA && saberType == SaberType.SaberA) || (noteType == NoteType.NoteB && saberType == SaberType.SaberB));
+				bool saberTypeOK = ((colorType == ColorType.ColorA && saberType == SaberType.SaberA) || (colorType == ColorType.ColorB && saberType == SaberType.SaberB));
 				return saberTypeOK;
 			}
 			else

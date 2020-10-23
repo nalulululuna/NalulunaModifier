@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using System.Reflection;
 
-namespace NalulunaModifier
+namespace NalulunaModifier.HarmonyPatches
 {
     [HarmonyPatch(typeof(BombCutSoundEffectManager), "HandleNoteWasCut")]
     static class BombCutSoundEffectManagerHandleNoteWasCut

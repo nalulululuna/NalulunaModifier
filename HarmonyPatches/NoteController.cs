@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace NalulunaModifier
+namespace NalulunaModifier.HarmonyPatches
 {
     [HarmonyPatch(typeof(NoteController), "Init")]
 	static class NoteControllerInit
@@ -58,7 +58,7 @@ namespace NalulunaModifier
 		{
 			if (Config.centering)
 			{
-				noteTransform.localScale = Vector3.one * Config.centeringNotesScale;
+				____noteTransform.localScale = Vector3.one * Config.centeringNotesScale;
 				if (Config.flatNotes)
 				{
 					____noteTransform.localScale = new Vector3(____noteTransform.localScale.x, ____noteTransform.localScale.y * 0.5f, ____noteTransform.localScale.z);

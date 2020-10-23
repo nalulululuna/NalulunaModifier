@@ -1,21 +1,17 @@
 ﻿using BeatSaberMarkupLanguage.GameplaySetup;
-using BS_Utils.Gameplay;
-using BS_Utils.Utilities;
 using HarmonyLib;
 using IPA;
 using System;
-using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
 namespace NalulunaModifier
 {
-    //[Plugin(RuntimeOptions.DynamicInit)]
     [Plugin(RuntimeOptions.SingleStartInit)]
     public class Plugin
     {
-        public const string HarmonyId = "com.twitter.nalulululuna.NalulunaModifier";
+        public const string HarmonyId = "com.github.nalulululuna.NalulunaModifier";
         internal static Harmony harmony = new Harmony(HarmonyId);
 
         internal static Plugin instance { get; private set; }
@@ -34,28 +30,11 @@ namespace NalulunaModifier
         [OnStart]
         public void OnApplicationStart()
         {
-            OnEnable();
-        }
-
-        //[OnEnable]
-        public void OnEnable()
-        {
             Config.Read();
-            GameplaySetup.instance.AddTab(TabName, $"{Name}.UI.ModifierUI.bsml", UI.ModifierUI.instance);
+            GameplaySetup.instance.AddTab(TabName, $"{Name}.UI.ModifierUI.bsml", ModifierUI.instance);
             new GameObject("NalulunaModifierController").AddComponent<NalulunaModifierController>();
             ApplyHarmonyPatches();
         }
-
-        /*
-        [OnDisable]
-        public void OnDisable()
-        {
-            if (PluginController != null)
-                GameObject.Destroy(PluginController);
-            RemoveHarmonyPatches();
-            GameplaySetup.instance.RemoveTab(TabName);
-        }
-        */
 
         public static void ApplyHarmonyPatches()
         {

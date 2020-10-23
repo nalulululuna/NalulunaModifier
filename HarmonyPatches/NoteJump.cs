@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace NalulunaModifier
+namespace NalulunaModifier.HarmonyPatches
 {
     [HarmonyPatch(typeof(NoteJump), "Init")]
     [HarmonyPriority(Priority.VeryLow)]
@@ -25,9 +25,9 @@ namespace NalulunaModifier
     static class NoteJumpManualUpdate
     {
         //static int tick = 0;
-        public static Vector3 center = new Vector3(0, 0.9f, 0);
+        internal static Vector3 center = new Vector3(0, 0.9f, 0);
 
-        static PlayerController playerController = null;
+        static SaberManager _saberManager = null;
 
         static void Postfix(
             NoteJump __instance,
@@ -66,12 +66,12 @@ namespace NalulunaModifier
 
             if (Config.vacuum)
             {
-                if (playerController == null)
+                if (_saberManager == null)
                 {
-                    playerController = Resources.FindObjectsOfTypeAll<PlayerController>().FirstOrDefault();
+                    _saberManager = Resources.FindObjectsOfTypeAll<SaberManager>().FirstOrDefault();
                 }
 
-                if (playerController != null)
+                if (_saberManager != null)
                 {
                     float time = ____audioTimeSyncController.songTime - ____beatTime + ____jumpDuration * 0.5f;
                     float amount = time / ____jumpDuration;
@@ -79,7 +79,7 @@ namespace NalulunaModifier
 
                     if (amount > 0.7f)
                     {
-                        Vector3 endPos = playerController.rightSaber.saberBladeTopPos;
+                        Vector3 endPos = _saberManager.rightSaber.saberBladeTopPos;
                         float t = (amount - 0.5f) * 2;
                         t = t * t * t * t;
                         ____localPosition.x = Mathf.Lerp(____localPosition.x, endPos.x, t);

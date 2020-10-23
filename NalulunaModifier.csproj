@@ -45,11 +45,17 @@
     <Reference Include="0Harmony">
       <HintPath>$(BeatSaberDir)\Libs\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="BeatmapCore">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
+    </Reference>
     <Reference Include="BSML">
       <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
     </Reference>
     <Reference Include="BS_Utils">
       <HintPath>$(BeatSaberDir)\Plugins\BS_Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="GameplayCore">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
     </Reference>
     <Reference Include="HMLib">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\HMLib.dll</HintPath>
@@ -116,19 +122,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HarmonyPatches\SphereCuttableBySaberPatch.cs" />
-    <Compile Include="HarmonyPatches\BombNoteControllerPatch.cs" />
-    <Compile Include="HarmonyPatches\BombCutSoundEffectManagerPatch.cs" />
-    <Compile Include="HarmonyPatches\GameNoteControllerPatch.cs" />
-    <Compile Include="HarmonyPatches\NoteCutEffectSpawnerPatch.cs" />
-    <Compile Include="HarmonyPatches\VRControllerPatch.cs" />
+    <Compile Include="HarmonyPatches\NoteCutHapticEffect.cs" />
+    <Compile Include="HarmonyPatches\SaberClashChecker.cs" />
+    <Compile Include="HarmonyPatches\SphereCuttableBySaber.cs" />
+    <Compile Include="HarmonyPatches\BombNoteController.cs" />
+    <Compile Include="HarmonyPatches\BombCutSoundEffectManager.cs" />
+    <Compile Include="HarmonyPatches\GameNoteController.cs" />
+    <Compile Include="HarmonyPatches\NoteCutEffectSpawner.cs" />
     <Compile Include="NalulunaModifierController.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="HarmonyPatches\BeatmapObjectManagerPatch.cs" />
-    <Compile Include="HarmonyPatches\NoteBasicCutInfoPatch.cs" />
-    <Compile Include="HarmonyPatches\NoteControllerPatch.cs" />
-    <Compile Include="HarmonyPatches\NoteMovementPatch.cs" />
-    <Compile Include="HarmonyPatches\NoteJumpPatch.cs" />
+    <Compile Include="HarmonyPatches\BeatmapObjectManager.cs" />
+    <Compile Include="HarmonyPatches\NoteBasicCutInfo.cs" />
+    <Compile Include="HarmonyPatches\NoteController.cs" />
+    <Compile Include="HarmonyPatches\NoteMovement.cs" />
+    <Compile Include="HarmonyPatches\NoteJump.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

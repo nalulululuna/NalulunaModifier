@@ -1,9 +1,19 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
-namespace NalulunaModifier.UI
+using BeatSaberMarkupLanguage.Parser;
+
+namespace NalulunaModifier
 {
     public class ModifierUI : NotifiableSingleton<ModifierUI>
     {
+        [UIParams]
+        BSMLParserParams parserParams;
+
+        public void updateUI()
+        {
+            parserParams.EmitEvent("cancel");
+        }
+
         [UIValue("parabola")]
         public bool parabola
         {
@@ -13,12 +23,6 @@ namespace NalulunaModifier.UI
                 Config.parabola = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setParabola")]
-        void setParabola(bool value)
-        {
-            parabola = value;
         }
 
         [UIValue("noBlue")]
@@ -32,12 +36,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setNoBlue")]
-        void setNoBlue(bool value)
-        {
-            noBlue = value;
-        }
-
         [UIValue("noRed")]
         public bool noRed
         {
@@ -47,12 +45,6 @@ namespace NalulunaModifier.UI
                 Config.noRed = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setNoRed")]
-        void setNoRed(bool value)
-        {
-            noRed = value;
         }
 
         [UIValue("redToBlue")]
@@ -66,12 +58,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setRedToBlue")]
-        void setRedToBlue(bool value)
-        {
-            redToBlue = value;
-        }
-
         [UIValue("blueToRed")]
         public bool blueToRed
         {
@@ -81,12 +67,6 @@ namespace NalulunaModifier.UI
                 Config.blueToRed = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setBlueToRed")]
-        void setBlueToRed(bool value)
-        {
-            blueToRed = value;
         }
 
         [UIAction("twitterLinkClick")]
@@ -130,12 +110,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setBoxing")]
-        void setBoxing(bool value)
-        {
-            boxing = value;
-        }
-
         [UIValue("centering")]
         public bool centering
         {
@@ -147,12 +121,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setCentering")]
-        void setCentering(bool value)
-        {
-            centering = value;
-        }
-
         [UIValue("hideSabers")]
         public bool hideSabers
         {
@@ -161,13 +129,9 @@ namespace NalulunaModifier.UI
             {
                 Config.hideSabers = value;
                 Config.Write();
-            }
-        }
 
-        [UIAction("setHideSabers")]
-        void setHideSabers(bool value)
-        {
-            hideSabers = value;
+                updateUI();
+            }
         }
 
         [UIValue("hideSaberEffects")]
@@ -181,12 +145,21 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setHideSaberEffects")]
-        void setHideSaberEffects(bool value)
+        [UIValue("feetModifiers")]
+        public bool feetModifiers
         {
-            hideSaberEffects = value;
+            get => Config.feetModifiers;
+            set
+            {
+                Config.feetModifiers = value;
+                Config.feet = value;
+                Config.noDirection = value;
+                Config.ignoreBadColor = value;
+                Config.Write();
+            }
         }
 
+        /*
         [UIValue("feet")]
         public bool feet
         {
@@ -196,12 +169,6 @@ namespace NalulunaModifier.UI
                 Config.feet = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setFeet")]
-        void setFoot(bool value)
-        {
-            feet = value;
         }
 
         [UIValue("noDirection")]
@@ -215,12 +182,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setNoDirection")]
-        void setNoDirection(bool value)
-        {
-            noDirection = value;
-        }
-
         [UIValue("ignoreBadColor")]
         public bool ignoreBadColor
         {
@@ -231,12 +192,7 @@ namespace NalulunaModifier.UI
                 Config.Write();
             }
         }
-
-        [UIAction("setIgnoreBadColor")]
-        void setIgnoreBadColor(bool value)
-        {
-            ignoreBadColor = value;
-        }
+        */
 
         [UIValue("flatNotes")]
         public bool flatNotes
@@ -247,12 +203,6 @@ namespace NalulunaModifier.UI
                 Config.flatNotes = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setFlatNotes")]
-        void setFlatNotes(bool value)
-        {
-            flatNotes = value;
         }
 
         [UIValue("feetAvatar")]
@@ -266,12 +216,19 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setFeetAvatar")]
-        void setFeetAvatar(bool value)
+        [UIValue("ninjaModifiers")]
+        public bool ninjaModifiers
         {
-            feetAvatar = value;
+            get => Config.ninjaModifiers;
+            set
+            {
+                Config.ninjaModifiers = value;
+                Config.fourSabers = value;
+                Config.Write();
+            }
         }
 
+        /*
         [UIValue("fourSabers")]
         public bool fourSabers
         {
@@ -282,12 +239,7 @@ namespace NalulunaModifier.UI
                 Config.Write();
             }
         }
-
-        [UIAction("setFourSabers")]
-        void setFourSabers(bool value)
-        {
-            fourSabers = value;
-        }
+        */
 
         [UIValue("reverseGrip")]
         public bool reverseGrip
@@ -298,12 +250,6 @@ namespace NalulunaModifier.UI
                 Config.reverseGrip = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setReverseGrip")]
-        void setReverseGrip(bool value)
-        {
-            reverseGrip = value;
         }
 
         [UIValue("topNotesToFeet")]
@@ -317,12 +263,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setTopNotesToFeet")]
-        void setTopNotesToFeet(bool value)
-        {
-            topNotesToFeet = value;
-        }
-
         [UIValue("middleNotesToFeet")]
         public bool middleNotesToFeet
         {
@@ -332,12 +272,6 @@ namespace NalulunaModifier.UI
                 Config.middleNotesToFeet = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setMiddleNotesToFeet")]
-        void setMiddleNotesToFeet(bool value)
-        {
-            middleNotesToFeet = value;
         }
 
         [UIValue("bottomNotesToFeet")]
@@ -351,12 +285,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setBottomNotesToFeet")]
-        void setBottomNotesToFeet(bool value)
-        {
-            bottomNotesToFeet = value;
-        }
-
         [UIValue("headbang")]
         public bool headbang
         {
@@ -366,12 +294,6 @@ namespace NalulunaModifier.UI
                 Config.headbang = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setHeadbang")]
-        void setHeadbang(bool value)
-        {
-            headbang = value;
         }
 
         [UIValue("superhot")]
@@ -385,12 +307,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setSuperhot")]
-        void setSuperhot(bool value)
-        {
-            superhot = value;
-        }
-
         [UIValue("vacuum")]
         public bool vacuum
         {
@@ -400,12 +316,6 @@ namespace NalulunaModifier.UI
                 Config.vacuum = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setVacuum")]
-        void setVacuum(bool value)
-        {
-            vacuum = value;
         }
 
         [UIValue("ninjaMaster")]
@@ -419,12 +329,6 @@ namespace NalulunaModifier.UI
             }
         }
 
-        [UIAction("setNinjaMaster")]
-        void setNinjaMaster(bool value)
-        {
-            ninjaMaster = value;
-        }
-
         /*
         [UIValue("beatWalker")]
         public bool beatWalker
@@ -435,12 +339,6 @@ namespace NalulunaModifier.UI
                 Config.beatWalker = value;
                 Config.Write();
             }
-        }
-
-        [UIAction("setBeatWalker")]
-        void setBeatWalk(bool value)
-        {
-            beatWalker = value;
         }
         */
     }

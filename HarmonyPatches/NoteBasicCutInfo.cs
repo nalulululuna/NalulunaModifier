@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace NalulunaModifier
+namespace NalulunaModifier.HarmonyPatches
 {
     [HarmonyPatch(typeof(NoteBasicCutInfo), "GetBasicCutInfo")]
 	static class NoteBasicCutInfoGetBasicCutInfo
@@ -24,9 +24,9 @@ namespace NalulunaModifier
             }
         }
 
-        static void Postfix(NoteType noteType, ref bool directionOK, ref bool speedOK, ref bool saberTypeOK)
+        static void Postfix(ColorType colorType, ref bool directionOK, ref bool speedOK, ref bool saberTypeOK)
         {
-            if (Config.vacuum && (noteType != NoteType.Bomb))
+            if (Config.vacuum && (colorType != ColorType.None))
             {
                 directionOK = true;
                 saberTypeOK = true;
