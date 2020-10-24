@@ -176,6 +176,47 @@ namespace NalulunaModifier
 
             if (newScene.name == "GameCore")
             {
+                Logger.log.Debug($"Mode: {BS_Utils.Plugin.LevelData.Mode}");
+
+                if (BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Standard)
+                {
+                    Config.feetModifiers = false;
+                    Config.feet = false;
+                    Config.flatNotes = false;
+                    Config.noDirection = false;
+                    Config.ignoreBadColor = false;
+                    Config.feetAvatar = false;
+                    Config.feetTracker = false;
+
+                    Config.ninjaModifiers = false;
+                    Config.fourSabers = false;
+                    Config.reverseGrip = false;
+                    Config.topNotesToFeet = false;
+                    Config.middleNotesToFeet = false;
+                    Config.bottomNotesToFeet = false;
+
+                    Config.parabola = false;
+                    Config.noBlue = false;
+                    Config.noRed = false;
+                    Config.redToBlue = false;
+                    Config.blueToRed = false;
+
+                    Config.boxing = false;
+                    Config.hideSabers = false;
+                    Config.hideSaberEffects = false;
+                    Config.centering = false;
+
+                    Config.headbang = false;
+                    Config.superhot = false;
+                    Config.vacuum = false;
+                    Config.ninjaMaster = false;
+                    Config.beatWalker = false;
+
+                    ModifierUI.instance.updateUI();
+
+                    return;
+                }
+
                 Config.Read();
 
                 if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
@@ -201,9 +242,9 @@ namespace NalulunaModifier
 
                 StartCoroutine(OnGameCoreCoroutine());
             }
-            else
+            else if (newScene.name == "MainMenu")
             {
-                OnNotGameCore();
+                OnMainMenu();
             }
         }
 
@@ -640,7 +681,7 @@ namespace NalulunaModifier
             return result;
         }
 
-        private void OnNotGameCore()
+        private void OnMainMenu()
         {
             // cleanup
             if (_feetSaber != null) Destroy(_feetSaber);
