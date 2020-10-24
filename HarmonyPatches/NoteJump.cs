@@ -5,9 +5,9 @@ using UnityEngine;
 namespace NalulunaModifier.HarmonyPatches
 {
     [HarmonyPatch(typeof(NoteJump), "Init")]
-    [HarmonyPriority(Priority.VeryLow)]
     static class NoteJumpInit
     {
+        [HarmonyPriority(Priority.VeryLow)]
         static void Postfix(
             ref Quaternion ____middleRotation,
             ref Quaternion ____endRotation,
@@ -22,12 +22,12 @@ namespace NalulunaModifier.HarmonyPatches
     }
 
     [HarmonyPatch(typeof(NoteJump), "ManualUpdate")]
-    [HarmonyPriority(Priority.VeryLow)]
     static class NoteJumpManualUpdate
     {
         //static int tick = 0;
         static SaberManager _saberManager = null;
 
+        [HarmonyPriority(Priority.VeryLow)]
         static void Postfix(
             NoteJump __instance,
             ref Vector3 __result,

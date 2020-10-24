@@ -122,6 +122,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarmonyPatches\FlyingSpriteSpawner.cs" />
+    <Compile Include="HarmonyPatches\FlyingScoreSpawner.cs" />
     <Compile Include="HarmonyPatches\NoteCutter.cs" />
     <Compile Include="HarmonyPatches\NoteCutHapticEffect.cs" />
     <Compile Include="HarmonyPatches\SaberClashChecker.cs" />
