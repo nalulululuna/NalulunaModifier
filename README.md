@@ -9,7 +9,6 @@ https://youtu.be/7DqtCf-v2lA
 https://youtu.be/QtLNweiiQPU  
 [![](https://img.youtube.com/vi/QtLNweiiQPU/0.jpg)](https://www.youtube.com/watch?v=QtLNweiiQPU)  
   
-(for older beatsaber versions, as the mods don't work with the latest now)  
 Download (0.0.13 for BeatSaber 1.12.2) https://drive.google.com/file/d/150yJbVP5QvpV-dRaA_TbPqQoQ9mhGokN  
 Download (0.0.12 for BeatSaber 1.11.1) https://drive.google.com/file/d/1lOSJbvlB5Mx_1SepBX3iISnyNh4kFP4n  
 
