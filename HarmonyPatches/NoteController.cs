@@ -23,8 +23,8 @@ namespace NalulunaModifier.HarmonyPatches
 			}
 
 			if ((Config.topNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Top)) ||
-			  (Config.middleNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Upper)) ||
-			  (Config.bottomNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Base)))
+				(Config.middleNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Upper)) ||
+				(Config.bottomNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Base)))
 			{
 				noteData.SetNonPublicProperty("cutDirection", NoteCutDirection.Any);
 				____noteTransform.localScale = new Vector3(1f, 0.5f, 1f);
@@ -36,21 +36,21 @@ namespace NalulunaModifier.HarmonyPatches
 
 			if (Config.topNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Top))
 			{
-				moveStartPos = new Vector3(moveStartPos.x, 0.1f, moveStartPos.z);
-				moveEndPos = new Vector3(moveEndPos.x, 0.1f, moveEndPos.z);
-				jumpEndPos = new Vector3(jumpEndPos.x, 0.1f, jumpEndPos.z);
+				moveStartPos = new Vector3(moveStartPos.x, Config.feetNotesY, moveStartPos.z);
+				moveEndPos = new Vector3(moveEndPos.x, Config.feetNotesY, moveEndPos.z);
+				jumpEndPos = new Vector3(jumpEndPos.x, Config.feetNotesY, jumpEndPos.z);
 			}
 			if (Config.middleNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Upper))
 			{
-				moveStartPos = new Vector3(moveStartPos.x, 0.1f, moveStartPos.z);
-				moveEndPos = new Vector3(moveEndPos.x, 0.1f, moveEndPos.z);
-				jumpEndPos = new Vector3(jumpEndPos.x, 0.1f, jumpEndPos.z);
+				moveStartPos = new Vector3(moveStartPos.x, Config.feetNotesY, moveStartPos.z);
+				moveEndPos = new Vector3(moveEndPos.x, Config.feetNotesY, moveEndPos.z);
+				jumpEndPos = new Vector3(jumpEndPos.x, Config.feetNotesY, jumpEndPos.z);
 			}
 			if (Config.bottomNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Base))
 			{
-				moveStartPos = new Vector3(moveStartPos.x, 0.1f, moveStartPos.z);
-				moveEndPos = new Vector3(moveEndPos.x, 0.1f, moveEndPos.z);
-				jumpEndPos = new Vector3(jumpEndPos.x, 0.1f, jumpEndPos.z);
+				moveStartPos = new Vector3(moveStartPos.x, Config.feetNotesY, moveStartPos.z);
+				moveEndPos = new Vector3(moveEndPos.x, Config.feetNotesY, moveEndPos.z);
+				jumpEndPos = new Vector3(jumpEndPos.x, Config.feetNotesY, jumpEndPos.z);
 			}
 		}
 

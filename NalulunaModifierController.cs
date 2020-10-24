@@ -25,6 +25,7 @@ namespace NalulunaModifier
         private PauseController _pauseController;
 
         private SaberManager _saberManager;
+        private NoteCutter _noteCutter;
         private PlayerTransforms _playerTransform;
         private Transform _rightSaberTransform;
         private Transform _leftSaberTransform;
@@ -49,8 +50,8 @@ namespace NalulunaModifier
         private Saber _saberFootR;
         private Saber _saberFootL2;
         private Saber _saberFootR2;
-        private Saber _saberL2;
-        private Saber _saberR2;
+        private Saber _saberLeft2;
+        private Saber _saberRight2;
         private Saber _saberWaistL;
         private Saber _saberWaistR;
         private Saber _saberMouthL;
@@ -71,6 +72,8 @@ namespace NalulunaModifier
 
         internal static readonly string saberFootLName = "saberFootL";
         internal static readonly string saberFootRName = "saberFootR";
+        internal static readonly string saberLeft2Name = "saberLeft2";
+        internal static readonly string saberRight2Name = "saberRight2";
 
         private void FindTrackers()
         {
@@ -210,8 +213,8 @@ namespace NalulunaModifier
             if (_saberFootR != null) _saberFootR.gameObject.SetActive(false);
             if (_saberFootL2 != null) _saberFootL2.gameObject.SetActive(false);
             if (_saberFootR2 != null) _saberFootR2.gameObject.SetActive(false);
-            if (_saberL2 != null) _saberL2.gameObject.SetActive(false);
-            if (_saberR2 != null) _saberR2.gameObject.SetActive(false);
+            if (_saberLeft2 != null) _saberLeft2.gameObject.SetActive(false);
+            if (_saberRight2 != null) _saberRight2.gameObject.SetActive(false);
             if (_saberWaistL != null) _saberWaistL.gameObject.SetActive(false);
             if (_saberWaistR != null) _saberWaistR.gameObject.SetActive(false);
             if (_saberMouthL != null) _saberMouthL.gameObject.SetActive(false);
@@ -228,8 +231,8 @@ namespace NalulunaModifier
             if (_saberFootR != null) _saberFootR.gameObject.SetActive(true);
             if (_saberFootL2 != null) _saberFootL2.gameObject.SetActive(true);
             if (_saberFootR2 != null) _saberFootR2.gameObject.SetActive(true);
-            if (_saberL2 != null) _saberL2.gameObject.SetActive(true);
-            if (_saberR2 != null) _saberR2.gameObject.SetActive(true);
+            if (_saberLeft2 != null) _saberLeft2.gameObject.SetActive(true);
+            if (_saberRight2 != null) _saberRight2.gameObject.SetActive(true);
             if (_saberWaistL != null) _saberWaistL.gameObject.SetActive(true);
             if (_saberWaistR != null) _saberWaistR.gameObject.SetActive(true);
             if (_saberMouthL != null) _saberMouthL.gameObject.SetActive(true);
@@ -307,6 +310,11 @@ namespace NalulunaModifier
 
             if (_saberManager == null)
                 _saberManager = Resources.FindObjectsOfTypeAll<SaberManager>().FirstOrDefault();
+            if (_noteCutter == null)
+            {
+                CuttingManager cuttingManager = Resources.FindObjectsOfTypeAll<CuttingManager>().FirstOrDefault();
+                _noteCutter = cuttingManager.GetPrivateField<NoteCutter>("_noteCutter");
+            }
             if (_playerTransform == null)
                 _playerTransform = Resources.FindObjectsOfTypeAll<PlayerTransforms>().FirstOrDefault();
             if (_rightSaberTransform == null)
@@ -325,19 +333,6 @@ namespace NalulunaModifier
                 _saberBurnMarkArea = Resources.FindObjectsOfTypeAll<SaberBurnMarkArea>().FirstOrDefault();
             if (_saberBurnMarkSparkles == null)
                 _saberBurnMarkSparkles = Resources.FindObjectsOfTypeAll<SaberBurnMarkSparkles>().FirstOrDefault();
-
-            // need some wait to GetNoteOffset
-            if (Config.centering)
-            {
-                if (_beatmapObjectSpawnController == null)
-                    _beatmapObjectSpawnController = Resources.FindObjectsOfTypeAll<BeatmapObjectSpawnController>().FirstOrDefault();
-                BeatmapObjectSpawnMovementData beatmapObjectSpawnMovementData = _beatmapObjectSpawnController.GetPrivateField<BeatmapObjectSpawnMovementData>("_beatmapObjectSpawnMovementData");
-                Vector3 leftBase = beatmapObjectSpawnMovementData.GetNoteOffset(0, NoteLineLayer.Base);
-                Vector3 rightTop = beatmapObjectSpawnMovementData.GetNoteOffset(3, NoteLineLayer.Top);
-                HarmonyPatches.NoteJumpManualUpdate.center = (leftBase + rightTop) / 2;
-                //Logger.log.Debug($"leftBase={leftBase.x}, {leftBase.y}, {leftBase.z}");
-                //Logger.log.Debug($"rightTop={rightTop.x}, {rightTop.y}, {rightTop.z}");
-            }
 
             if (Config.hideSabers)
             {
@@ -409,6 +404,23 @@ namespace NalulunaModifier
             _init = true;
         }
 
+        /*
+        private IEnumerator GetSpawnCenterCoroutine()
+        {
+            // need some wait
+            yield return new WaitForSecondsRealtime(1f);
+
+            if (_beatmapObjectSpawnController == null)
+                _beatmapObjectSpawnController = Resources.FindObjectsOfTypeAll<BeatmapObjectSpawnController>().FirstOrDefault();
+            BeatmapObjectSpawnMovementData beatmapObjectSpawnMovementData = _beatmapObjectSpawnController.GetPrivateField<BeatmapObjectSpawnMovementData>("_beatmapObjectSpawnMovementData");
+            Vector3 leftBase = beatmapObjectSpawnMovementData.GetNoteOffset(0, NoteLineLayer.Base);
+            Vector3 rightTop = beatmapObjectSpawnMovementData.GetNoteOffset(3, NoteLineLayer.Top);
+            center = (leftBase + rightTop) / 2;
+            Logger.log.Debug($"leftBase={leftBase.x}, {leftBase.y}, {leftBase.z}");
+            Logger.log.Debug($"rightTop={rightTop.x}, {rightTop.y}, {rightTop.z}");
+        }
+        */
+
         private IEnumerator FindAvatarCoroutine()
         {
             // need some wait
@@ -479,8 +491,11 @@ namespace NalulunaModifier
                 {
                     if (!Config.ninjaMasterHideHand)
                     {
-                        _saberL2 = CopySaber(_saberManager.leftSaber);
-                        _saberR2 = CopySaber(_saberManager.rightSaber);
+                        _saberLeft2 = CopySaber(_saberManager.leftSaber);
+                        _saberRight2 = CopySaber(_saberManager.rightSaber);
+
+                        _saberLeft2.name = saberLeft2Name;
+                        _saberRight2.name = saberRight2Name;
                     }
 
                     if (!Config.ninjaMasterHideFoot)
@@ -633,8 +648,8 @@ namespace NalulunaModifier
             if (_saberFootR != null) Destroy(_saberFootR);
             if (_saberFootL2 != null) Destroy(_saberFootL2);
             if (_saberFootR2 != null) Destroy(_saberFootR2);
-            if (_saberL2 != null) Destroy(_saberL2);
-            if (_saberR2 != null) Destroy(_saberR2);
+            if (_saberLeft2 != null) Destroy(_saberLeft2);
+            if (_saberRight2 != null) Destroy(_saberRight2);
             if (_saberWaistL != null) Destroy(_saberWaistL);
             if (_saberWaistR != null) Destroy(_saberWaistR);
             if (_saberMouthL != null) Destroy(_saberMouthL);
@@ -723,10 +738,18 @@ namespace NalulunaModifier
         private void AdjustPosAndRot(Transform transform, float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
         {
             transform.Translate(posX * 0.01f, posY * 0.01f, posZ * 0.01f, Space.Self);
-            //transform.Rotate(rotX, rotY, rotZ, Space.Self);
             transform.Rotate(rotX, 0, 0, Space.Self);
             transform.Rotate(0, rotY, 0, Space.Self);
             transform.Rotate(0, 0, rotZ, Space.Self);
+        }
+
+        private void UpdateAdditionalSaber(Saber saber)
+        {
+            saber.ManualUpdate();
+            if (_noteCutter != null)
+            {
+                _noteCutter.Cut(saber);
+            }
         }
 
         private void Update()
@@ -848,8 +871,8 @@ namespace NalulunaModifier
 
                     if (Config.fourSabers || Config.ninjaMaster)
                     {
-                        _saberFootL.ManualUpdate();
-                        _saberFootR.ManualUpdate();
+                        UpdateAdditionalSaber(_saberFootL);
+                        UpdateAdditionalSaber(_saberFootR);
                     }
                 }
 
@@ -865,29 +888,29 @@ namespace NalulunaModifier
                         if (Config.ninjaMasterHideHandR)
                         {
                             _saberManager.rightSaber.gameObject.SetActive(false);
-                            _saberL2.gameObject.SetActive(false);
+                            _saberLeft2.gameObject.SetActive(false);
                         }
                         else
                         {
-                            _saberL2.transform.position = _rightSaberTransform.position;
-                            _saberL2.transform.rotation = _rightSaberTransform.rotation;
-                            _saberL2.transform.Rotate(0.0f, 180.0f, 0.0f);
-                            _saberL2.transform.Translate(0.0f, 0.0f, Config.ninjaMasterSaberSeparation, Space.Self);
-                            _saberL2.ManualUpdate();
+                            _saberLeft2.transform.position = _rightSaberTransform.position;
+                            _saberLeft2.transform.rotation = _rightSaberTransform.rotation;
+                            _saberLeft2.transform.Rotate(0.0f, 180.0f, 0.0f);
+                            _saberLeft2.transform.Translate(0.0f, 0.0f, Config.ninjaMasterSaberSeparation, Space.Self);
+                            UpdateAdditionalSaber(_saberLeft2);
                         }
 
                         if (Config.ninjaMasterHideHandL)
                         {
                             _saberManager.leftSaber.gameObject.SetActive(false);
-                            _saberR2.gameObject.SetActive(false);
+                            _saberRight2.gameObject.SetActive(false);
                         }
                         else
                         {
-                            _saberR2.transform.position = _leftSaberTransform.position;
-                            _saberR2.transform.rotation = _leftSaberTransform.rotation;
-                            _saberR2.transform.Rotate(0.0f, 180.0f, 0.0f);
-                            _saberR2.transform.Translate(0.0f, 0.0f, Config.ninjaMasterSaberSeparation, Space.Self);
-                            _saberR2.ManualUpdate();
+                            _saberRight2.transform.position = _leftSaberTransform.position;
+                            _saberRight2.transform.rotation = _leftSaberTransform.rotation;
+                            _saberRight2.transform.Rotate(0.0f, 180.0f, 0.0f);
+                            _saberRight2.transform.Translate(0.0f, 0.0f, Config.ninjaMasterSaberSeparation, Space.Self);
+                            UpdateAdditionalSaber(_saberRight2);
                         }
                     }
 
@@ -901,8 +924,8 @@ namespace NalulunaModifier
                         _saberFootR2.transform.rotation = footSaberL.rotation;
                         _saberFootR2.transform.Rotate(0.0f, 180.0f, 0.0f);
 
-                        _saberFootL2.ManualUpdate();
-                        _saberFootR2.ManualUpdate();
+                        UpdateAdditionalSaber(_saberFootL2);
+                        UpdateAdditionalSaber(_saberFootR2);
                     }
 
                     if (!Config.ninjaMasterHideWaist)
@@ -915,8 +938,8 @@ namespace NalulunaModifier
                         _saberWaistR.transform.rotation = _hips.transform.rotation;
                         _saberWaistR.transform.Rotate(0.0f, 90.0f, 0.0f);
 
-                        _saberWaistL.ManualUpdate();
-                        _saberWaistR.ManualUpdate();
+                        UpdateAdditionalSaber(_saberWaistL);
+                        UpdateAdditionalSaber(_saberWaistR);
                     }
 
                     Vector3 headPos = _head.transform.position;
@@ -933,8 +956,8 @@ namespace NalulunaModifier
                         _saberMouthR.transform.Rotate(0.0f, 90.0f, 0.0f);
                         _saberMouthR.transform.Translate(-0.12f, 0.0f, 0.0f, Space.Self);
 
-                        _saberMouthL.ManualUpdate();
-                        _saberMouthR.ManualUpdate();
+                        UpdateAdditionalSaber(_saberMouthL);
+                        UpdateAdditionalSaber(_saberMouthR);
                     }
 
                     if (!Config.ninjaMasterHideHead)
@@ -951,8 +974,8 @@ namespace NalulunaModifier
                         _saberHeadR.transform.Rotate(315.0f, 0.0f, 0.0f);
                         _saberHeadR.transform.Translate(-0.05f, 0.1f, 0.1f, Space.Self);
 
-                        _saberHeadL.ManualUpdate();
-                        _saberHeadR.ManualUpdate();
+                        UpdateAdditionalSaber(_saberHeadL);
+                        UpdateAdditionalSaber(_saberHeadR);
                     }
                 }
             }

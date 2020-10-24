@@ -10,9 +10,10 @@ namespace NalulunaModifier.HarmonyPatches
     {
         static void Postfix(
             ref Quaternion ____middleRotation,
-            ref Quaternion ____endRotation)
+            ref Quaternion ____endRotation,
+            Vector3 startPos)
         {
-            if (Config.noDirection)
+            if (Config.noDirection || (Config.fourSabers && startPos.y == Config.feetNotesY))
             {
                 ____middleRotation = Quaternion.identity;
                 ____endRotation = Quaternion.identity;
@@ -25,8 +26,6 @@ namespace NalulunaModifier.HarmonyPatches
     static class NoteJumpManualUpdate
     {
         //static int tick = 0;
-        internal static Vector3 center = new Vector3(0, 0.9f, 0);
-
         static SaberManager _saberManager = null;
 
         static void Postfix(
@@ -55,9 +54,9 @@ namespace NalulunaModifier.HarmonyPatches
 
             if (Config.centering)
             {
-                ____localPosition.x = ____localPosition.x / 2f + center.x / 2f;
-                ____localPosition.y = ____localPosition.y / 2f + center.y / 2f;
-                ____localPosition.y = ____localPosition.y + Config.centeringOffsetY;
+                float time = ____audioTimeSyncController.songTime - ____beatTime + ____jumpDuration * 0.5f;
+                float amount = time / ____jumpDuration;
+                ____localPosition.y = Mathf.Lerp(____localPosition.y, ____localPosition.y / 2f + Config.centeringBaseY, Mathf.Clamp01(amount * 10f));
                 __result = ____worldRotation * ____localPosition;
                 __instance.transform.position = __result;
             }
@@ -95,11 +94,6 @@ namespace NalulunaModifier.HarmonyPatches
                 ____localPosition.y = Config.feetNotesY;
                 __result = ____worldRotation * ____localPosition;
                 __instance.transform.position = __result;
-
-                if (Config.centering)
-                {
-                    ____localPosition.y = ____localPosition.y / 2f + center.y / 2f;
-                }
             }
 
             if (Config.topNotesToFeet || Config.middleNotesToFeet || Config.bottomNotesToFeet)

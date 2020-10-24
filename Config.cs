@@ -20,7 +20,7 @@ namespace NalulunaModifier
         public static bool hideSabers = false;
         public static bool hideSaberEffects = false;
         public static bool centering = false;
-        public static float centeringOffsetY = 0.3f;
+        public static float centeringBaseY = 0.8f;
         public static float centeringNotesScale = 0.75f;
 
         public static bool headbang = false;
@@ -39,7 +39,7 @@ namespace NalulunaModifier
 
         public static bool feetModifiers = false;
         public static bool feet = false;
-        public static float feetNotesY = 0.1f;
+        public static float feetNotesY = 0.12f;
         public static bool flatNotes = false;
         public static bool noDirection = false;
         public static bool ignoreBadColor = false;
@@ -122,12 +122,12 @@ namespace NalulunaModifier
             hideSabers = _config.GetBool(Plugin.Name, "hideSabers", false, true);
             hideSaberEffects = _config.GetBool(Plugin.Name, "hideSaberEffects", false, true);
             centering = _config.GetBool(Plugin.Name, "centering", false, true);
-            centeringOffsetY = _config.GetFloat(Plugin.Name, "centeringOffsetY", 0.3f, true);
+            centeringBaseY = _config.GetFloat(Plugin.Name, "centeringBaseY", 0.8f, true);
             centeringNotesScale = _config.GetFloat(Plugin.Name, "centeringNotesScale", 0.75f, true);
 
             feetModifiers = _config.GetBool(Plugin.Name, "feetModifiers", false, true);
             feet = _config.GetBool(Plugin.Name, "feet", false, true);
-            feetNotesY = _config.GetFloat(Plugin.Name, "feetNotesY", 0.1f, true);
+            feetNotesY = _config.GetFloat(Plugin.Name, "feetNotesY", 0.12f, true);
             noDirection = _config.GetBool(Plugin.Name, "noDirection", false, true);
             ignoreBadColor = _config.GetBool(Plugin.Name, "ignoreBadColor", false, true);
             flatNotes = _config.GetBool(Plugin.Name, "flatNotes", false, true);

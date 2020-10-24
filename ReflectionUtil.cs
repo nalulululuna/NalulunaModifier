@@ -21,7 +21,6 @@ namespace NalulunaModifier
 
 		public static T GetPrivateField<T>(this object obj, string fieldName)
 		{
-			Logger.log.Debug($"GetPrivateField1-{fieldName}");
 			Type t = obj.GetType();
 			FieldInfo fi = null;
 			while (t != null)
