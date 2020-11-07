@@ -4,50 +4,54 @@
   </vertical>
 
   <vertical child-control-height='false' pad-top='10'>
-    <tab tags='settings-tab' tab-name='Feet1'>
-      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
-        <modifier value='feetModifiers' apply-on-change='true' source='NalulunaModifier.UI.Foot.png' text='FeetSaber' hover-hint='[Disable Score] Move all the notes to foot-level. You can play by fastening the controllers to your feet.'></modifier>
-        <!--
-        <modifier value='feet' apply-on-change='true' source='NalulunaModifier.UI.Foot.png' text='FeetSaber' hover-hint='[Disable Score] Move all the notes to foot-level. You can play by fastening the controllers to your feet.'></modifier>
-        <modifier value='noDirection' apply-on-change='true' source='NalulunaModifier.UI.NoDirection.png' text='No Direction (Recommended)' hover-hint="[Disable Score] You don't have to kick or step on the notes. Just making contact is treated as a hit. It also enable NoArrows."></modifier>
-        <modifier value='ignoreBadColor' apply-on-change='true' source='NalulunaModifier.UI.Check.png' text='Ignore Bad Color (Recommended)' hover-hint="[Disable Score] When a saber hits a different colored note, just ignore it instead of cutting it off and getting a miss."></modifier>
-        -->
-        <modifier value='flatNotes' apply-on-change='true' source='NalulunaModifier.UI.FlatNote.png' text='Flat Notes' hover-hint="[Disable Score] Halve the height of the notes."></modifier>
-        <modifier value='hideSabers' apply-on-change='true' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
-        <modifier value='feetAvatar' apply-on-change='true' source='NalulunaModifier.UI.Avatar.png' text="Sabers on Avatar's Feet (avatar mod required)" hover-hint='If you have FullBodyTracking and Avatar mod (VMCAvatar or CustomAvatar, not LIV), you can cut notes with your feet.'></modifier>
-        <modifier value='disableStatistics' apply-on-change='true' source='NalulunaModifier.UI.No.png' text="                       Disable Statistics on FeetSaber" hover-hint="Temporarily stop recording your player statistics when playing FeetSaber. In case you don't want your average cut score to go down by FeetSaber."></modifier>
-      </vertical>
+    <tab tags='settings-tab' tab-name='FeetSaber'>
+      <horizontal child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false' spacing='4' horizontal-fit='PreferredSize'>
+        <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+          <modifier value='feetModifiers' apply-on-change='true' source='NalulunaModifier.UI.Foot.png' text='FeetSaber' hover-hint='[Disable Score] Move all the notes to foot-level. You can play by fastening the controllers to your feet.'></modifier>
+          <!--
+          <modifier value='feet' apply-on-change='true' source='NalulunaModifier.UI.Foot.png' text='FeetSaber' hover-hint='[Disable Score] Move all the notes to foot-level. You can play by fastening the controllers to your feet.'></modifier>
+          <modifier value='noDirection' apply-on-change='true' source='NalulunaModifier.UI.NoDirection.png' text='No Direction (Recommended)' hover-hint="[Disable Score] You don't have to kick or step on the notes. Just making contact is treated as a hit. It also enable NoArrows."></modifier>
+          <modifier value='ignoreBadColor' apply-on-change='true' source='NalulunaModifier.UI.Check.png' text='Ignore Bad Color (Recommended)' hover-hint="[Disable Score] When a saber hits a different colored note, just ignore it instead of cutting it off and getting a miss."></modifier>
+          -->
+          <modifier value='flatNotes' apply-on-change='true' source='NalulunaModifier.UI.FlatNote.png' text='Flat Notes' hover-hint="[Disable Score] Halve the height of the notes."></modifier>
+          <modifier value='hideSabers' apply-on-change='true' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
+          <modifier value='feetAvatar' apply-on-change='true' source='NalulunaModifier.UI.Avatar.png' text="Sabers on Avatar's Feet (avatar mod required)" hover-hint='If you have FullBodyTracking and Avatar mod (VMCAvatar or CustomAvatar, not LIV), you can cut notes with your feet.'></modifier>
+          <modifier value='disableStatistics' apply-on-change='true' source='NalulunaModifier.UI.No.png' text="                       Disable Statistics on FeetSaber/NinjaSaber" hover-hint="Temporarily stop recording your player statistics when playing FeetSaber or NinjaSaber. In case you don't want your average cut score to go down."></modifier>
+        </vertical>
+        <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+          <modifier value='ninjaModifiers' apply-on-change='true' source='NalulunaModifier.UI.Four.png' text='     NinjaSaber (4-saber) (avatar mod required)' hover-hint='[Disable Score] "No. Four. Two, two, four."  (You need to have an avatar to use this option) "And noodle."'></modifier>
+          <!--
+          <modifier value='fourSabers' apply-on-change='true' source='NalulunaModifier.UI.Four.png' text='NinjaSaber (4-saber) (avatar mod required)' hover-hint='[Disable Score] "No. Four. Two, two, four."  (You need to have an avatar to use this option) "And noodle."'></modifier>
+          -->
+          <modifier value='reverseGrip' apply-on-change='true' source='NalulunaModifier.UI.ReverseGrip.png' text='Reverse Grip' hover-hint='Hold sabers in a reverse grip.'></modifier>
+          <modifier value='topNotesToFeet' apply-on-change='true' source='NalulunaModifier.UI.TopNotesToFeet.png' text='Top Notes to Feet' hover-hint="[Disable Score] Move the top notes to foot-level. It's better than nothing. Don't expect too much."></modifier>
+          <modifier value='middleNotesToFeet' apply-on-change='true' source='NalulunaModifier.UI.MiddleNotesToFeet.png' text='Middle Notes to Feet' hover-hint="[Disable Score] Move the middle notes to foot-level. It's better than nothing. Don't expect too much."></modifier>
+          <modifier value='bottomNotesToFeet' apply-on-change='true' source='NalulunaModifier.UI.BottomNotesToFeet.png' text='Bottom Notes to Feet' hover-hint="[Disable Score] Move the bottom notes to foot-level. It's better than nothing. Don't expect too much."></modifier>
+        </vertical>
+      </horizontal>
     </tab>
 
-    <tab tags='settings-tab' tab-name='Feet2'>
-      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
-        <modifier value='ninjaModifiers' apply-on-change='true' source='NalulunaModifier.UI.Four.png' text='     NinjaSaber (4-saber) (avatar mod required)' hover-hint='[Disable Score] "No. Four. Two, two, four."  (You need to have an avatar to use this option) "And noodle."'></modifier>
-        <!--
-        <modifier value='fourSabers' apply-on-change='true' source='NalulunaModifier.UI.Four.png' text='NinjaSaber (4-saber) (avatar mod required)' hover-hint='[Disable Score] "No. Four. Two, two, four."  (You need to have an avatar to use this option) "And noodle."'></modifier>
-        -->
-        <modifier value='reverseGrip' apply-on-change='true' source='NalulunaModifier.UI.ReverseGrip.png' text='Reverse Grip' hover-hint='Hold sabers in a reverse grip.'></modifier>
-        <modifier value='topNotesToFeet' apply-on-change='true' source='NalulunaModifier.UI.TopNotesToFeet.png' text='Top Notes to Feet' hover-hint="[Disable Score] Move the top notes to foot-level. It's better than nothing. Don't expect too much."></modifier>
-        <modifier value='middleNotesToFeet' apply-on-change='true' source='NalulunaModifier.UI.MiddleNotesToFeet.png' text='Middle Notes to Feet' hover-hint="[Disable Score] Move the middle notes to foot-level. It's better than nothing. Don't expect too much."></modifier>
-        <modifier value='bottomNotesToFeet' apply-on-change='true' source='NalulunaModifier.UI.BottomNotesToFeet.png' text='Bottom Notes to Feet' hover-hint="[Disable Score] Move the bottom notes to foot-level. It's better than nothing. Don't expect too much."></modifier>
-      </vertical>
+    <tab tags='settings-tab' tab-name='Note'>
+      <horizontal child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false' spacing='4' horizontal-fit='PreferredSize'>
+        <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+          <modifier value='parabola' apply-on-change='true' source='NalulunaModifier.UI.Parabola.png' text='Parabola' hover-hint='[Disable Score] You can change notes height offset by modifying the value of parabolaOffsetY in (BeatSaberDir)\UserData\NalulunaModifier.ini'></modifier>
+          <modifier value='centering' apply-on-change='true' source='NalulunaModifier.UI.Centering.png' text='Centering Notes' hover-hint='[Disable Score] Move notes to the center for the Boxing modifier. Those notes are a little smaller.'></modifier>
+        </vertical>
+        <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
+          <modifier value='noRed' apply-on-change='true' source='NalulunaModifier.UI.NoRed.png' text='No Red Notes' hover-hint='[Disable Score] Remove all red notes. Hide a left saber.'></modifier>
+          <modifier value='noBlue' apply-on-change='true' source='NalulunaModifier.UI.NoBlue.png' text='No Blue Notes' hover-hint='[Disable Score] Remove all blue notes. Hide a right saber.'></modifier>
+          <modifier value='redToBlue' apply-on-change='true' source='NalulunaModifier.UI.RedToBlue.png' text='Change Red to Blue' hover-hint='[Disable Score] Change All red notes to blue. Hide a left saber.'></modifier>
+          <modifier value='blueToRed' apply-on-change='true' source='NalulunaModifier.UI.BlueToRed.png' text='Change Blue to Red' hover-hint='[Disable Score] Change All blue notes to red. Hide a right saber.'></modifier>
+          <modifier value='oneColorRed' apply-on-change='true' source='NalulunaModifier.UI.BlueToRed.png' text='One Color (Red)' hover-hint='[Disable Score] Change All sabers and notes to red. Not hide sabers.'></modifier>
+        </vertical>
+      </horizontal>
     </tab>
 
-    <tab tags='settings-tab' tab-name='Parabola'>
-      <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
-        <modifier value='parabola' apply-on-change='true' source='NalulunaModifier.UI.Parabola.png' text='Parabola' hover-hint='[Disable Score] You can change notes height offset by modifying the value of parabolaOffsetY in (BeatSaberDir)\UserData\NalulunaModifier.ini'></modifier>
-        <modifier value='noRed' apply-on-change='true' source='NalulunaModifier.UI.NoRed.png' text='No Red Notes' hover-hint='[Disable Score] Remove all red notes'></modifier>
-        <modifier value='noBlue' apply-on-change='true' source='NalulunaModifier.UI.NoBlue.png' text='No Blue Notes' hover-hint='[Disable Score] Remove all blue notes'></modifier>
-        <modifier value='redToBlue' apply-on-change='true' source='NalulunaModifier.UI.RedToBlue.png' text='Change Red to Blue' hover-hint='[Disable Score] Change All red notes to blue'></modifier>
-        <modifier value='blueToRed' apply-on-change='true' source='NalulunaModifier.UI.BlueToRed.png' text='Change Blue to Red' hover-hint='[Disable Score] Change All blue notes to red'></modifier>
-      </vertical>
-    </tab>
-
-    <tab tags='settings-tab' tab-name='Boxing'>
+    <tab tags='settings-tab' tab-name='Saber'>
       <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
         <modifier value='boxing' apply-on-change='true' source='NalulunaModifier.UI.Boxing.png' text='Boxing' hover-hint='Hit the notes with your hands. Highly recommended to turn on the Hide Sabers and Centering option below.'></modifier>
         <modifier value='hideSabers' apply-on-change='true' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
         <modifier value='hideSaberEffects' apply-on-change='true' source='NalulunaModifier.UI.No.png' text='Hide Saber Effects' hover-hint='Make your saber effects invisible. No clash effect and burn mark.'></modifier>
-        <modifier value='centering' apply-on-change='true' source='NalulunaModifier.UI.Centering.png' text='Centering Notes' hover-hint='[Disable Score] Move notes to the center for the Boxing modifier. Those notes are a little smaller.'></modifier>
       </vertical>
     </tab>
 

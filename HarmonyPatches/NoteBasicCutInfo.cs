@@ -31,6 +31,11 @@ namespace NalulunaModifier.HarmonyPatches
                 directionOK = true;
                 saberTypeOK = true;
             }
+
+            if (Config.oneColorRed && (colorType != ColorType.None))
+            {
+                saberTypeOK = true;
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ namespace NalulunaModifier
         public static bool noRed = false;
         public static bool redToBlue = false;
         public static bool blueToRed = false;
+        public static bool oneColorRed = false;
 
         public static bool boxing = false;
         public static bool hideSabers = false;
@@ -118,6 +119,7 @@ namespace NalulunaModifier
             noRed = _config.GetBool(Plugin.Name, "noRed", false, true);
             redToBlue = _config.GetBool(Plugin.Name, "redToBlue", false, true);
             blueToRed = _config.GetBool(Plugin.Name, "blueToRed", false, true);
+            oneColorRed = _config.GetBool(Plugin.Name, "oneColorRed", false, true);
 
             boxing = _config.GetBool(Plugin.Name, "boxing", false, true);
             hideSabers = _config.GetBool(Plugin.Name, "hideSabers", false, true);
@@ -200,6 +202,7 @@ namespace NalulunaModifier
             _config.SetBool(Plugin.Name, "noRed", noRed);
             _config.SetBool(Plugin.Name, "redToBlue", redToBlue);
             _config.SetBool(Plugin.Name, "blueToRed", blueToRed);
+            _config.SetBool(Plugin.Name, "oneColorRed", oneColorRed);
 
             _config.SetBool(Plugin.Name, "feetModifiers", feetModifiers);
             _config.SetBool(Plugin.Name, "feet", feet);

@@ -69,6 +69,17 @@ namespace NalulunaModifier
             }
         }
 
+        [UIValue("oneColorRed")]
+        public bool oneColorRed
+        {
+            get => Config.oneColorRed;
+            set
+            {
+                Config.oneColorRed = value;
+                Config.Write();
+            }
+        }
+
         [UIAction("twitterLinkClick")]
         void twitterLinkClick()
         {

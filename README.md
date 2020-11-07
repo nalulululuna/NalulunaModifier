@@ -9,8 +9,13 @@ https://youtu.be/7DqtCf-v2lA
 https://youtu.be/QtLNweiiQPU  
 [![](https://img.youtube.com/vi/QtLNweiiQPU/0.jpg)](https://www.youtube.com/watch?v=QtLNweiiQPU)  
   
-Download (0.0.14 for BeatSaber 1.12.2) https://drive.google.com/file/d/1AN76WgFf7D-N2GDM-bIlZ7xWok63frmP  
+Download (0.0.19 for BeatSaber 1.12.2) (Testing) https://drive.google.com/file/d/1fhMOckM8Y1jMrDE6tXVbSPAiRZ57MuGq  
 Download (0.0.12 for BeatSaber 1.11.1) https://drive.google.com/file/d/1lOSJbvlB5Mx_1SepBX3iISnyNh4kFP4n  
+
+### Requirements
+BeatSaberMarkupLanguage  
+BS Utils  
+Ini Parser  
 
 **Please make sure to read the video description when installing for the first time.**  
 **初めてお使いの場合、必ず動画の説明欄をお読みください**

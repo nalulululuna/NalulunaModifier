@@ -28,6 +28,12 @@ namespace NalulunaModifier.HarmonyPatches
                 return false;
             }
 
+            if (Config.oneColorRed)
+            {
+                PropertyInfo property = typeof(NoteData).GetProperty("colorType");
+                property.SetValue(noteData, ColorType.ColorA, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
+            }
+
             return true;
         }
     }

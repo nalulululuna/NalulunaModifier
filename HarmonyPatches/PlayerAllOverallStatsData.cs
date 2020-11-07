@@ -7,7 +7,7 @@ namespace NalulunaModifier.HarmonyPatches
     {
         static bool Prefix()
         {
-            return !(Config.disableStatistics && Config.feet);
+            return !(Config.disableStatistics && (Config.feet || Config.fourSabers));
         }
     }
 }

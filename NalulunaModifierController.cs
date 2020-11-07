@@ -20,6 +20,8 @@ namespace NalulunaModifier
 
         public static NalulunaModifierController instance { get; private set; }
 
+        public bool inGame = false;
+
         private AudioTimeSyncController _audioTimeSyncController;
         private AudioSource _audioSource;
         private PauseController _pauseController;
@@ -37,7 +39,7 @@ namespace NalulunaModifier
         private GameEnergyCounter _gameEnergyCounter;
 
         private BeatmapObjectManager _beatmapObjectManager;
-        private BeatmapObjectSpawnController _beatmapObjectSpawnController;
+        //private BeatmapObjectSpawnController _beatmapObjectSpawnController;
 
         private ColorManager _colorManager;
 
@@ -173,11 +175,13 @@ namespace NalulunaModifier
             Logger.log.Debug($"OnActiveSceneChanged: {newScene.name}");
 
             _init = false;
+            inGame = false;
 
             if (newScene.name == "GameCore")
             {
-                Logger.log.Debug($"Mode: {BS_Utils.Plugin.LevelData.Mode}");
+                inGame = true;
 
+                Logger.log.Debug($"Mode: {BS_Utils.Plugin.LevelData.Mode}");
                 if (BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Standard)
                 {
                     Config.feetModifiers = false;
@@ -200,6 +204,7 @@ namespace NalulunaModifier
                     Config.noRed = false;
                     Config.redToBlue = false;
                     Config.blueToRed = false;
+                    Config.oneColorRed = false;
 
                     Config.boxing = false;
                     Config.hideSabers = false;
@@ -219,7 +224,7 @@ namespace NalulunaModifier
 
                 Config.Read();
 
-                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.centering ||
+                if (Config.parabola || Config.noBlue || Config.noRed || Config.redToBlue || Config.blueToRed || Config.oneColorRed ||  Config.centering ||
                     Config.feet || Config.noDirection || Config.flatNotes ||
                     Config.fourSabers || Config.topNotesToFeet || Config.middleNotesToFeet || Config.bottomNotesToFeet ||
                     Config.superhot || Config.vacuum || Config.ninjaMaster || Config.beatWalker)
