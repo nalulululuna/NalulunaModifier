@@ -216,6 +216,17 @@ namespace NalulunaModifier
             }
         }
 
+        [UIValue("disableStatistics")]
+        public bool disableStatistics
+        {
+            get => Config.disableStatistics;
+            set
+            {
+                Config.disableStatistics = value;
+                Config.Write();
+            }
+        }
+
         [UIValue("ninjaModifiers")]
         public bool ninjaModifiers
         {

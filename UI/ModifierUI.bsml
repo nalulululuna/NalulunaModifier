@@ -15,12 +15,13 @@
         <modifier value='flatNotes' apply-on-change='true' source='NalulunaModifier.UI.FlatNote.png' text='Flat Notes' hover-hint="[Disable Score] Halve the height of the notes."></modifier>
         <modifier value='hideSabers' apply-on-change='true' source='NalulunaModifier.UI.No.png' text='Hide Sabers' hover-hint='Make your sabers invisible. No clash effect and burn mark.'></modifier>
         <modifier value='feetAvatar' apply-on-change='true' source='NalulunaModifier.UI.Avatar.png' text="Sabers on Avatar's Feet (avatar mod required)" hover-hint='If you have FullBodyTracking and Avatar mod (VMCAvatar or CustomAvatar, not LIV), you can cut notes with your feet.'></modifier>
+        <modifier value='disableStatistics' apply-on-change='true' source='NalulunaModifier.UI.No.png' text="                       Disable Statistics on FeetSaber" hover-hint="Temporarily stop recording your player statistics when playing FeetSaber. In case you don't want your average cut score to go down by FeetSaber."></modifier>
       </vertical>
     </tab>
 
     <tab tags='settings-tab' tab-name='Feet2'>
       <vertical child-control-height='false' child-expand-height='false' child-control-width='false' child-expand-width='false'>
-        <modifier value='ninjaModifiers' apply-on-change='true' source='NalulunaModifier.UI.Four.png' text='NinjaSaber (4-saber)      (avatar mod required)' hover-hint='[Disable Score] "No. Four. Two, two, four."  (You need to have an avatar to use this option) "And noodle."'></modifier>
+        <modifier value='ninjaModifiers' apply-on-change='true' source='NalulunaModifier.UI.Four.png' text='     NinjaSaber (4-saber) (avatar mod required)' hover-hint='[Disable Score] "No. Four. Two, two, four."  (You need to have an avatar to use this option) "And noodle."'></modifier>
         <!--
         <modifier value='fourSabers' apply-on-change='true' source='NalulunaModifier.UI.Four.png' text='NinjaSaber (4-saber) (avatar mod required)' hover-hint='[Disable Score] "No. Four. Two, two, four."  (You need to have an avatar to use this option) "And noodle."'></modifier>
         -->

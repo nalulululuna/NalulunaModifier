@@ -334,6 +334,8 @@ namespace NalulunaModifier
 
         private IEnumerator OnGameCoreCoroutine()
         {
+            yield return null;
+
             if (_audioTimeSyncController == null)
                 _audioTimeSyncController = Resources.FindObjectsOfTypeAll<AudioTimeSyncController>().FirstOrDefault();
             _audioSource = _audioTimeSyncController.GetPrivateField<AudioSource>("_audioSource");
@@ -346,25 +348,25 @@ namespace NalulunaModifier
             }
 
             // wait for CustomSaber mod
-            yield return new WaitUntil(() => Resources.FindObjectsOfTypeAll<Saber>().Any());
+            yield return new WaitUntil(() => FindObjectsOfType<Saber>().Any());
             yield return new WaitForSecondsRealtime(0.1f);
 
             if (_saberManager == null)
-                _saberManager = Resources.FindObjectsOfTypeAll<SaberManager>().FirstOrDefault();
+                _saberManager = FindObjectsOfType<SaberManager>().FirstOrDefault();
             if (_noteCutter == null)
             {
-                CuttingManager cuttingManager = Resources.FindObjectsOfTypeAll<CuttingManager>().FirstOrDefault();
+                CuttingManager cuttingManager = FindObjectsOfType<CuttingManager>().FirstOrDefault();
                 _noteCutter = cuttingManager.GetPrivateField<NoteCutter>("_noteCutter");
             }
             if (_playerTransform == null)
-                _playerTransform = Resources.FindObjectsOfTypeAll<PlayerTransforms>().FirstOrDefault();
+                _playerTransform = FindObjectsOfType<PlayerTransforms>().FirstOrDefault();
             if (_rightSaberTransform == null)
                 _rightSaberTransform = _saberManager.rightSaber.transform;
             if (_leftSaberTransform == null)
                 _leftSaberTransform = _saberManager.leftSaber.transform;
             if (_saberClashChecker == null)
             {
-                SaberClashEffect saberClashEffect = Resources.FindObjectsOfTypeAll<SaberClashEffect>().FirstOrDefault();
+                SaberClashEffect saberClashEffect = FindObjectsOfType<SaberClashEffect>().FirstOrDefault();
                 if (saberClashEffect != null)
                 {
                     _saberClashChecker = saberClashEffect.GetPrivateField<SaberClashChecker>("_saberClashChecker");
@@ -425,8 +427,8 @@ namespace NalulunaModifier
                 // most of maps don't need this, so I might remove this codes
                 
                 // testing
-                if (_beatmapObjectManager == null)
-                    _beatmapObjectManager = _pauseController.GetPrivateField<BeatmapObjectManager>("_beatmapObjectManager");
+                _beatmapObjectManager = _pauseController.GetPrivateField<BeatmapObjectManager>("_beatmapObjectManager");
+                _beatmapObjectManager.noteWasSpawnedEvent -= OnNoteWasSpawned;
                 _beatmapObjectManager.noteWasSpawnedEvent += OnNoteWasSpawned;
 
                 _prevNoteTime = 0;
@@ -441,6 +443,26 @@ namespace NalulunaModifier
             }
 
             UpdateSaberActive();
+
+            if (_audioTimeSyncController == null ||
+                _audioSource == null ||
+                _pauseController == null ||
+                _saberManager == null ||
+                _noteCutter == null ||
+                _playerTransform == null ||
+                _rightSaberTransform == null ||
+                _leftSaberTransform == null ||
+                _saberClashChecker == null ||
+                _saberBurnMarkArea == null ||
+                _saberBurnMarkSparkles == null)
+            {
+                Logger.log.Debug("GameCore Init Fail");
+                Logger.log.Debug($"{_audioTimeSyncController}, {_audioSource}, {_pauseController}, {_noteCutter}, {_playerTransform}, {_rightSaberTransform}, {_leftSaberTransform}, {_saberClashChecker}, {_saberBurnMarkArea}, {_saberBurnMarkSparkles}");
+            }
+            else
+            {
+                Logger.log.Debug("GameCore Init Success");
+            }
 
             _init = true;
         }
@@ -479,10 +501,14 @@ namespace NalulunaModifier
                 if (vrm != null)
                 {
                     Logger.log.Debug("VRM Found");
-                    _footL = vrm.GetComponent<Animator>()?.GetBoneTransform(HumanBodyBones.LeftFoot)?.transform;
-                    _footR = vrm.GetComponent<Animator>()?.GetBoneTransform(HumanBodyBones.RightFoot)?.transform;
-                    _hips = vrm.GetComponent<Animator>()?.GetBoneTransform(HumanBodyBones.Hips)?.transform;
-                    _head = vrm.GetComponent<Animator>()?.GetBoneTransform(HumanBodyBones.Head)?.transform;
+                    Animator animator = vrm.GetComponent<Animator>();
+                    if (animator != null)
+                    {
+                        _footL = animator.GetBoneTransform(HumanBodyBones.LeftFoot)?.transform;
+                        _footR = animator.GetBoneTransform(HumanBodyBones.RightFoot)?.transform;
+                        _hips = animator.GetBoneTransform(HumanBodyBones.Hips)?.transform;
+                        _head = animator.GetBoneTransform(HumanBodyBones.Head)?.transform;
+                    }
                     if (_footL != null && _footR != null)
                     {
                         _avatarType = AvatarType.VMCAvatar;
@@ -499,14 +525,18 @@ namespace NalulunaModifier
                 {
                     //Logger.log.Debug("VRM NotFound");
                     //Logger.log.Debug("CustomAvatar Search");
-                    GameObject customAvatar = GameObject.Find("_CustomAvatar(Clone)");
+                    GameObject customAvatar = GameObject.Find("Avatar Container");
                     if (customAvatar != null)
                     {
                         Logger.log.Debug("CustomAvatar Found");
-                        _footL = customAvatar.GetComponentInChildren<Animator>()?.GetBoneTransform(HumanBodyBones.LeftFoot)?.transform;
-                        _footR = customAvatar.GetComponentInChildren<Animator>()?.GetBoneTransform(HumanBodyBones.RightFoot)?.transform;
-                        _hips = customAvatar.GetComponentInChildren<Animator>()?.GetBoneTransform(HumanBodyBones.Hips)?.transform;
-                        _head = customAvatar.GetComponentInChildren<Animator>()?.GetBoneTransform(HumanBodyBones.Head)?.transform;
+                        Animator animator = customAvatar.GetComponentInChildren<Animator>();
+                        if (animator != null)
+                        {
+                            _footL = animator.GetBoneTransform(HumanBodyBones.LeftFoot)?.transform;
+                            _footR = animator.GetBoneTransform(HumanBodyBones.RightFoot)?.transform;
+                            _hips = animator.GetBoneTransform(HumanBodyBones.Hips)?.transform;
+                            _head = animator.GetBoneTransform(HumanBodyBones.Head)?.transform;
+                        }
                         if (_footL != null && _footR != null)
                         {
                             _avatarType = AvatarType.CustomAvatar;
@@ -709,7 +739,7 @@ namespace NalulunaModifier
             float time;
             if (noteController.noteData.colorType == ColorType.None)
             {
-                //Logger.log.Debug($"Spawn Bomb: {noteController.noteData.id} : {noteController.noteData.time}");
+                //Logger.log.Debug($"Spawn Bomb: {noteController.noteData.lineIndex} : {noteController.noteData.time}");
 
                 time = noteController.noteData.time;
                 if (_prevBombTime != 0 && time != _prevBombTime)
@@ -723,9 +753,9 @@ namespace NalulunaModifier
                 {
                     foreach (NoteController note in _noteList)
                     {
-                        if (noteController.noteTransform.position.x == note.noteTransform.position.x)
+                        if (noteController.noteData.lineIndex == note.noteData.lineIndex)
                         {
-                            //Logger.log.Debug($"Dissolve: {noteController.noteData.id} : {noteController.noteData.time}");
+                            //Logger.log.Debug($"Dissolve: {noteController.noteData.lineIndex} : {noteController.noteData.time}");
                             noteController.Dissolve(0);
                             isDissolved = true;
                             break;
@@ -741,7 +771,7 @@ namespace NalulunaModifier
             }
             else
             {
-                //Logger.log.Debug($"Spawn Note: {noteController.noteData.id} : {noteController.noteData.time}");
+                //Logger.log.Debug($"Spawn Note: {noteController.noteData.lineIndex} : {noteController.noteData.time}");
 
                 time = noteController.noteData.time;
                 if (time != _prevNoteTime)
@@ -755,9 +785,9 @@ namespace NalulunaModifier
                 {
                     for (int i = _bombList.Count - 1; i >= 0; i--)
                     {
-                        if (noteController.noteTransform.position.x == _bombList[i].noteTransform.position.x)
+                        if (noteController.noteData.lineIndex == _bombList[i].noteData.lineIndex)
                         {
-                            //Logger.log.Debug($"Dissolve: {_bombList[i].noteData.id} : {_bombList[i].noteData.time}");
+                            //Logger.log.Debug($"Dissolve: {_bombList[i].noteData.lineIndex} : {_bombList[i].noteData.time}");
                             _bombList[i].Dissolve(0);
                             _bombList.RemoveAt(i);
                         }
@@ -799,7 +829,7 @@ namespace NalulunaModifier
             {
                 return;
             }
-                
+
             if (Config.boxing)
             {
                 _rightSaberTransform.Translate(0, 0, -0.23f, Space.Self);
@@ -837,7 +867,7 @@ namespace NalulunaModifier
 
                 if (!(Config.ninjaMaster && Config.ninjaMasterHideFoot))
                 {
-                    if (Config.fourSabers || Config.ninjaMaster)
+                    if (!Config.feetTracker && (Config.fourSabers || Config.ninjaMaster))
                     {
                         footSaberL = _saberFootL.transform;
                         footSaberR = _saberFootR.transform;

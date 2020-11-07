@@ -14,6 +14,24 @@ namespace NalulunaModifier.HarmonyPatches
 	{
 		static void Prefix(ref NoteData noteData, ref Vector3 moveStartPos, ref Vector3 moveEndPos, ref Vector3 jumpEndPos, Transform ____noteTransform)
 		{
+			NoteLineLayer noteLineLayer;
+			if ((int)noteData.noteLineLayer <= 2)
+			{
+				noteLineLayer = noteData.noteLineLayer;
+			}
+			else if ((int)noteData.noteLineLayer < 1667)
+			{
+				noteLineLayer = NoteLineLayer.Base;
+			}
+			else if ((int)noteData.noteLineLayer < 2334)
+			{
+				noteLineLayer = NoteLineLayer.Upper;
+			}
+			else
+			{
+				noteLineLayer = NoteLineLayer.Top;
+			}
+
 			if (Config.noDirection)
 			{
 				if (noteData.cutDirection != NoteCutDirection.None)
@@ -22,9 +40,9 @@ namespace NalulunaModifier.HarmonyPatches
 				}
 			}
 
-			if ((Config.topNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Top)) ||
-				(Config.middleNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Upper)) ||
-				(Config.bottomNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Base)))
+			if ((Config.topNotesToFeet && (noteLineLayer == NoteLineLayer.Top)) ||
+				(Config.middleNotesToFeet && (noteLineLayer == NoteLineLayer.Upper)) ||
+				(Config.bottomNotesToFeet && (noteLineLayer == NoteLineLayer.Base)))
 			{
 				noteData.SetNonPublicProperty("cutDirection", NoteCutDirection.Any);
 				____noteTransform.localScale = new Vector3(1f, 0.5f, 1f);
@@ -34,19 +52,19 @@ namespace NalulunaModifier.HarmonyPatches
 				____noteTransform.localScale = Vector3.one;
 			}
 
-			if (Config.topNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Top))
+			if (Config.topNotesToFeet && (noteLineLayer == NoteLineLayer.Top))
 			{
 				moveStartPos = new Vector3(moveStartPos.x, Config.feetNotesY, moveStartPos.z);
 				moveEndPos = new Vector3(moveEndPos.x, Config.feetNotesY, moveEndPos.z);
 				jumpEndPos = new Vector3(jumpEndPos.x, Config.feetNotesY, jumpEndPos.z);
 			}
-			if (Config.middleNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Upper))
+			if (Config.middleNotesToFeet && (noteLineLayer == NoteLineLayer.Upper))
 			{
 				moveStartPos = new Vector3(moveStartPos.x, Config.feetNotesY, moveStartPos.z);
 				moveEndPos = new Vector3(moveEndPos.x, Config.feetNotesY, moveEndPos.z);
 				jumpEndPos = new Vector3(jumpEndPos.x, Config.feetNotesY, jumpEndPos.z);
 			}
-			if (Config.bottomNotesToFeet && (noteData.noteLineLayer == NoteLineLayer.Base))
+			if (Config.bottomNotesToFeet && (noteLineLayer == NoteLineLayer.Base))
 			{
 				moveStartPos = new Vector3(moveStartPos.x, Config.feetNotesY, moveStartPos.z);
 				moveEndPos = new Vector3(moveEndPos.x, Config.feetNotesY, moveEndPos.z);

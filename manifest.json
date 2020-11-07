@@ -3,7 +3,7 @@
   "id": "NalulunaModifier",
   "name": "NalulunaModifier",
   "author": "nalulululuna",
-  "version": "0.0.15",
+  "version": "0.0.19",
   "description": "Custom Gameplay Modifiers",
   "gameVersion": "1.12.2",
   "dependsOn": {

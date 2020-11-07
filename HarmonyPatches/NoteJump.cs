@@ -24,7 +24,6 @@ namespace NalulunaModifier.HarmonyPatches
     [HarmonyPatch(typeof(NoteJump), "ManualUpdate")]
     static class NoteJumpManualUpdate
     {
-        //static int tick = 0;
         static SaberManager _saberManager = null;
 
         [HarmonyPriority(Priority.VeryLow)]
@@ -37,7 +36,9 @@ namespace NalulunaModifier.HarmonyPatches
             Vector3 ____localPosition,
             Vector3 ____startPos,
             Vector3 ____endPos,
-            Quaternion ____worldRotation)
+            Quaternion ____worldRotation,
+            Quaternion ____middleRotation,
+            Transform ____rotatedObject)
         {
             if (Config.parabola)
             {
@@ -67,7 +68,7 @@ namespace NalulunaModifier.HarmonyPatches
             {
                 if (_saberManager == null)
                 {
-                    _saberManager = Resources.FindObjectsOfTypeAll<SaberManager>().FirstOrDefault();
+                    _saberManager = Object.FindObjectsOfType<SaberManager>().FirstOrDefault();
                 }
 
                 if (_saberManager != null)
@@ -94,6 +95,24 @@ namespace NalulunaModifier.HarmonyPatches
                 ____localPosition.y = Config.feetNotesY;
                 __result = ____worldRotation * ____localPosition;
                 __instance.transform.position = __result;
+
+                Transform noteCube = __instance.transform.Find("NoteCube");
+                if (noteCube != null)
+                {
+                    foreach (Transform noteCubeChild in noteCube)
+                    {
+                        if (noteCubeChild.name.StartsWith("customNote"))
+                        {
+                            foreach (Transform noteCubeGrandChild in noteCubeChild)
+                            {
+                                if (noteCubeGrandChild.name.StartsWith("Feet"))
+                                {
+                                    noteCubeGrandChild.rotation = ____middleRotation;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             if (Config.topNotesToFeet || Config.middleNotesToFeet || Config.bottomNotesToFeet)

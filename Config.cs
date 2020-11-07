@@ -44,7 +44,8 @@ namespace NalulunaModifier
         public static bool noDirection = false;
         public static bool ignoreBadColor = false;
         public static bool feetAvatar = false;
-        
+        public static bool disableStatistics = false;
+
         public static bool feetTracker
         {
             get { return _feetTracker && feet; }
@@ -133,6 +134,7 @@ namespace NalulunaModifier
             flatNotes = _config.GetBool(Plugin.Name, "flatNotes", false, true);
             feetAvatar = _config.GetBool(Plugin.Name, "feetAvatar", false, true);
             feetTracker = _config.GetBool(Plugin.Name, "feetTracker", false, true);
+            disableStatistics = _config.GetBool(Plugin.Name, "disableStatistics", false, true);
             ReadFeetPosRot();
 
             ninjaModifiers = _config.GetBool(Plugin.Name, "ninjaModifiers", false, true);
@@ -205,6 +207,7 @@ namespace NalulunaModifier
             _config.SetBool(Plugin.Name, "ignoreBadColor", ignoreBadColor);
             _config.SetBool(Plugin.Name, "flatNotes", flatNotes);
             _config.SetBool(Plugin.Name, "feetAvatar", feetAvatar);
+            _config.SetBool(Plugin.Name, "disableStatistics", disableStatistics);
 
             _config.SetBool(Plugin.Name, "ninjaModifiers", ninjaModifiers);
             _config.SetBool(Plugin.Name, "fourSabers", fourSabers);

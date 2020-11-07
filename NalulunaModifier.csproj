@@ -126,6 +126,7 @@
     <Compile Include="HarmonyPatches\FlyingScoreSpawner.cs" />
     <Compile Include="HarmonyPatches\NoteCutter.cs" />
     <Compile Include="HarmonyPatches\NoteCutHapticEffect.cs" />
+    <Compile Include="HarmonyPatches\PlayerAllOverallStatsData.cs" />
     <Compile Include="HarmonyPatches\SaberClashChecker.cs" />
     <Compile Include="HarmonyPatches\SphereCuttableBySaber.cs" />
     <Compile Include="HarmonyPatches\BombNoteController.cs" />
