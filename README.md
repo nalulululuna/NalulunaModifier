@@ -9,7 +9,7 @@ https://youtu.be/7DqtCf-v2lA
 https://youtu.be/QtLNweiiQPU  
 [![](https://img.youtube.com/vi/QtLNweiiQPU/0.jpg)](https://www.youtube.com/watch?v=QtLNweiiQPU)  
   
-Download (0.0.29 for BeatSaber 1.16.2): https://drive.google.com/file/d/1jLqmKYSQCw_tTQCS7uvHECVhOysBYhOz  
+Download (0.0.30 for BeatSaber 1.16.2): https://drive.google.com/file/d/1yL1XdlQxocDR892jZpX_JNZ_YxNwsIvH  
 
 ### Requirements
 BeatSaberMarkupLanguage  
