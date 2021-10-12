@@ -9,6 +9,7 @@ https://youtu.be/7DqtCf-v2lA
 https://youtu.be/QtLNweiiQPU  
 [![](https://img.youtube.com/vi/QtLNweiiQPU/0.jpg)](https://www.youtube.com/watch?v=QtLNweiiQPU)  
   
+Download (0.0.36 for BeatSaber 1.18.1): https://drive.google.com/file/d/1tCEValJ-FsUPb2MzQG2khz8eTtMo8zzN  
 Download (0.0.35 for BeatSaber 1.18.0): https://drive.google.com/file/d/1dxqL0bvm79OesUvHcLlFzLMmPqcs62j3  
 Download (0.0.34 for BeatSaber 1.17.0): https://drive.google.com/file/d/1PafBIRpAthe2j8RbFj_nT-kP_xAVEuWT  
 Download (0.0.33 for BeatSaber 1.16.4): https://drive.google.com/file/d/14_qK34xSYEfUF_DRwA3_anFvrvFNvbBl  
